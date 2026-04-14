@@ -11,7 +11,6 @@ const LayeringCard = () => {
                 </span>
             </div>
 
-            {/* الـ Inner Box اللي بيمثل الـ Layering */}
             <div className="bg-surface-low rounded-md h-[160px] flex items-center justify-center border border-slate-200/50">
                 <span className="text-[12px] text-slate-400">Visual representation of nested surfaces</span>
             </div>
