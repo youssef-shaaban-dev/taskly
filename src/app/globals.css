@@ -1,10 +1,5 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   /* Colors */
 
@@ -24,6 +19,9 @@
   --color-success: #82f9be;
   --color-error: #ba1a1a;
   --color-warning: #ffb300;
+
+  /* Others */
+  --color-gray: #737685;
 
   /*      Typography     */
 
@@ -48,13 +46,18 @@
   /* Label-SM */
   --text-label-sm: 0.6875rem; /* 11px */
   --text-label-sm--font-weight: 700;
-  --text-label-sm--line-height: 1.5; 
-  --text-label-sm--letter-spacing: 0.1em; 
+  --text-label-sm--line-height: 1.5;
+  --text-label-sm--letter-spacing: 0.1em;
+}
+
+:root {
+  --background: white;
+  --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: --color-background;
+    --background: black;
     --foreground: #ededed;
   }
 }
@@ -65,9 +68,20 @@ body {
   font-family: "inter", ui-sans-serif, system-ui;
 }
 
-
 @layer components {
-  .form-label {
-    @apply text-[0.625rem] font-bold uppercase tracking-[0.062rem] leading-[0.94rem];
+  .auth-container {
+    @apply min-h-screen flex items-center justify-center bg-white p-4;
+  }
+
+  .auth-card {
+    @apply w-full max-w-xl bg-white pb-[4.63rem] px-6  md:p-12 rounded-lg shadow-sm border border-slate-100;
+  }
+
+  .auth-header {
+    @apply text-center mb-8;
+  }
+
+  .auth-title {
+    @apply font-semibold leading-10 md:leading-9  text-[1.75rem] md:text-3xl text-slate-900 mb-2;
   }
 }
