@@ -32,16 +32,21 @@ export const useForgotPassword = () => {
     try {
       await apiClient("/auth/v1/recover", {
         method: "POST",
-        body: JSON.stringify({ email: data.email }),
+        body: JSON.stringify({
+          email: data.email,
+          options: {
+            redirectTo: "http://localhost:3000/auth/callback",
+          },
+        }),
       });
 
       setServerMessage(
-        "If an account exists with this email, we’ve sent a password reset link.",
+        "If an account exists with this email, we've sent a link.",
       );
-      setCountdown(300); // 5 minutes
+      setCountdown(300);
       setTrials((prev) => prev + 1);
     } catch (error) {
-      form.setError("root", { message: "Network error, please try again." });
+      form.setError("root", { message: "Network error" });
     }
   };
 
