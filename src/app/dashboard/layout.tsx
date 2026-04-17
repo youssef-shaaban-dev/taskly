@@ -1,10 +1,10 @@
 "use client";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Sidebar } from "@/components/pages/dashboard/layout/Sidebar";
-import { Navbar } from "@/components/pages/dashboard/layout/Navbar";
+import { Sidebar } from "@/components/features/dashboard/layout/Sidebar";
+import { Navbar } from "@/components/features/dashboard/layout/Navbar";
 import { fetchUser } from "@/store/slices/user/userActions";
-import { BottomNav } from "@/components/pages/dashboard/layout/BottomNav";
+import { BottomNav } from "@/components/features/dashboard/layout/BottomNav";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();

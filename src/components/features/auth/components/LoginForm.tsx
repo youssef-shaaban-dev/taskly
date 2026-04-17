@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
-import { useLogin } from '@/hooks/useLogin'
+import { useLogin } from '@/components/features/auth/hooks/useLogin'
 
 const LoginForm = () => {
     const { register, onSubmit, errors, isSubmitting } = useLogin();

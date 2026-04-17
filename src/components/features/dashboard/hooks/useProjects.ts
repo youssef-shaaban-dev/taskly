@@ -37,8 +37,8 @@ export const useProjects = () => {
 
         const data = await response.json();
         setProjects(data || []);
-      } catch (err: any) {
-        setError(err.message || "An unexpected error occurred");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An unexpected error occurred");
       } finally {
         setIsLoading(false);
       }

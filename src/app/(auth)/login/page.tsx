@@ -1,4 +1,4 @@
-import LoginForm from "@/components/pages/login/LoginForm"
+import LoginForm from "@/components/features/auth/components/LoginForm"
 import AuthWrapper from "@/components/shared/AuthWrapper"
 
 const LoginPage = () => {

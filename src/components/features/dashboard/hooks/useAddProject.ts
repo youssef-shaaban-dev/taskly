@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { apiClient } from "@/utils/apiClient";
-import { ProjectFormValues, projectSchema } from "@/schemas/projectSchema";
+import { ProjectFormValues, projectSchema } from "@/components/features/dashboard/schemas/projectSchema";
 
 
 export const useAddProject = () => {
@@ -36,8 +36,8 @@ export const useAddProject = () => {
       alert("Project created successfully");
       form.reset();
       router.push("/dashboard/projects");
-    } catch (error: any) {
-      alert(error.message || "Failed to create project. Please try again.");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Failed to create project. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

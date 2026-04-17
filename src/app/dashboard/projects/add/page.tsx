@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { DashboardIcon } from "@/components/icons";
-import { useAddProject } from "@/hooks/useAddProject";
+import { useAddProject } from "@/components/features/dashboard/hooks/useAddProject";
 
 export default function AddProjectPage() {
   const { form, isSubmitting, descriptionValue, onSubmit } = useAddProject();

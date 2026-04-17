@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useSignUp } from "@/hooks/useSignup";
+import { useSignUp } from "@/components/features/auth/hooks/useSignup";
 import { useWatch } from "react-hook-form";
 
 const SignUpForm = () => {

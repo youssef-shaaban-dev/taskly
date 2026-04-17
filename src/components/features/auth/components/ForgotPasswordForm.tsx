@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useForgotPassword } from "@/hooks/useForgotPassword";
+import { useForgotPassword } from "@/components/features/auth/hooks/useForgotPassword";
 import Link from "next/link";
 
 const ForgotPasswordForm = () => {

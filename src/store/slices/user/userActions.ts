@@ -10,8 +10,9 @@ export const fetchUser = createAsyncThunk(
       const response = await apiClient("/auth/v1/user", { method: "GET" });
       if (!response.ok) throw new Error("Could not fetch user data");
       return await response.json();
-    } catch (error: any) {
-      return rejectWithValue(error.message || "An error occurred");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "An error occurred";
+      return rejectWithValue(message);
     }
   },
 );
@@ -31,10 +32,9 @@ export const logoutUser = createAsyncThunk(
       Cookies.remove("refresh_token");
 
       return true;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.message || "Logout failed, please try again.",
-      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Logout failed, please try again.";
+      return rejectWithValue(message);
     }
   },
 );

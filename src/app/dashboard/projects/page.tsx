@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { DashboardIcon } from "@/components/icons";
-import { useProjects } from "@/hooks/useProjects";
+import { useProjects } from "@/components/features/dashboard/hooks/useProjects";
 
 export default function ProjectsPage() {
   const { projects, isLoading, error } = useProjects();

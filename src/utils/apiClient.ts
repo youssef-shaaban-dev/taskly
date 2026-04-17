@@ -18,7 +18,7 @@ export const apiClient = async (
 
   let response = await fetch(`${BASE_URL}${endpoint}`, { ...options, headers });
 
-  if (response.status === 401 || 403) {
+  if (response.status === 401 || response.status === 403) {
     const refreshToken = Cookies.get("refresh_token");
 
     if (refreshToken) {

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { loginSchema, LoginFormData } from "@/schemas/loginSchema";
+import { loginSchema, LoginFormData } from "@/components/features/auth/schemas/loginSchema";
 import Cookies from "js-cookie";
 import { apiClient } from "@/utils/apiClient";
 
