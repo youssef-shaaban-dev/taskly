@@ -62,7 +62,7 @@ const ForgotPasswordForm = () => {
       w-full flex items-center justify-center gap-2 py-4 rounded-sm transition-all duration-300
       ${
         countdown > 0
-          ? "bg-[#F1F3FF] text-slate-400 cursor-not-allowed"
+          ? "bg-surface-low text-slate-400 cursor-not-allowed"
           : "bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer"
       }
     `}

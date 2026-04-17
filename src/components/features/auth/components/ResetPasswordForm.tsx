@@ -73,7 +73,7 @@ const ResetPasswordForm = () => {
             </div>
 
             {/* Security Requirements Checklist */}
-            <div className="bg-[#F1F3FF]/50 p-4 rounded-sm space-y-3">
+            <div className="bg-surface-low/50 p-4 rounded-sm space-y-3">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
                     Security Requirements
                 </p>

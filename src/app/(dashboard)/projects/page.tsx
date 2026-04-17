@@ -97,7 +97,7 @@ export default function ProjectsPage() {
             ))}
 
             {/* Add Project Card inside Grid (Desktop only) */}
-            <Link href="/projects/add" className="hidden md:flex bg-[#FAFBFF] p-6 rounded-lg border-2 border-dashed border-slate-200 hover:border-primary/50 transition-colors flex-col items-center justify-center h-56 text-slate-500 hover:text-primary group">
+            <Link href="/projects/add" className="hidden md:flex bg-background p-6 rounded-lg border-2 border-dashed border-slate-200 hover:border-primary/50 transition-colors flex-col items-center justify-center h-56 text-slate-500 hover:text-primary group">
               <div className="w-10 h-10 bg-white border shadow-sm rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                 <span className="text-xl font-light">+</span>
               </div>
