@@ -10,11 +10,11 @@ export const BottomNav = () => {
   const pathname = usePathname();
 
   const menuItems = [
-    { label: "Projects", icon: <DashboardIcon />, path: "/projects" },
-    { label: "Monitoring", icon: <MonitoringIcon />, path: "/monitoring" },
-    { label: "Inventory", icon: <InventoryIcon />, path: "/inventory" },
-    { label: "Groups", icon: <GroupsIcon />, path: "/groups" },
-    { label: "Details", icon: <DescriptionIcon />, path: "/details" },
+    { label: "Projects", icon: <DashboardIcon />, path: "/dashboard/projects" },
+    { label: "Monitoring", icon: <MonitoringIcon />, path: "/dashboard/monitoring" },
+    { label: "Inventory", icon: <InventoryIcon />, path: "/dashboard/inventory" },
+    { label: "Groups", icon: <GroupsIcon />, path: "/dashboard/groups" },
+    { label: "Details", icon: <DescriptionIcon />, path: "/dashboard/details" },
   ];
 
   return (

@@ -35,7 +35,7 @@ export const useAddProject = () => {
 
       alert("Project created successfully");
       form.reset();
-      router.push("/projects");
+      router.push("/dashboard/projects");
     } catch (error: any) {
       alert(error.message || "Failed to create project. Please try again.");
     } finally {

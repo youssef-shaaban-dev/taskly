@@ -16,7 +16,7 @@ export default function AddProjectPage() {
     <div className="max-w-4xl mx-auto w-full pb-10">
       <div className="mb-6">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-2">
-          <Link href="/projects" className="text-slate-400 hover:text-slate-600">
+          <Link href="/dashboard/projects" className="text-slate-400 hover:text-slate-600">
             Projects
           </Link>
           <span className="text-slate-400">&gt;</span>
@@ -105,7 +105,7 @@ export default function AddProjectPage() {
 
             <div className="pt-6 border-t border-slate-50 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
               <Link
-                href="/projects"
+                href="/dashboard/projects"
                 className="w-full sm:w-auto text-sm font-bold text-slate-500 hover:text-slate-700 text-center py-2 px-4 transition-colors"
               >
                 Cancel
