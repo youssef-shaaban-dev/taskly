@@ -4,6 +4,8 @@ import StoreProvider from "@/store/StoreProvider";
 
 
 
+import AuthHashHandler from "@/components/features/auth/components/AuthHashHandler";
+
 export const metadata: Metadata = {
   title: "Tasks Management",
   description: "Task - rafiq",
@@ -21,9 +23,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <StoreProvider>
+          <AuthHashHandler />
           {children}
         </StoreProvider>
       </body>
     </html>
   );
 }
+

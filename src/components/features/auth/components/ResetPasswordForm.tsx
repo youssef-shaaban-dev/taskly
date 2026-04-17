@@ -9,9 +9,11 @@ import { useWatch } from "react-hook-form";
 
 const ResetPasswordForm = () => {
     const searchParams = useSearchParams();
-    const token = searchParams.get("token");
+    const token = searchParams.get("access_token");
 
     const { register, onSubmit, errors, isSubmitting, success, control } = useResetPassword(token);
+
+
 
     const passwordValue = useWatch({ control, name: "password", defaultValue: "" });
 
