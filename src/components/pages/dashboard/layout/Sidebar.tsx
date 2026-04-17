@@ -1,9 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; 
 import Link from "next/link";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { closeMobileMenu } from "@/store/slices/uiSlice";
+import { logoutUser } from "@/store/slices/user/userActions"; 
 import { 
   DashboardIcon, MonitoringIcon, InventoryIcon, 
   GroupsIcon, DescriptionIcon, LogoutIcon, 
@@ -13,6 +14,7 @@ import {
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
+  const router = useRouter(); 
   const dispatch = useAppDispatch();
   const { isMobileMenuOpen } = useAppSelector((state) => state.ui);
 
@@ -20,12 +22,21 @@ export const Sidebar = () => {
     dispatch(closeMobileMenu());
   }, [pathname, dispatch]);
 
+  const handleLogout = async () => {
+    const result = await dispatch(logoutUser());
+    if (logoutUser.fulfilled.match(result)) {
+      router.push("/login");
+    } else {
+      alert("Logout failed, please try again.");
+    }
+  };
+
   const menuItems = [
     { label: "Projects", icon: <DashboardIcon />, path: "/projects" },
     { label: "Monitoring", icon: <MonitoringIcon />, path: "/monitoring" },
     { label: "Inventory", icon: <InventoryIcon />, path: "/inventory" },
     { label: "Groups", icon: <GroupsIcon />, path: "/groups" },
-    { label: "Details", icon: <DescriptionIcon />, path: "/details" },
+    { label: "Project Details", icon: <DescriptionIcon />, path: "/details" },
   ];
 
   return (
@@ -43,17 +54,15 @@ export const Sidebar = () => {
           ${isMobileMenuOpen ? "translate-x-0 w-[256px]" : "-translate-x-full md:translate-x-0"}
         `}
       >
-        {/* 1. Header / Logo */}
         <div className="h-16 flex items-center px-6 gap-3 border-b border-slate-50 overflow-hidden">
-          <TasklyIcon className="min-w-6" />
+          <TasklyIcon className="min-w-6 text-primary-container" />
           {!isCollapsed && (
-            <span className="font-black text-xl text-primary tracking-tighter transition-opacity duration-200">
+            <span className="font-black text-xl text-slate-900 tracking-tighter transition-opacity duration-200">
               TASKLY
             </span>
           )}
         </div>
 
-        {/* 2. Navigation Items */}
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {menuItems.map((item) => {
             const isActive = pathname === item.path;
@@ -79,7 +88,6 @@ export const Sidebar = () => {
           })}
         </nav>
 
-        {/* 3. Footer (Collapse & Logout) */}
         <div className="p-4 border-t border-slate-50 space-y-4">
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -92,7 +100,11 @@ export const Sidebar = () => {
             {!isCollapsed && <span className="text-[10px] font-bold uppercase tracking-wider">Collapse</span>}
           </button>
 
-          <button className={`flex items-center gap-3 w-full text-error hover:bg-error/5 p-3 rounded-sm transition-colors ${isCollapsed ? "md:justify-center" : ""}`}>
+         
+          <button 
+            onClick={handleLogout}
+            className={`flex items-center cursor-pointer gap-3 w-full text-error hover:bg-error/5 p-3 rounded-sm transition-colors ${isCollapsed ? "md:justify-center" : ""}`}
+          >
             <LogoutIcon />
             {(!isCollapsed || isMobileMenuOpen) && <span className="text-sm font-bold">Logout</span>}
           </button>

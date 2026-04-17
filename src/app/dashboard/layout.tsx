@@ -1,9 +1,9 @@
 "use client";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchUser } from "@/store/slices/userSlice";
 import { Sidebar } from "@/components/pages/dashboard/layout/Sidebar";
 import { Navbar } from "@/components/pages/dashboard/layout/Navbar";
+import { fetchUser } from "@/store/slices/user/userActions";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();

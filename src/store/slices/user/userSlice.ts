@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { apiClient } from "@/utils/apiClient";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchUser, logoutUser } from "./userActions"; 
 
 interface UserData {
   user_metadata: {
@@ -21,19 +21,6 @@ const initialState: UserState = {
   error: null,
 };
 
-export const fetchUser = createAsyncThunk(
-  "user/fetchUser",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await apiClient("/auth/v1/user", { method: "GET" });
-      if (!response.ok) throw new Error("Could not fetch user data");
-      return await response.json();
-    } catch (error: any) {
-      return rejectWithValue(error.message || "An error occurred");
-    }
-  },
-);
-
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -44,20 +31,23 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Fetch User Cases
       .addCase(fetchUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchUser.fulfilled,
-        (state, action: PayloadAction<UserData>) => {
-          state.loading = false;
-          state.user = action.payload;
-        },
-      )
+      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<UserData>) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      // Logout Cases
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null; 
+        state.loading = false;
       });
   },
 });
