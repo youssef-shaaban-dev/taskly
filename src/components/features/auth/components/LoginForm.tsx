@@ -45,7 +45,7 @@ const LoginForm = () => {
                     </label>
                 </div>
 
-                <Link href="forgot-password" className="hidden md:block text-xs font-bold text-primary hover:underline">
+                <Link href="forgot-password" className="text-xs font-bold text-primary hover:underline">
                     Forgot Password?
                 </Link>
             </div>

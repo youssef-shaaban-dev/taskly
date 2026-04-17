@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const authPaths = ["/login", "/signup", "/forgot-password", "/reset-password"];
-const publicPaths = ["/auth/callback"];
+const publicPaths = ["/callback", "/auth/callback"];
 
 export function proxy(request: NextRequest) {
   const token = request.cookies.get("access_token")?.value;
