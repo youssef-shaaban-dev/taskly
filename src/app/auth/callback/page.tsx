@@ -25,7 +25,7 @@ export default function AuthCallback() {
             console.log(type)
 
             if (type === "recovery" && accessToken) {
-                router.push(`/resetPassword?access_token=${accessToken}`);
+                router.push(`/reset-password?access_token=${accessToken}`);
             } else {
                 router.push("/login");
             }

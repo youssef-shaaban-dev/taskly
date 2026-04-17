@@ -27,7 +27,7 @@ const ResetPasswordForm = () => {
         return (
             <div className="p-6 text-center bg-red-50 text-error rounded-xl border border-error/20">
                 <p className="font-bold">Invalid or expired reset link.</p>
-                <Link href="/forgotPassword" className="text-xs underline mt-2 inline-block">
+                <Link href="/forgot-password" className="text-xs underline mt-2 inline-block">
                     Try requesting a new link
                 </Link>
             </div>
