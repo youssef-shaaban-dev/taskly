@@ -35,7 +35,7 @@ export const useForgotPassword = () => {
         body: JSON.stringify({
           email: data.email,
           options: {
-            redirectTo: "http://localhost:3000/callback",
+            redirectTo: `${window.location.origin}/callback`,
           },
         }),
       });
