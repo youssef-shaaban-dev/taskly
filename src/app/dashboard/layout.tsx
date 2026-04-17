@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Sidebar } from "@/components/pages/dashboard/layout/Sidebar";
 import { Navbar } from "@/components/pages/dashboard/layout/Navbar";
 import { fetchUser } from "@/store/slices/user/userActions";
+import { BottomNav } from "@/components/pages/dashboard/layout/BottomNav";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
@@ -27,10 +28,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       <div className="flex-1 flex flex-col min-w-0 md:pl-64 transition-all duration-300 has-[aside.md:w-[90px]]:md:pl-[90px]">
         <Navbar />
-        <main className="pt-24 px-4 md:px-8 pb-8 transition-all">
+        <main className="pt-24 px-4 md:px-8 pb-20 md:pb-8 transition-all">
           {children}
         </main>
       </div>
+
+      {!isMobileMenuOpen && <BottomNav />}
     </div>
   );
 }
