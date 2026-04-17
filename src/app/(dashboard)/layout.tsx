@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen bg-[#F9F9FB] flex">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col min-w-0 md:pl-64 transition-all duration-300 has-[aside.md:w-[90px]]:md:pl-[90px]">
+      <div className="flex-1 flex flex-col min-w-0 md:pl-64 transition-all duration-300 has-[aside[data-collapsed=true]]:md:pl-[90px]">
         <Navbar />
         <main className="pt-24 px-4 md:px-8 pb-20 md:pb-8 transition-all">
           {children}

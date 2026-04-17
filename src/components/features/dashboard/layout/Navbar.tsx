@@ -41,7 +41,7 @@ export const Navbar = () => {
   }
 
   return (
-    <nav className="h-16 border-b bg-white px-4 md:px-8 flex items-center justify-between fixed top-0 right-0 left-0 md:left-64 z-30 transition-all duration-300 has-[aside.md:w-[90px]]:md:left-[90px]">
+    <nav className="h-16 border-b bg-white px-4 md:px-8 flex items-center justify-between fixed top-0 right-0 left-0 md:left-64 z-30 transition-all duration-300 has-[aside[data-collapsed=true]]:md:left-[90px]">
       
       <button 
         onClick={() => dispatch(toggleMobileMenu())}

@@ -32,11 +32,11 @@ export const Sidebar = () => {
   };
   
   const menuItems = [
-    { label: "Projects", icon: <DashboardIcon />, path: "/dashboard/projects" },
-    { label: "Monitoring", icon: <MonitoringIcon />, path: "/dashboard/monitoring" },
-    { label: "Inventory", icon: <InventoryIcon />, path: "/dashboard/inventory" },
-    { label: "Groups", icon: <GroupsIcon />, path: "/dashboard/groups" },
-    { label: "Project Details", icon: <DescriptionIcon />, path: "/dashboard/details" },
+    { label: "Projects", icon: <DashboardIcon />, path: "/projects" },
+    { label: "Monitoring", icon: <MonitoringIcon />, path: "/monitoring" },
+    { label: "Inventory", icon: <InventoryIcon />, path: "/inventory" },
+    { label: "Groups", icon: <GroupsIcon />, path: "/groups" },
+    { label: "Project Details", icon: <DescriptionIcon />, path: "/details" },
   ];
 
   return (
@@ -49,19 +49,20 @@ export const Sidebar = () => {
       )}
 
       <aside
+        data-collapsed={isCollapsed}
         className={`fixed left-0 top-0 h-full bg-white border-r border-slate-100 z-50 transition-all duration-300 flex flex-col
           ${isCollapsed ? "md:w-22.5" : "md:w-[256px]"}
           ${isMobileMenuOpen ? "translate-x-0 w-[256px]" : "-translate-x-full md:translate-x-0"}
         `}
       >
-        <div className="h-16 flex items-center px-6 gap-3 border-b border-slate-50 overflow-hidden">
+        <Link href="/" className="h-16 flex items-center px-6 gap-3 border-b border-slate-50 overflow-hidden">
           <TasklyIcon className="min-w-6 text-primary-container" />
           {!isCollapsed && (
             <span className="font-black text-xl text-slate-900 tracking-tighter transition-opacity duration-200">
               TASKLY
             </span>
           )}
-        </div>
+        </Link>
 
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {menuItems.map((item) => {

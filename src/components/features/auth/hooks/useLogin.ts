@@ -35,7 +35,7 @@ export const useLogin = () => {
       Cookies.set("access_token", result.access_token, cookieOptions);
       Cookies.set("refresh_token", result.refresh_token, cookieOptions);
 
-      router.push("/dashboard"); 
+      router.push("/"); 
       router.refresh();
     } catch (error) {
       form.setError("root", { message: "Network error, please try again." });

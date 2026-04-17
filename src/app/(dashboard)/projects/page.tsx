@@ -37,7 +37,7 @@ export default function ProjectsPage() {
         </div>
         {/* Desktop Create Button */}
         <Link
-          href="/dashboard/projects/add"
+          href="/projects/add"
           className="hidden md:flex bg-primary text-white px-5 py-2.5 rounded-md text-sm font-bold hover:opacity-90 transition-opacity items-center gap-2"
         >
           <span>+</span> Create New Project
@@ -69,7 +69,7 @@ export default function ProjectsPage() {
             Get started by creating your first project to manage tasks and collaborate with your team.
           </p>
           <Link
-            href="/dashboard/projects/add"
+            href="/projects/add"
             className="bg-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"
           >
             Create New Project
@@ -97,7 +97,7 @@ export default function ProjectsPage() {
             ))}
 
             {/* Add Project Card inside Grid (Desktop only) */}
-            <Link href="/dashboard/projects/add" className="hidden md:flex bg-[#FAFBFF] p-6 rounded-lg border-2 border-dashed border-slate-200 hover:border-primary/50 transition-colors flex-col items-center justify-center h-56 text-slate-500 hover:text-primary group">
+            <Link href="/projects/add" className="hidden md:flex bg-[#FAFBFF] p-6 rounded-lg border-2 border-dashed border-slate-200 hover:border-primary/50 transition-colors flex-col items-center justify-center h-56 text-slate-500 hover:text-primary group">
               <div className="w-10 h-10 bg-white border shadow-sm rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                 <span className="text-xl font-light">+</span>
               </div>
@@ -130,7 +130,7 @@ export default function ProjectsPage() {
 
       {/* Mobile Floating Action Button (FAB) */}
       <Link
-        href="/dashboard/projects/add"
+        href="/projects/add"
         className="md:hidden fixed bottom-24 right-6 w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-40"
       >
         <span className="text-2xl font-light">+</span>
