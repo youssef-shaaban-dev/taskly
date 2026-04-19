@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/utils/apiClient";
 import Cookies from "js-cookie";
+import { COOKIES, ROUTES, API_ENDPOINTS } from "@/constant";
 
 export interface Project {
   id: string;
@@ -19,15 +20,15 @@ export const useProjects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await apiClient("/rest/v1/rpc/get_projects", {
+        const response = await apiClient(API_ENDPOINTS.GET_PROJECTS, {
           method: "GET",
         });
 
         if (response.status === 401) {
           // Token expired or invalid -> Clear auth and redirect
-          Cookies.remove("access_token");
-          Cookies.remove("refresh_token");
-          router.push("/login");
+          Cookies.remove(COOKIES.ACCESS_TOKEN);
+          Cookies.remove(COOKIES.REFRESH_TOKEN);
+          router.push(ROUTES.LOGIN);
           return;
         }
 

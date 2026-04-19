@@ -1,13 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiClient } from "@/utils/apiClient";
 import Cookies from "js-cookie";
+import { COOKIES, API_ENDPOINTS } from "@/constant";
 
 //  Fetch User Thunk
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await apiClient("/auth/v1/user", { method: "GET" });
+      const response = await apiClient(API_ENDPOINTS.USER, { method: "GET" });
       if (!response.ok) throw new Error("Could not fetch user data");
       return await response.json();
     } catch (error) {
@@ -22,14 +23,14 @@ export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await apiClient("/auth/v1/logout", {
+      const response = await apiClient(API_ENDPOINTS.LOGOUT, {
         method: "POST",
       });
 
       if (!response.ok) throw new Error("Logout failed on server");
 
-      Cookies.remove("access_token");
-      Cookies.remove("refresh_token");
+      Cookies.remove(COOKIES.ACCESS_TOKEN);
+      Cookies.remove(COOKIES.REFRESH_TOKEN);
 
       return true;
     } catch (error) {

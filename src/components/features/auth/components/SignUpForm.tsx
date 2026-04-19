@@ -3,6 +3,8 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { useSignUp } from "@/components/features/auth/hooks/useSignup";
 import { useWatch } from "react-hook-form";
+import Link from "next/link";
+import { ROUTES } from "@/constant";
 
 const SignUpForm = () => {
 
@@ -99,7 +101,7 @@ const SignUpForm = () => {
 
             <p className="text-center text-sm text-slate-500 font-normal">
                 Already have an account?
-                <a href="/login" className="text-primary ml-1 font-semibold hover:underline">Log in</a>
+                <Link href={ROUTES.LOGIN} className="text-primary ml-1 font-semibold hover:underline">Log in</Link>
             </p>
         </form>
     )

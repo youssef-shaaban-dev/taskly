@@ -3,6 +3,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { useForgotPassword } from "@/components/features/auth/hooks/useForgotPassword";
 import Link from "next/link";
+import { ROUTES } from "@/constant";
 
 const ForgotPasswordForm = () => {
   const {
@@ -34,7 +35,7 @@ const ForgotPasswordForm = () => {
       </Button>
 
       <Link
-        href="/login"
+        href={ROUTES.LOGIN}
         className="text-center text-[12px] font-bold text-primary hover:underline"
       >
         ← Back to log in

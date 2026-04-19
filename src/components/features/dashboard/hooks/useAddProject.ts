@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { apiClient } from "@/utils/apiClient";
 import { ProjectFormValues, projectSchema } from "@/components/features/dashboard/schemas/projectSchema";
+import { API_ENDPOINTS, ROUTES } from "@/constant";
 
 
 export const useAddProject = () => {
@@ -23,7 +24,7 @@ export const useAddProject = () => {
   const onSubmit = async (data: ProjectFormValues) => {
     setIsSubmitting(true);
     try {
-      const response = await apiClient("/rest/v1/projects", {
+      const response = await apiClient(API_ENDPOINTS.CREATE_PROJECT, {
         method: "POST",
         body: JSON.stringify(data),
       });
@@ -35,7 +36,7 @@ export const useAddProject = () => {
 
       alert("Project created successfully");
       form.reset();
-      router.push("/projects");
+      router.push(ROUTES.PROJECTS);
     } catch (error) {
       alert(error instanceof Error ? error.message : "Failed to create project. Please try again.");
     } finally {

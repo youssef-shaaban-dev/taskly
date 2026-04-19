@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { DashboardIcon } from "@/components/icons";
 import { useAddProject } from "@/components/features/dashboard/hooks/useAddProject";
+import { ROUTES } from "@/constant";
 
 export default function AddProjectPage() {
   const { form, isSubmitting, descriptionValue, onSubmit } = useAddProject();
@@ -16,7 +17,7 @@ export default function AddProjectPage() {
     <div className="max-w-4xl mx-auto w-full pb-10">
       <div className="mb-6">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-2">
-          <Link href="/projects" className="text-slate-400 hover:text-slate-600">
+          <Link href={ROUTES.PROJECTS} className="text-slate-400 hover:text-slate-600">
             Projects
           </Link>
           <span className="text-slate-400">&gt;</span>

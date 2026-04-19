@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import { useLogin } from '@/components/features/auth/hooks/useLogin'
+import { ROUTES } from '@/constant'
 
 const LoginForm = () => {
     const { register, onSubmit, errors, isSubmitting } = useLogin();
@@ -45,7 +46,7 @@ const LoginForm = () => {
                     </label>
                 </div>
 
-                <Link href="forgot-password" className="text-xs font-bold text-primary hover:underline">
+                <Link href={ROUTES.FORGOT_PASSWORD} className="text-xs font-bold text-primary hover:underline">
                     Forgot Password?
                 </Link>
             </div>
@@ -56,7 +57,7 @@ const LoginForm = () => {
 
             <p className="text-center text-sm text-slate-500">
                 Don’t have an account?
-                <Link href="/signup" className="text-primary font-semibold hover:underline">
+                <Link href={ROUTES.SIGNUP} className="text-primary font-semibold hover:underline">
                     Sign Up
                 </Link>
             </p>

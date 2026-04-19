@@ -20,7 +20,7 @@ const Input = ({ label, error, className = " ", ...props }: InputProps) => {
       <input
         id={inputId}
         className={`
-       rounded-sm px-4 py-3.5 text-[0.625rem] font-bold uppercase tracking-[0.062rem] leading-[0.94rem] 
+       rounded-sm px-4 py-3.5 text-[0.625rem] font-bold tracking-[0.062rem] leading-[0.94rem] 
             
 
           ${

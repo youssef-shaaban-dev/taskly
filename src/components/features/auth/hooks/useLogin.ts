@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { loginSchema, LoginFormData } from "@/components/features/auth/schemas/loginSchema";
 import Cookies from "js-cookie";
 import { apiClient } from "@/utils/apiClient";
+import { COOKIES, ROUTES, API_ENDPOINTS } from "@/constant";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ export const useLogin = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await apiClient("/auth/v1/token?grant_type=password", {
+      const response = await apiClient(`${API_ENDPOINTS.AUTH_TOKEN}?grant_type=password`, {
         method: "POST",
         body: JSON.stringify({
           email: data.email,
@@ -32,10 +33,10 @@ export const useLogin = () => {
 
       const cookieOptions = data.rememberMe ? { expires: 7 } : {};
 
-      Cookies.set("access_token", result.access_token, cookieOptions);
-      Cookies.set("refresh_token", result.refresh_token, cookieOptions);
+      Cookies.set(COOKIES.ACCESS_TOKEN, result.access_token, cookieOptions);
+      Cookies.set(COOKIES.REFRESH_TOKEN, result.refresh_token, cookieOptions);
 
-      router.push("/");
+      router.push(ROUTES.HOME);
       router.refresh();
     } catch (error) {
       form.setError("root", { message: "Network error, please try again." });

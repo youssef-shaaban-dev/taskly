@@ -6,10 +6,11 @@ import { useResetPassword } from "@/components/features/auth/hooks/useResetPassw
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useWatch } from "react-hook-form";
+import { COOKIES, ROUTES } from "@/constant";
 
 const ResetPasswordForm = () => {
     const searchParams = useSearchParams();
-    const token = searchParams.get("access_token");
+    const token = searchParams.get(COOKIES.ACCESS_TOKEN);
 
     const { register, onSubmit, errors, isSubmitting, success, control } = useResetPassword(token);
 
@@ -29,7 +30,7 @@ const ResetPasswordForm = () => {
         return (
             <div className="p-6 text-center bg-red-50 text-error rounded-xl border border-error/20">
                 <p className="font-bold">Invalid or expired reset link.</p>
-                <Link href="/forgot-password" className="text-xs underline mt-2 inline-block">
+                <Link href={ROUTES.FORGOT_PASSWORD} className="text-xs underline mt-2 inline-block">
                     Try requesting a new link
                 </Link>
             </div>
@@ -104,7 +105,7 @@ const ResetPasswordForm = () => {
                 </Button>
 
                 <div className="text-center">
-                    <Link href="/login" className="text-[12px] font-bold text-primary hover:underline transition-all">
+                    <Link href={ROUTES.LOGIN} className="text-[12px] font-bold text-primary hover:underline transition-all">
                         Back to Log In
                     </Link>
                 </div>

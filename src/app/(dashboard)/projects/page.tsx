@@ -4,6 +4,7 @@ import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { DashboardIcon } from "@/components/icons";
 import { useProjects } from "@/components/features/dashboard/hooks/useProjects";
+import { ROUTES } from "@/constant";
 
 export default function ProjectsPage() {
   const { projects, isLoading, error } = useProjects();
@@ -37,7 +38,7 @@ export default function ProjectsPage() {
         </div>
         {/* Desktop Create Button */}
         <Link
-          href="/projects/add"
+        href={ROUTES.ADD_PROJECT}
           className="hidden md:flex bg-primary text-white px-5 py-2.5 rounded-md text-sm font-bold hover:opacity-90 transition-opacity items-center gap-2"
         >
           <span>+</span> Create New Project
@@ -69,7 +70,7 @@ export default function ProjectsPage() {
             Get started by creating your first project to manage tasks and collaborate with your team.
           </p>
           <Link
-            href="/projects/add"
+          href={ROUTES.ADD_PROJECT}
             className="bg-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"
           >
             Create New Project

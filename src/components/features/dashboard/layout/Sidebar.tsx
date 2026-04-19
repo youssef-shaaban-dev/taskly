@@ -10,6 +10,7 @@ import {
   GroupsIcon, DescriptionIcon, LogoutIcon, 
   ArrowIcon, TasklyIcon 
 } from "@/components/icons";
+import { ROUTES } from "@/constant";
 
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -25,18 +26,18 @@ export const Sidebar = () => {
   const handleLogout = async () => {
     const result = await dispatch(logoutUser());
     if (logoutUser.fulfilled.match(result)) {
-      router.push("/login");
+      router.push(ROUTES.LOGIN);
     } else {
       alert("Logout failed, please try again.");
     }
   };
   
   const menuItems = [
-    { label: "Projects", icon: <DashboardIcon />, path: "/projects" },
-    { label: "Monitoring", icon: <MonitoringIcon />, path: "/monitoring" },
-    { label: "Inventory", icon: <InventoryIcon />, path: "/inventory" },
-    { label: "Groups", icon: <GroupsIcon />, path: "/groups" },
-    { label: "Project Details", icon: <DescriptionIcon />, path: "/details" },
+    { label: "Projects", icon: <DashboardIcon />, path: ROUTES.PROJECTS },
+    { label: "Monitoring", icon: <MonitoringIcon />, path: ROUTES.MONITORING },
+    { label: "Inventory", icon: <InventoryIcon />, path: ROUTES.INVENTORY },
+    { label: "Groups", icon: <GroupsIcon />, path: ROUTES.GROUPS },
+    { label: "Project Details", icon: <DescriptionIcon />, path: ROUTES.DETAILS },
   ];
 
   return (
@@ -55,7 +56,7 @@ export const Sidebar = () => {
           ${isMobileMenuOpen ? "translate-x-0 w-[256px]" : "-translate-x-full md:translate-x-0"}
         `}
       >
-        <Link href="/" className="h-16 flex items-center px-6 gap-3 border-b border-slate-50 overflow-hidden">
+        <Link href={ROUTES.HOME} className="h-16 flex items-center px-6 gap-3 border-b border-slate-50 overflow-hidden">
           <TasklyIcon className="min-w-6 text-primary-container" />
           {!isCollapsed && (
             <span className="font-black text-xl text-slate-900 tracking-tighter transition-opacity duration-200">

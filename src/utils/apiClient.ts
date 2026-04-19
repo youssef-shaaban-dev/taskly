@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { COOKIES, ROUTES, API_ENDPOINTS } from "@/constant";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -7,7 +8,7 @@ export const apiClient = async (
   endpoint: string,
   options: RequestInit = {},
 ) => {
-  const accessToken = Cookies.get("access_token");
+  const accessToken = Cookies.get(COOKIES.ACCESS_TOKEN);
 
   const headers = {
     "Content-Type": "application/json",
@@ -19,11 +20,11 @@ export const apiClient = async (
   let response = await fetch(`${BASE_URL}${endpoint}`, { ...options, headers });
 
   if (response.status === 401 || response.status === 403) {
-    const refreshToken = Cookies.get("refresh_token");
+    const refreshToken = Cookies.get(COOKIES.REFRESH_TOKEN);
 
     if (refreshToken) {
       const refreshResponse = await fetch(
-        `${BASE_URL}/auth/v1/token?grant_type=refresh_token`,
+        `${BASE_URL}${API_ENDPOINTS.AUTH_TOKEN}?grant_type=refresh_token`,
         {
           method: "POST",
           headers: {
@@ -37,8 +38,8 @@ export const apiClient = async (
       if (refreshResponse.ok) {
         const data = await refreshResponse.json();
 
-        Cookies.set("access_token", data.access_token);
-        Cookies.set("refresh_token", data.refresh_token);
+        Cookies.set(COOKIES.ACCESS_TOKEN, data.access_token);
+        Cookies.set(COOKIES.REFRESH_TOKEN, data.refresh_token);
 
         const newHeaders = {
           ...headers,
@@ -49,9 +50,9 @@ export const apiClient = async (
           headers: newHeaders,
         });
       } else {
-        Cookies.remove("access_token");
-        Cookies.remove("refresh_token");
-        window.location.href = "/login";
+        Cookies.remove(COOKIES.ACCESS_TOKEN);
+        Cookies.remove(COOKIES.REFRESH_TOKEN);
+        window.location.href = ROUTES.LOGIN;
       }
     }
   }

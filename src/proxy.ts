@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { COOKIES, ROUTES } from "@/constant";
 
-const authPaths = ["/login", "/signup", "/forgot-password", "/reset-password"];
-const publicPaths = ["/callback", "/auth/callback"];
+const authPaths = [ROUTES.LOGIN, ROUTES.SIGNUP, ROUTES.FORGOT_PASSWORD, ROUTES.RESET_PASSWORD];
+const publicPaths = [ROUTES.CALLBACK, "/auth/callback"];
 
 export function proxy(request: NextRequest) {
-  const token = request.cookies.get("access_token")?.value;
+  const token = request.cookies.get(COOKIES.ACCESS_TOKEN)?.value;
   const { pathname } = request.nextUrl;
 
   const isAuthPage = authPaths.some(path => pathname.startsWith(path));
@@ -20,11 +21,11 @@ export function proxy(request: NextRequest) {
   const isDashboardPage = !isAuthPage && !isPublicPage && !pathname.startsWith("/_next") && !pathname.includes(".");
 
   if (isDashboardPage && !token) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
   }
 
   if (isAuthPage && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL(ROUTES.HOME, request.url));
   }
 
   return NextResponse.next();

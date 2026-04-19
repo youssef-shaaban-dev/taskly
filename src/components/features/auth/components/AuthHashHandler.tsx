@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { COOKIES, ROUTES } from "@/constant";
 
 /**
  * Component to handle Supabase auth hash fragments (e.g. recovery tokens).
@@ -19,7 +20,7 @@ export default function AuthHashHandler() {
       // Supabase fragments look like: #access_token=...&type=recovery
       const params = new URLSearchParams(hash.replace("#", "?"));
       const type = params.get("type");
-      const accessToken = params.get("access_token");
+      const accessToken = params.get(COOKIES.ACCESS_TOKEN);
 
       if (type === "recovery" && accessToken) {
         console.log("Recovery token found! Redirecting to /reset-password...");
@@ -27,7 +28,7 @@ export default function AuthHashHandler() {
         window.history.replaceState(null, "", window.location.pathname + window.location.search);
         
         // Redirect to /reset-password with the token in the query params as per requirements
-        router.push(`/reset-password?access_token=${accessToken}`);
+        router.push(`${ROUTES.RESET_PASSWORD}?access_token=${accessToken}`);
       }
     };
 
