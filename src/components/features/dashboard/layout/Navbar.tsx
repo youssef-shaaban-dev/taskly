@@ -6,6 +6,7 @@ import { getInitials } from "@/utils/getInitials";
 import { LogoutIcon, MenuIcon } from "@/components/icons";
 import { logoutUser } from "@/store/slices/user/userActions";
 import { toggleMobileMenu } from "@/store/slices/uiSlice";
+import { toast } from "sonner";
 
 export const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -15,14 +16,14 @@ export const Navbar = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const name = user?.user_metadata?.name || "User";
-  const job = user?.user_metadata?.department || "Worker";
+  const job = user?.user_metadata?.department || "";
 
   const handleLogout = async () => {
     const result = await dispatch(logoutUser());
     if (logoutUser.fulfilled.match(result)) {
       router.push("/login");
     } else {
-      alert("Logout failed, please try again.");
+      toast.error("Logout failed, please try again.");
     }
   };
 

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { apiClient } from "@/utils/apiClient";
 import { ProjectFormValues, projectSchema } from "@/components/features/dashboard/schemas/projectSchema";
 import { API_ENDPOINTS, ROUTES } from "@/constant";
+import { toast } from "sonner";
 
 
 export const useAddProject = () => {
@@ -34,11 +35,11 @@ export const useAddProject = () => {
         throw new Error(errorData.message || "Failed to create project");
       }
 
-      alert("Project created successfully");
+      toast.success("Project created successfully");
       form.reset();
       router.push(ROUTES.PROJECTS);
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Failed to create project. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to create project. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

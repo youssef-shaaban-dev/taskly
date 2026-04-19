@@ -11,6 +11,7 @@ import {
   ArrowIcon, TasklyIcon 
 } from "@/components/icons";
 import { ROUTES } from "@/constant";
+import { toast } from "sonner";
 
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -28,7 +29,7 @@ export const Sidebar = () => {
     if (logoutUser.fulfilled.match(result)) {
       router.push(ROUTES.LOGIN);
     } else {
-      alert("Logout failed, please try again.");
+      toast.error("Logout failed, please try again.");
     }
   };
   
