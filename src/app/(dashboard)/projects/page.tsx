@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 import { DashboardIcon } from "@/components/icons";
 import { useProjects } from "@/components/features/dashboard/hooks/useProjects";
 import { ROUTES } from "@/constant";
 
 export default function ProjectsPage() {
+  const router = useRouter();
   const { projects, isLoading, error } = useProjects();
 
   // 1. Error State
@@ -19,7 +21,7 @@ export default function ProjectsPage() {
         <h2 className="text-xl font-bold text-slate-900 mb-2">Oops! Something went wrong</h2>
         <p className="text-sm text-slate-500 mb-6">{error}</p>
         <button 
-          onClick={() => window.location.reload()} 
+          onClick={() => router.refresh()} 
           className="bg-primary text-white px-6 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity"
         >
           Try Again
@@ -98,7 +100,7 @@ export default function ProjectsPage() {
             ))}
 
             {/* Add Project Card inside Grid (Desktop only) */}
-            <Link href="/projects/add" className="hidden md:flex bg-background p-6 rounded-lg border-2 border-dashed border-slate-200 hover:border-primary/50 transition-colors flex-col items-center justify-center h-56 text-slate-500 hover:text-primary group">
+            <Link href={ROUTES.ADD_PROJECT} className="hidden md:flex bg-background p-6 rounded-lg border-2 border-dashed border-slate-200 hover:border-primary/50 transition-colors flex-col items-center justify-center h-56 text-slate-500 hover:text-primary group">
               <div className="w-10 h-10 bg-white border shadow-sm rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                 <span className="text-xl font-light">+</span>
               </div>
@@ -131,7 +133,7 @@ export default function ProjectsPage() {
 
       {/* Mobile Floating Action Button (FAB) */}
       <Link
-        href="/projects/add"
+        href={ROUTES.ADD_PROJECT}
         className="md:hidden fixed bottom-24 right-6 w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-40"
       >
         <span className="text-2xl font-light">+</span>

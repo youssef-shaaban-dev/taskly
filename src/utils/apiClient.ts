@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { COOKIES, ROUTES, API_ENDPOINTS } from "@/constant";
+import { COOKIES, API_ENDPOINTS } from "@/constant";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -49,10 +49,9 @@ export const apiClient = async (
           ...options,
           headers: newHeaders,
         });
-      } else {
+      } else {    
         Cookies.remove(COOKIES.ACCESS_TOKEN);
         Cookies.remove(COOKIES.REFRESH_TOKEN);
-        window.location.href = ROUTES.LOGIN;
       }
     }
   }

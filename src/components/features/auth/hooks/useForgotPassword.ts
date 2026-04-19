@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiClient } from "@/utils/apiClient";
+import { API_ENDPOINTS, ROUTES } from "@/constant";
 
 const forgotSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email format"),
@@ -30,12 +31,12 @@ export const useForgotPassword = () => {
     if (trials >= 3) return;
 
     try {
-      await apiClient("/auth/v1/recover", {
+      await apiClient(API_ENDPOINTS.AUTH_RECOVER, {
         method: "POST",
         body: JSON.stringify({
           email: data.email,
           options: {
-            redirectTo: `${window.location.origin}/callback`,
+            redirectTo: `${window.location.origin}${ROUTES.CALLBACK}`,
           },
         }),
       });
@@ -43,10 +44,13 @@ export const useForgotPassword = () => {
       setServerMessage(
         "If an account exists with this email, we've sent a link.",
       );
+      form.reset();
       setCountdown(300);
       setTrials((prev) => prev + 1);
     } catch (error) {
-      form.setError("root", { message: "Network error" });
+      if (error instanceof Error) {
+        form.setError("root", { message: error.message });
+      }
     }
   };
 

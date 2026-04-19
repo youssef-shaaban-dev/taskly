@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
   USER: "/auth/v1/user",
   LOGOUT: "/auth/v1/logout",
   AUTH_TOKEN: "/auth/v1/token",
+  AUTH_RECOVER: "/auth/v1/recover",
   GET_PROJECTS: "/rest/v1/rpc/get_projects",
   CREATE_PROJECT: "/rest/v1/projects",
 } as const;
