@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { apiClient } from "@/utils/apiClient";
-import { API_ENDPOINTS, ROUTES } from "@/constant";
+import { forgotPasswordService } from "../services/forgotPasswordService";
 
 const forgotSchema = z.object({
   email: z.string().nonempty("Email is required").email("Invalid email format"),
@@ -31,15 +30,7 @@ export const useForgotPassword = () => {
     if (trials >= 3) return;
 
     try {
-      await apiClient(API_ENDPOINTS.AUTH_RECOVER, {
-        method: "POST",
-        body: JSON.stringify({
-          email: data.email,
-          options: {
-            redirectTo: `${window.location.origin}${ROUTES.CALLBACK}`,
-          },
-        }),
-      });
+      await forgotPasswordService(data.email);
 
       setServerMessage(
         "If an account exists with this email, we've sent a link.",
@@ -48,9 +39,8 @@ export const useForgotPassword = () => {
       setCountdown(300);
       setTrials((prev) => prev + 1);
     } catch (error) {
-      if (error instanceof Error) {
-        form.setError("root", { message: error.message });
-      }
+      const message = error instanceof Error ? error.message : "An unexpected error occurred";
+      form.setError("root", { message });
     }
   };
 
@@ -73,8 +63,8 @@ export const useForgotPassword = () => {
   };
 
   return {
-    ...form,
-    onSubmit: form.handleSubmit(onSubmit),
+    form,
+    onSubmit,
     serverMessage,
     countdown,
     trials,

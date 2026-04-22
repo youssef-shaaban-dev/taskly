@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { passwordSchema } from "@/components/features/auth/login/schemas/signUpSchema";
-import { apiClient } from "@/utils/apiClient";
 import z from "zod";
+import { passwordSchema } from "../../signup/schemas/signUpSchema";
+
+import { resetPasswordService } from "../services/resetPasswordService";
 
 type ResetPasswordData = z.infer<typeof passwordSchema>;
 
@@ -21,24 +22,21 @@ export const useResetPassword = (token: string | null) => {
     if (!token) return;
 
     try {
-      const response = await apiClient("/auth/v1/user", {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ password: data.password }),
-      });
+      const response = await resetPasswordService(data.password, token);
 
       if (response.ok) {
         setSuccess(true);
         setTimeout(() => router.push("/login"), 3000);
       }
     } catch (error) {
-      form.setError("root", { message: "Failed to update password." });
+      const message = error instanceof Error ? error.message : "Failed to update password.";
+      form.setError("root", { message });
     }
   };
 
   return {
-    ...form,
-    onSubmit: form.handleSubmit(onSubmit),
+    form,
+    onSubmit,
     success,
     errors: form.formState.errors,
     isSubmitting: form.formState.isSubmitting,
