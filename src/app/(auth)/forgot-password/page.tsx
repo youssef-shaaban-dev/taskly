@@ -1,4 +1,4 @@
-import ForgotPasswordForm from "@/components/features/auth/components/ForgotPasswordForm"
+import ForgotPasswordForm from "@/components/features/auth/forgot-password/components/ForgotPasswordForm"
 import AuthWrapper from "@/components/shared/AuthWrapper"
 
 const ForgotPasswordPage = () => {

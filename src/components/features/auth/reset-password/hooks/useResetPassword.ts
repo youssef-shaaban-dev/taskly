@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { passwordSchema } from "@/components/features/auth/schemas/signUpSchema";
+import { passwordSchema } from "@/components/features/auth/login/schemas/signUpSchema";
 import { apiClient } from "@/utils/apiClient";
 import z from "zod";
 

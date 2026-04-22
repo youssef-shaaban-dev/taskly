@@ -6,7 +6,7 @@ import { apiClient } from "@/utils/apiClient";
 import { API_ENDPOINTS, ROUTES } from "@/constant";
 
 const forgotSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email format"),
+  email: z.string().nonempty("Email is required").email("Invalid email format"),
 });
 
 export const useForgotPassword = () => {

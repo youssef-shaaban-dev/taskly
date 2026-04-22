@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useForgotPassword } from "@/components/features/auth/hooks/useForgotPassword";
+import { useForgotPassword } from "@/components/features/auth/forgot-password/hooks/useForgotPassword";
 import Link from "next/link";
 import { ROUTES } from "@/constant";
 

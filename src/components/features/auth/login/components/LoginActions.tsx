@@ -1,37 +1,14 @@
-"use client";
-import Link from 'next/link'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import { useLogin } from '@/components/features/auth/hooks/useLogin'
-import { ROUTES } from '@/constant'
+import Link from 'next/link';
+import Button from '@/components/ui/Button';
+import { useFormContext } from 'react-hook-form';
+import { ROUTES } from '@/constant';
 
-const LoginForm = () => {
-    const { register, onSubmit, errors, isSubmitting } = useLogin();
+
+
+export const LoginActions = () => {
+    const { register, formState: { isSubmitting } } = useFormContext();
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-6">
-            {errors.root && (
-                <div className="bg-red-50 text-error text-xs p-3 rounded-sm border border-error/20">
-                    {errors.root.message}
-                </div>
-            )}
-
-            <Input
-                label="Email Address"
-                type="email"
-                placeholder="yourname@company.com"
-                {...register("email")}
-                error={errors.email?.message}
-            />
-
-            <Input
-                label="Password"
-                type="password"
-                placeholder="Enter your password"
-                {...register("password")}
-                error={errors.password?.message}
-            />
-
-
+        <>
             <div className="flex items-center justify-between gap-2">
 
                 <div className='flex items-center gap-0.5'>
@@ -61,8 +38,6 @@ const LoginForm = () => {
                     Sign Up
                 </Link>
             </p>
-        </form>
-    )
-}
-
-export default LoginForm
+        </>
+    );
+};

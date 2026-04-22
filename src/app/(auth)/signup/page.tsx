@@ -1,4 +1,4 @@
-import SignUpForm from "@/components/features/auth/components/SignUpForm";
+import SignUpForm from "@/components/features/auth/signup/components/SignUpForm";
 import AuthWrapper from "@/components/shared/AuthWrapper";
 
 export default function SignUpPage() {

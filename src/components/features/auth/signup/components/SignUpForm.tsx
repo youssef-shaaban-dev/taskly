@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useSignUp } from "@/components/features/auth/hooks/useSignup";
+import { useSignUp } from "@/components/features/auth/signup/hooks/useSignup";
 import { useWatch } from "react-hook-form";
 import Link from "next/link";
 import { ROUTES } from "@/constant";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import StoreProvider from "@/store/StoreProvider";
-import AuthHashHandler from "@/components/features/auth/components/AuthHashHandler";
+import AuthHashHandler from "@/components/features/auth/shared/AuthHashHandler";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {

@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useResetPassword } from "@/components/features/auth/hooks/useResetPassword";
+import { useResetPassword } from "@/components/features/auth/reset-password/hooks/useResetPassword";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useWatch } from "react-hook-form";

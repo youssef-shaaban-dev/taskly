@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { signUpSchema, SignUpFormData } from "@/components/features/auth/schemas/signUpSchema";
+import {
+  signUpSchema,
+  SignUpFormData,
+} from "@/components/features/auth/login/schemas/signUpSchema";
 import { apiClient } from "@/utils/apiClient";
 
 export const useSignUp = () => {
