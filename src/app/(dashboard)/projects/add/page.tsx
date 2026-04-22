@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { DashboardIcon } from "@/components/icons";
-import { useAddProject } from "@/components/features/dashboard/hooks/useAddProject";
+import { useAddProject } from "@/components/features/dashboard/pages/projects/hooks/useAddProject";
 import { ROUTES } from "@/constant";
 
 export default function AddProjectPage() {

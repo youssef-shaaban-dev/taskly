@@ -7,12 +7,9 @@ import { COOKIES, ROUTES } from "@/constant";
 export default function AuthCallback() {
     const router = useRouter();
 
-    console.log("test");
 
     useEffect(() => {
         const hash = window.location.hash;
-
-        console.log(hash);
 
         if (hash) {
 

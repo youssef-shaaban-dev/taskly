@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/utils/apiClient";
-import Cookies from "js-cookie";
-import { COOKIES, ROUTES, API_ENDPOINTS } from "@/constant";
+import { API_ENDPOINTS } from "@/constant";
 
 export interface Project {
   id: string;
@@ -24,14 +23,6 @@ export const useProjects = () => {
           method: "GET",
         });
 
-        if (response.status === 401) {
-          // Token expired or invalid -> Clear auth and redirect
-          Cookies.remove(COOKIES.ACCESS_TOKEN);
-          Cookies.remove(COOKIES.REFRESH_TOKEN);
-          router.push(ROUTES.LOGIN);
-          return;
-        }
-
         if (!response.ok) {
           throw new Error("Failed to fetch projects. Please try again later.");
         }
@@ -39,7 +30,9 @@ export const useProjects = () => {
         const data = await response.json();
         setProjects(data || []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An unexpected error occurred");
+        setError(
+          err instanceof Error ? err.message : "An unexpected error occurred",
+        );
       } finally {
         setIsLoading(false);
       }
