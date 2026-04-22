@@ -3,7 +3,7 @@ import { useLogin } from '@/components/features/auth/login/hooks/useLogin'
 import LoginFields from './LoginFields';
 import { LoginActions } from './LoginActions';
 import { Form, FormProvider } from 'react-hook-form';
-import FormError from './FormError';
+import FormError from '../../shared/FormError';
 
 const LoginForm = () => {
     const { form, onSubmit } = useLogin();
