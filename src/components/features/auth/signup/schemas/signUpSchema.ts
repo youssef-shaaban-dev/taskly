@@ -14,7 +14,7 @@ export const passwordSchema = z
         "At least one special character (!@#$...) is required",
       )
       .refine((val) => !/\s/.test(val), "Spaces are not allowed in passwords"),
-    confirmPassword: z.string().nonempty( "Please confirm your password"),
+    confirmPassword: z.string().nonempty("Please confirm your password"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -37,9 +37,8 @@ export const signUpSchema = z
       ),
 
     email: z
-      .string()
-      .nonempty( "Email address is required")
-      .email("Invalid email format"),
+      .email("Invalid email format")
+      .nonempty("Email address is required"),
 
     job_title: z.string().optional(),
   })

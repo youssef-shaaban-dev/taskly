@@ -5,7 +5,7 @@ import { z } from "zod";
 import { forgotPasswordService } from "../services/forgotPasswordService";
 
 const forgotSchema = z.object({
-  email: z.string().nonempty("Email is required").email("Invalid email format"),
+  email: z.email("Invalid email format").nonempty("Email is required"),
 });
 
 export const useForgotPassword = () => {
