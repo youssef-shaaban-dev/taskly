@@ -1,45 +1,54 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { apiClient } from "@/utils/apiClient";
-import { API_ENDPOINTS } from "@/constant";
-
-export interface Project {
-  id: string;
-  name: string;
-  description: string;
-  created_at: string;
-}
+import { useEffect, useCallback } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchProjectsThunk } from "@/store/slices/projects/projectThunks";
 
 export const useProjects = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const {
+    projects,
+    currentPage,
+    limit,
+    totalCount,
+    isLoading,
+    isLoadMoreLoading,
+    error,
+  } = useAppSelector((state) => state.projects);
+
+  const totalPages = Math.ceil(totalCount / limit);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await apiClient(API_ENDPOINTS.GET_PROJECTS, {
-          method: "GET",
-        });
+    if (projects.length === 0) {
+      dispatch(fetchProjectsThunk({ page: 1, limit }));
+    }
+  }, [dispatch, limit, projects.length]);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch projects. Please try again later.");
-        }
+  const goToPage = useCallback(
+    (page: number) => {
+      dispatch(fetchProjectsThunk({ page, limit, isLoadMore: false }));
+    },
+    [dispatch, limit],
+  );
 
-        const data = await response.json();
-        setProjects(data || []);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unexpected error occurred",
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const loadMore = useCallback(() => {
+    if (currentPage < totalPages && !isLoadMoreLoading) {
+      dispatch(
+        fetchProjectsThunk({ page: currentPage + 1, limit, isLoadMore: true }),
+      );
+    }
+  }, [dispatch, currentPage, totalPages, limit, isLoadMoreLoading]);
 
-    fetchProjects();
-  }, [router]);
-
-  return { projects, isLoading, error };
+  return {
+    projects,
+    isLoading,
+    isLoadMoreLoading,
+    error,
+    pagination: {
+      currentPage,
+      totalCount,
+      limit,
+      totalPages,
+      goToPage,
+    },
+    loadMore,
+  };
 };

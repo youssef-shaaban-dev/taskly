@@ -7,10 +7,11 @@ import { ProjectsEmpty, ProjectsError, ProjectsSkeleton } from "@/components/fea
 import { ProjectsHeader } from "@/components/features/dashboard/pages/projects/components/ProjectsHeader";
 import { ProjectCard } from "@/components/features/dashboard/pages/projects/components/ProjectCard";
 import { ProjectsPagination } from "@/components/features/dashboard/pages/projects/components/ProjectsPagination";
+import { InfiniteScrollObserver } from "@/components/features/dashboard/pages/projects/components/InfiniteScrollObserver";
 
 export default function ProjectsPage() {
   const router = useRouter();
-  const { projects, isLoading, error } = useProjects();
+  const { projects, isLoading, error, pagination: { currentPage, totalCount, totalPages, goToPage }, loadMore, isLoadMoreLoading } = useProjects();
 
   if (error) {
     return <ProjectsError error={error} onRetry={() => router.refresh()} />;
@@ -40,7 +41,21 @@ export default function ProjectsPage() {
             </Link>
           </div>
 
-          <ProjectsPagination currentCount={projects.length} totalCount={projects.length} />
+          <div className="hidden md:block">
+            <ProjectsPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalCount={totalCount}
+              currentItemsCount={projects.length}
+              onPageChange={goToPage}
+            />
+          </div>
+
+          <InfiniteScrollObserver
+            onIntersect={loadMore}
+            isLoading={isLoadMoreLoading}
+            hasMore={currentPage < totalPages}
+          />
         </>
       )}
     </div>

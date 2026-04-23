@@ -1,7 +1,7 @@
 "use client";
 
 import { FormProvider, Form } from 'react-hook-form';
-import { useAddProject } from "@/components/features/dashboard/pages/projects/hooks/useAddProject";
+import { useAddProject } from "@/components/features/dashboard/pages/projects/addProject/hooks/useAddProject";
 import { AddProjectHeader } from '@/components/features/dashboard/pages/projects/addProject/components/AddProjectHeader';
 import { AddProjectFields } from '@/components/features/dashboard/pages/projects/addProject/components/AddProjectFields';
 import { AddProjectActions } from '@/components/features/dashboard/pages/projects/addProject/components/AddProjectActions';
