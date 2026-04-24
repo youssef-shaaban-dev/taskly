@@ -9,7 +9,7 @@ import {
   EditProjectFormValues,
   editProjectSchema,
 } from "../schema/editProjectSchema";
-import { fetchProjectDetails } from "../../singleProject/services/fetchProjectDetails";
+import { fetchProjectDetails } from "../../projectDetails/services/fetchProjectDetails";
 
 export const useEditProject = () => {
   const router = useRouter();
