@@ -1,14 +1,14 @@
 "use client";
 
-import { useProjectMembers } from "@/components/features/dashboard/pages/projects/projectMembers/hooks/useProjectMembers";
-import { ProjectHeader } from "@/components/features/dashboard/pages/projects/components/shared/ProjectHeader";
-import { MembersList } from "@/components/features/dashboard/pages/projects/projectMembers/components/MembersList";
-import { MembersSkeleton } from "@/components/features/dashboard/pages/projects/projectMembers/components/MembersSkeleton";
-import { MembersError } from "@/components/features/dashboard/pages/projects/projectMembers/components/MembersError";
+import { useProjectMembers } from "@/components/features/dashboard/projects/projectMembers/hooks/useProjectMembers";
+import { ProjectHeader } from "@/components/features/dashboard/projects/components/shared/ProjectHeader";
+import { MembersList } from "@/components/features/dashboard/projects/projectMembers/components/MembersList";
+import { MembersSkeleton } from "@/components/features/dashboard/projects/projectMembers/components/MembersSkeleton";
+import { MembersError } from "@/components/features/dashboard/projects/projectMembers/components/MembersError";
 import { ROUTES } from "@/constant";
 import Button from "@/components/ui/Button";
 
-import { useProjectDetails } from "@/components/features/dashboard/pages/projects/projectDetails/hooks/useProjectDetails";
+import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
 
 export default function ProjectMembersPage() {
   const { members, isLoading, error, retry, projectId } = useProjectMembers();
@@ -22,7 +22,7 @@ export default function ProjectMembersPage() {
         title="Project Members"
         breadcrumbs={[
           { label: "Projects", href: ROUTES.PROJECTS },
-          { label: projectName }, 
+          { label: projectName },
           { label: "Members", active: true },
         ]}
         action={

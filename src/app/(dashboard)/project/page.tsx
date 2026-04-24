@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useProjects } from "@/components/features/dashboard/pages/projects/hooks/useProjects";
+import { useProjects } from "@/components/features/dashboard/projects/hooks/useProjects";
 import { ROUTES } from "@/constant";
-import { ProjectsEmpty, ProjectsError, ProjectsSkeleton } from "@/components/features/dashboard/pages/projects/components/ProjectsStates";
-import { ProjectsHeader } from "@/components/features/dashboard/pages/projects/components/ProjectsHeader";
-import { ProjectCard } from "@/components/features/dashboard/pages/projects/components/ProjectCard";
-import { ProjectsPagination } from "@/components/features/dashboard/pages/projects/components/ProjectsPagination";
-import { InfiniteScrollObserver } from "@/components/features/dashboard/pages/projects/components/InfiniteScrollObserver";
+import { ProjectsEmpty, ProjectsError, ProjectsSkeleton } from "@/components/features/dashboard/projects/components/ProjectsStates";
+import { ProjectsHeader } from "@/components/features/dashboard/projects/components/ProjectsHeader";
+import { ProjectCard } from "@/components/features/dashboard/projects/components/ProjectCard";
+import { ProjectsPagination } from "@/components/features/dashboard/projects/components/ProjectsPagination";
+import { InfiniteScrollObserver } from "@/components/features/dashboard/projects/components/InfiniteScrollObserver";
 
 export default function ProjectsPage() {
   const router = useRouter();

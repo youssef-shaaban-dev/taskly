@@ -1,13 +1,13 @@
 "use client";
 
 import { use, useState, useMemo } from "react";
-import { useProjectEpics } from "@/components/features/dashboard/pages/projects/epics/hooks/useProjectEpics";
-import { useProjectDetails } from "@/components/features/dashboard/pages/projects/projectDetails/hooks/useProjectDetails";
-import { EpicsHeader } from "@/components/features/dashboard/pages/projects/epics/components/EpicsHeader";
-import { EpicCard } from "@/components/features/dashboard/pages/projects/epics/components/EpicCard";
-import { EpicListSkeleton } from "@/components/features/dashboard/pages/projects/epics/components/EpicListSkeleton";
-import { EmptyEpics } from "@/components/features/dashboard/pages/projects/epics/components/EmptyEpics";
-import { EpicsError } from "@/components/features/dashboard/pages/projects/epics/components/EpicsError";
+import { useProjectEpics } from "@/components/features/dashboard/projects/epics/hooks/useProjectEpics";
+import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
+import { EpicsHeader } from "@/components/features/dashboard/projects/epics/components/EpicsHeader";
+import { EpicCard } from "@/components/features/dashboard/projects/epics/components/EpicCard";
+import { EpicListSkeleton } from "@/components/features/dashboard/projects/epics/components/EpicListSkeleton";
+import { EmptyEpics } from "@/components/features/dashboard/projects/epics/components/EmptyEpics";
+import { EpicsError } from "@/components/features/dashboard/projects/epics/components/EpicsError";
 import { ChevronIcon } from "@/components/icons";
 
 interface EpicsPageProps {
@@ -34,10 +34,10 @@ export default function EpicsPage({ params }: EpicsPageProps) {
 
   return (
     <div className="max-w-[1280px] mx-auto w-full pb-10 px-4 md:px-0">
-      <EpicsHeader 
-        projectId={projectId} 
-        projectName={projectName} 
-        onSearch={setSearchQuery} 
+      <EpicsHeader
+        projectId={projectId}
+        projectName={projectName}
+        onSearch={setSearchQuery}
       />
 
       {isLoading ? (

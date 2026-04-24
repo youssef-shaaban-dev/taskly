@@ -2,12 +2,12 @@
 
 import { use } from "react";
 import { FormProvider } from "react-hook-form";
-import { useCreateEpic } from "@/components/features/dashboard/pages/projects/epics/hooks/useCreateEpic";
-import { ProjectHeader } from "@/components/features/dashboard/pages/projects/components/shared/ProjectHeader";
-import { EpicFields } from "@/components/features/dashboard/pages/projects/epics/components/EpicFields";
-import { ProjectActions } from "@/components/features/dashboard/pages/projects/components/shared/ProjectActions";
+import { useCreateEpic } from "@/components/features/dashboard/projects/epics/hooks/useCreateEpic";
+import { ProjectHeader } from "@/components/features/dashboard/projects/components/shared/ProjectHeader";
+import { EpicFields } from "@/components/features/dashboard/projects/epics/components/EpicFields";
+import { ProjectActions } from "@/components/features/dashboard/projects/components/shared/ProjectActions";
 import { ROUTES } from "@/constant";
-import { useProjectDetails } from "@/components/features/dashboard/pages/projects/projectDetails/hooks/useProjectDetails";
+import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
 
 interface CreateEpicPageProps {
   params: Promise<{ projectId: string }>;

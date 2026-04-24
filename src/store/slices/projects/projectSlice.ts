@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchProjectsThunk } from "./projectThunks";
-import { Project } from "@/components/features/dashboard/pages/projects/types";
+import { Project } from "@/components/features/dashboard/projects/types";
 
 interface ProjectsState {
   projects: Project[];
-  currentPage: number;   
-  limit: number;         
-  totalCount: number;   
+  currentPage: number;
+  limit: number;
+  totalCount: number;
   isLoading: boolean;
   isLoadMoreLoading: boolean;
   error: string | null;
@@ -15,7 +15,7 @@ interface ProjectsState {
 const initialState: ProjectsState = {
   projects: [],
   currentPage: 1,
-  limit: 6, 
+  limit: 6,
   totalCount: 0,
   isLoading: true,
   isLoadMoreLoading: false,
@@ -43,7 +43,7 @@ const projectSlice = createSlice({
       .addCase(fetchProjectsThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoadMoreLoading = false;
-        
+
         state.totalCount = action.payload.totalCount;
         state.currentPage = action.payload.page;
 
@@ -56,7 +56,7 @@ const projectSlice = createSlice({
       .addCase(fetchProjectsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.isLoadMoreLoading = false;
-        state.error = action.payload as string || "Failed to load projects"; 
+        state.error = action.payload as string || "Failed to load projects";
       });
   },
 });

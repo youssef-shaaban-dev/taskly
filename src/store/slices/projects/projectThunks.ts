@@ -1,4 +1,4 @@
-import { fetchProjectsService } from "@/components/features/dashboard/pages/projects/services/projectService";
+import { fetchProjectsService } from "@/components/features/dashboard/projects/services/projectService";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 interface FetchProjectsArgs {
