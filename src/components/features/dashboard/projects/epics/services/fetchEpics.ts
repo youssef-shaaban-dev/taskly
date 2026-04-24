@@ -39,3 +39,22 @@ export const fetchProjectEpics = async ({
 
   return { data: data || [], totalCount };
 };
+
+export const fetchEpicById = async (projectId: string, epicId: string): Promise<Epic> => {
+  const url = `${API_ENDPOINTS.PROJECT_EPICS}?project_id=eq.${projectId}&id=eq.${epicId}`;
+
+  const response = await apiClient(url, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch epic details");
+  }
+
+  const data = await response.json();
+  if (!data || data.length === 0) {
+    throw new Error("Epic not found");
+  }
+
+  return data[0];
+};

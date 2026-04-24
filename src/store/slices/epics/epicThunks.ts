@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchProjectEpics } from "@/components/features/dashboard/projects/epics/services/fetchEpics";
+import { fetchProjectEpics, fetchEpicById } from "@/components/features/dashboard/projects/epics/services/fetchEpics";
 
 interface FetchEpicsArgs {
   projectId: string;
@@ -32,6 +32,23 @@ export const fetchEpicsThunk = createAsyncThunk(
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : "Failed to load epics";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const fetchEpicDetailsThunk = createAsyncThunk(
+  "epics/fetchDetails",
+  async (
+    { projectId, epicId }: { projectId: string; epicId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const data = await fetchEpicById(projectId, epicId);
+      return data;
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Failed to load epic details";
       return rejectWithValue(message);
     }
   }

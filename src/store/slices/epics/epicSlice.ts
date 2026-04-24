@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchEpicsThunk } from "./epicThunks";
+import { fetchEpicsThunk, fetchEpicDetailsThunk } from "./epicThunks";
 import { Epic } from "@/components/features/dashboard/projects/epics/types";
 
 interface EpicsState {
@@ -10,6 +10,10 @@ interface EpicsState {
   isLoading: boolean;
   isLoadMoreLoading: boolean;
   error: string | null;
+  // Detail Modal State
+  selectedEpic: Epic | null;
+  isDetailsLoading: boolean;
+  isDetailsModalOpen: boolean;
 }
 
 const initialState: EpicsState = {
@@ -20,6 +24,9 @@ const initialState: EpicsState = {
   isLoading: true,
   isLoadMoreLoading: false,
   error: null,
+  selectedEpic: null,
+  isDetailsLoading: false,
+  isDetailsModalOpen: false,
 };
 
 const epicSlice = createSlice({
@@ -36,9 +43,18 @@ const epicSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
+    openEpicDetails: (state, action: PayloadAction<Epic>) => {
+      state.selectedEpic = action.payload;
+      state.isDetailsModalOpen = true;
+    },
+    closeEpicDetails: (state) => {
+      state.isDetailsModalOpen = false;
+      state.selectedEpic = null;
+    },
   },
   extraReducers: (builder) => {
     builder
+      // Fetch List
       .addCase(fetchEpicsThunk.pending, (state, action) => {
         state.error = null;
         if (action.meta.arg.isLoadMore) {
@@ -50,10 +66,8 @@ const epicSlice = createSlice({
       .addCase(fetchEpicsThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoadMoreLoading = false;
-
         state.totalCount = action.payload.totalCount;
         state.currentPage = action.payload.page;
-
         if (action.payload.isLoadMore) {
           state.epics = [...state.epics, ...action.payload.data];
         } else {
@@ -64,9 +78,21 @@ const epicSlice = createSlice({
         state.isLoading = false;
         state.isLoadMoreLoading = false;
         state.error = (action.payload as string) || "Failed to load epics";
+      })
+      // Fetch Details
+      .addCase(fetchEpicDetailsThunk.pending, (state) => {
+        state.isDetailsLoading = true;
+        state.isDetailsModalOpen = true;
+      })
+      .addCase(fetchEpicDetailsThunk.fulfilled, (state, action) => {
+        state.isDetailsLoading = false;
+        state.selectedEpic = action.payload;
+      })
+      .addCase(fetchEpicDetailsThunk.rejected, (state) => {
+        state.isDetailsLoading = false;
       });
   },
 });
 
-export const { setLimit, resetEpics } = epicSlice.actions;
+export const { setLimit, resetEpics, openEpicDetails, closeEpicDetails } = epicSlice.actions;
 export default epicSlice.reducer;

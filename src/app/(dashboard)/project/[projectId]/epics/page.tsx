@@ -8,6 +8,7 @@ import { EpicCard } from "@/components/features/dashboard/projects/epics/compone
 import { EpicListSkeleton } from "@/components/features/dashboard/projects/epics/components/EpicListSkeleton";
 import { EmptyEpics } from "@/components/features/dashboard/projects/epics/components/EmptyEpics";
 import { EpicsError } from "@/components/features/dashboard/projects/epics/components/EpicsError";
+import { EpicDetailsModal } from "@/components/features/dashboard/projects/epics/components/EpicDetailsModal";
 import { InfiniteScrollObserver } from "@/components/shared/InfiniteScrollObserver";
 import { Pagination } from "@/components/shared/Pagination";
 
@@ -87,6 +88,8 @@ export default function EpicsPage({ params }: EpicsPageProps) {
           />
         </>
       )}
+
+      <EpicDetailsModal />
     </div>
   );
 }

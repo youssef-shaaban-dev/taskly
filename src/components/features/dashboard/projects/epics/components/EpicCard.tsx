@@ -1,20 +1,33 @@
+"use client";
+
 import { Epic } from "../types";
 import { cn } from "@/utils/cn";
 import { MoreIcon, EventIcon, UserIcon } from "@/components/icons";
 import { formatDate } from "@/utils/formatDate";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { fetchEpicDetailsThunk } from "@/store/slices/epics/epicThunks";
 
 interface EpicCardProps {
   epic: Epic;
 }
 
 export const EpicCard = ({ epic }: EpicCardProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const isDone = epic.status?.toLowerCase() === "done";
   
   const formattedDate = formatDate(epic.created_at);
 
+  const handleOpenDetails = () => {
+    dispatch(fetchEpicDetailsThunk({ projectId: epic.project_id, epicId: epic.id }));
+  };
+
   return (
-    <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 flex flex-col h-full hover:border-primary/20 transition-all group">
+    <div 
+      onClick={handleOpenDetails}
+      className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 flex flex-col h-full hover:border-primary/20 transition-all group cursor-pointer active:scale-[0.99]"
+    >
       <div className="flex items-center justify-between mb-4">
         <span className={cn(
           "px-2.5 py-1 rounded-md text-[10px] font-black tracking-wider uppercase",
@@ -33,7 +46,13 @@ export const EpicCard = ({ epic }: EpicCardProps) => {
                {epic.status}
              </span>
           )}
-          <button className="text-slate-300 hover:text-slate-600 transition-colors">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              // Future: Open actions menu
+            }}
+            className="text-slate-300 hover:text-slate-600 transition-colors"
+          >
             <MoreIcon size={20} />
           </button>
         </div>
