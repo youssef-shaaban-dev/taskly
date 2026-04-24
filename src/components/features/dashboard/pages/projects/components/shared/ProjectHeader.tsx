@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ROUTES } from "@/constant";
 import React from "react";
+import { cn } from "@/utils/cn";
 
 interface Breadcrumb {
   label: string;
@@ -25,7 +26,7 @@ export const ProjectHeader = ({ title, breadcrumbs, action }: ProjectHeaderProps
                 {crumb.label}
               </Link>
             ) : (
-              <span className={crumb.active ? "text-primary" : "text-slate-400"}>
+              <span className={cn(crumb.active ? "text-primary" : "text-slate-400")}>
                 {crumb.label}
               </span>
             )}

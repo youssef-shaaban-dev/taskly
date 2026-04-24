@@ -1,5 +1,5 @@
-"use client";
 import { useFormContext, useWatch } from "react-hook-form";
+import { cn } from "@/utils/cn";
 
 export const ProjectFields = () => {
   const { register, control, formState: { errors } } = useFormContext();
@@ -19,12 +19,12 @@ export const ProjectFields = () => {
         <input
           type="text"
           {...register("name")}
-          className={`w-full p-3 rounded-md border text-sm transition-colors focus:outline-none focus:ring-1 
-            ${errors.name
+          className={cn(
+            "w-full p-3 rounded-md border text-sm transition-colors focus:outline-none focus:ring-1",
+            errors.name
               ? "bg-error/5 border-error focus:ring-error"
               : "bg-[#F4F7FE] border-transparent focus:border-primary focus:ring-primary text-slate-900"
-            }
-          `}
+          )}
           placeholder="Enter project title..."
         />
         {errors.name && (
@@ -44,12 +44,12 @@ export const ProjectFields = () => {
         <textarea
           {...register("description")}
           rows={4}
-          className={`w-full p-3 rounded-md border text-sm transition-colors focus:outline-none focus:ring-1 resize-none
-            ${errors.description
+          className={cn(
+            "w-full p-3 rounded-md border text-sm transition-colors focus:outline-none focus:ring-1 resize-none",
+            errors.description
               ? "bg-error/5 border-error focus:ring-error"
               : "bg-[#F4F7FE] border-transparent focus:border-primary focus:ring-primary text-slate-900"
-            }
-          `}
+          )}
           placeholder="Provide a high-level overview of the project's architectural objectives and key milestones..."
         />
         <div className="flex items-center justify-between mt-1.5">
@@ -60,7 +60,10 @@ export const ProjectFields = () => {
               </p>
             )}
           </div>
-          <span className={`text-[10px] font-bold ${(descriptionValue?.length || 0) > 500 ? "text-error" : "text-slate-400"}`}>
+          <span className={cn(
+            "text-[10px] font-bold",
+            (descriptionValue?.length || 0) > 500 ? "text-error" : "text-slate-400"
+          )}>
             {(descriptionValue?.length || 0)}/500 characters
           </span>
         </div>

@@ -1,4 +1,5 @@
 import { ReactNode, ComponentPropsWithoutRef } from "react";
+import { cn } from "@/utils/cn";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
@@ -24,7 +25,7 @@ const Button = ({
 
   return (
     <button 
-      className={`${baseStyles} ${variants[variant]} ${className}`}
+      className={cn(baseStyles, variants[variant], className)}
       {...props} 
     >
       {children}
