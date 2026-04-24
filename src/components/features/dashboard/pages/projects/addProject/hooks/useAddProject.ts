@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { apiClient } from "@/utils/apiClient";
-import { ProjectFormValues, projectSchema } from "@/components/features/dashboard/schemas/projectSchema";
-import { API_ENDPOINTS, ROUTES } from "@/constant";
+import {
+  ProjectFormValues,
+  projectSchema,
+} from "@/components/features/dashboard/schemas/projectSchema";
+import { ROUTES } from "@/constant";
 import { toast } from "sonner";
-
+import { addProjectService } from "../services/addProjectService";
 
 export const useAddProject = () => {
   const router = useRouter();
@@ -25,21 +27,16 @@ export const useAddProject = () => {
   const onSubmit = async (data: ProjectFormValues) => {
     setIsSubmitting(true);
     try {
-      const response = await apiClient(API_ENDPOINTS.CREATE_PROJECT, {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create project");
-      }
-
+      await addProjectService(data);
       toast.success("Project created successfully");
       form.reset();
       router.push(ROUTES.PROJECTS);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to create project. Please try again.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to create project. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
