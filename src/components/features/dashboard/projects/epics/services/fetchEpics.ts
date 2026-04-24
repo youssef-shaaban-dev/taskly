@@ -2,14 +2,40 @@ import { API_ENDPOINTS } from "@/constant";
 import { Epic } from "../types";
 import { apiClient } from "@/utils/apiClient";
 
-export const fetchProjectEpics = async (projectId: string): Promise<Epic[]> => {
-  const response = await apiClient(`${API_ENDPOINTS.PROJECT_EPICS}?project_id=eq.${projectId}`, {
+interface FetchEpicsParams {
+  projectId: string;
+  limit: number;
+  offset: number;
+}
+
+export const fetchProjectEpics = async ({
+  projectId,
+  limit,
+  offset,
+}: FetchEpicsParams): Promise<{ data: Epic[]; totalCount: number }> => {
+  const url = `${API_ENDPOINTS.PROJECT_EPICS}?project_id=eq.${projectId}&limit=${limit}&offset=${offset}`;
+
+  const response = await apiClient(url, {
     method: "GET",
+    headers: {
+      Prefer: "count=exact",
+    },
   });
 
   if (!response.ok) {
     throw new Error("Failed to fetch project epics");
   }
 
-  return response.json();
+  const data = await response.json();
+
+  const contentRange = response.headers.get("Content-Range");
+  let totalCount = 0;
+  if (contentRange) {
+    const parts = contentRange.split("/");
+    if (parts.length === 2) {
+      totalCount = parseInt(parts[1], 10);
+    }
+  }
+
+  return { data: data || [], totalCount };
 };

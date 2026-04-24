@@ -6,8 +6,8 @@ import { ROUTES } from "@/constant";
 import { ProjectsEmpty, ProjectsError, ProjectsSkeleton } from "@/components/features/dashboard/projects/components/ProjectsStates";
 import { ProjectsHeader } from "@/components/features/dashboard/projects/components/ProjectsHeader";
 import { ProjectCard } from "@/components/features/dashboard/projects/components/ProjectCard";
-import { ProjectsPagination } from "@/components/features/dashboard/projects/components/ProjectsPagination";
-import { InfiniteScrollObserver } from "@/components/features/dashboard/projects/components/InfiniteScrollObserver";
+import { Pagination } from "@/components/shared/Pagination";
+import { InfiniteScrollObserver } from "@/components/shared/InfiniteScrollObserver";
 
 export default function ProjectsPage() {
   const router = useRouter();
@@ -42,12 +42,14 @@ export default function ProjectsPage() {
           </div>
 
           <div className="hidden md:block">
-            <ProjectsPagination
+            <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               totalCount={totalCount}
               currentItemsCount={projects.length}
               onPageChange={goToPage}
+              label="active projects"
+              className="hidden md:flex"
             />
           </div>
 

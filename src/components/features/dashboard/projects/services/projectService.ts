@@ -15,9 +15,6 @@ export const fetchProjectsService = async ({
 
   const response = await apiClient(url, {
     method: "GET",
-    headers: {
-      Prefer: "count=exact",
-    },
   });
 
   if (!response.ok) {

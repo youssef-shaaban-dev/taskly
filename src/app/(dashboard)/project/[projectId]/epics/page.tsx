@@ -8,15 +8,31 @@ import { EpicCard } from "@/components/features/dashboard/projects/epics/compone
 import { EpicListSkeleton } from "@/components/features/dashboard/projects/epics/components/EpicListSkeleton";
 import { EmptyEpics } from "@/components/features/dashboard/projects/epics/components/EmptyEpics";
 import { EpicsError } from "@/components/features/dashboard/projects/epics/components/EpicsError";
-import { ChevronIcon } from "@/components/icons";
+import { InfiniteScrollObserver } from "@/components/shared/InfiniteScrollObserver";
+import { Pagination } from "@/components/shared/Pagination";
 
 interface EpicsPageProps {
   params: Promise<{ projectId: string }>;
 }
 
+const PAGE_SIZE = 6;
+
 export default function EpicsPage({ params }: EpicsPageProps) {
   const { projectId } = use(params);
-  const { epics, isLoading, error, refetch } = useProjectEpics(projectId);
+  const { 
+    epics, 
+    isLoading, 
+    isLoadMoreLoading, 
+    error, 
+    totalCount, 
+    currentPage, 
+    totalPages, 
+    hasMore,
+    fetchNextPage,
+    setPage,
+    refetch 
+  } = useProjectEpics(projectId, PAGE_SIZE);
+  
   const { project } = useProjectDetails(projectId);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -34,13 +50,13 @@ export default function EpicsPage({ params }: EpicsPageProps) {
 
   return (
     <div className="max-w-[1280px] mx-auto w-full pb-10 px-4 md:px-0">
-      <EpicsHeader
-        projectId={projectId}
-        projectName={projectName}
-        onSearch={setSearchQuery}
+      <EpicsHeader 
+        projectId={projectId} 
+        projectName={projectName} 
+        onSearch={setSearchQuery} 
       />
 
-      {isLoading ? (
+      {isLoading && !isLoadMoreLoading ? (
         <EpicListSkeleton />
       ) : error ? (
         <EpicsError message={error} onRetry={refetch} />
@@ -54,26 +70,21 @@ export default function EpicsPage({ params }: EpicsPageProps) {
             ))}
           </div>
 
-          {/* Pagination Placeholder UI */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100">
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-              Showing {filteredEpics.length} of {epics.length} epics
-            </p>
-            <div className="flex items-center gap-2">
-              <button className="w-8 h-8 flex items-center justify-center rounded-md border border-slate-100 text-slate-300 hover:bg-slate-50 transition-colors cursor-not-allowed">
-                <ChevronIcon size={16} direction="left" />
-              </button>
-              <button className="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-white text-xs font-bold">
-                1
-              </button>
-              <button className="w-8 h-8 flex items-center justify-center rounded-md border border-slate-100 text-slate-600 hover:bg-slate-50 transition-colors text-xs font-bold">
-                2
-              </button>
-              <button className="w-8 h-8 flex items-center justify-center rounded-md border border-slate-100 text-slate-600 hover:bg-slate-50 transition-colors">
-                <ChevronIcon size={16} direction="right" />
-              </button>
-            </div>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalCount={totalCount}
+            currentItemsCount={epics.length}
+            onPageChange={setPage}
+            label="epics"
+            className="hidden md:flex"
+          />
+
+          <InfiniteScrollObserver 
+            onIntersect={fetchNextPage} 
+            isLoading={isLoadMoreLoading} 
+            hasMore={hasMore} 
+          />
         </>
       )}
     </div>
