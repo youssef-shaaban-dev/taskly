@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ROUTES } from "@/constant";
 import React from "react";
 import { cn } from "@/utils/cn";
 
@@ -10,7 +9,7 @@ interface Breadcrumb {
 }
 
 interface ProjectHeaderProps {
-  title: string;
+  title?: string;
   breadcrumbs: Breadcrumb[];
   action?: React.ReactNode;
 }

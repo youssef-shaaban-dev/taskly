@@ -6,23 +6,39 @@ interface ProjectActionsProps {
   submitLabel?: string;
   submittingLabel?: string;
   cancelHref?: string;
+  onCancel?: () => void;
 }
 
 export const ProjectActions = ({ 
   isSubmitting, 
   submitLabel = "Create Project", 
   submittingLabel = "Creating...",
-  cancelHref = ROUTES.PROJECTS
+  cancelHref = ROUTES.PROJECTS,
+  onCancel
 }: ProjectActionsProps) => {
+  const cancelLink = (
+    <button
+      type="button"
+      onClick={onCancel}
+      className="w-full sm:w-auto text-sm font-bold text-slate-500 hover:text-slate-700 text-center py-2 px-4 transition-colors cursor-pointer"
+    >
+      Cancel
+    </button>
+  );
+
   return (
     <>
       <div className="pt-6 border-t border-slate-50 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
-        <Link
-          href={cancelHref} 
-          className="w-full sm:w-auto text-sm font-bold text-slate-500 hover:text-slate-700 text-center py-2 px-4 transition-colors"
-        >
-          Cancel
-        </Link>
+        {onCancel ? (
+          cancelLink
+        ) : (
+          <Link
+            href={cancelHref} 
+            className="w-full sm:w-auto text-sm font-bold text-slate-500 hover:text-slate-700 text-center py-2 px-4 transition-colors"
+          >
+            Cancel
+          </Link>
+        )}
         <button
           type="submit"
           disabled={isSubmitting}
