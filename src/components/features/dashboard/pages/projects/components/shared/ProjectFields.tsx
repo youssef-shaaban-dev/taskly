@@ -1,7 +1,7 @@
 "use client";
 import { useFormContext, useWatch } from "react-hook-form";
 
-export const AddProjectFields = () => {
+export const ProjectFields = () => {
   const { register, control, formState: { errors } } = useFormContext();
 
   const descriptionValue = useWatch({
@@ -60,8 +60,8 @@ export const AddProjectFields = () => {
               </p>
             )}
           </div>
-          <span className={`text-[10px] font-bold ${descriptionValue.length > 500 ? "text-error" : "text-slate-400"}`}>
-            {descriptionValue.length}/500 characters
+          <span className={`text-[10px] font-bold ${(descriptionValue?.length || 0) > 500 ? "text-error" : "text-slate-400"}`}>
+            {(descriptionValue?.length || 0)}/500 characters
           </span>
         </div>
       </div>

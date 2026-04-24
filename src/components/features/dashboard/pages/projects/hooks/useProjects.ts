@@ -17,10 +17,8 @@ export const useProjects = () => {
   const totalPages = Math.ceil(totalCount / limit);
 
   useEffect(() => {
-    if (projects.length === 0) {
-      dispatch(fetchProjectsThunk({ page: 1, limit }));
-    }
-  }, [dispatch, limit, projects.length]);
+    dispatch(fetchProjectsThunk({ page: 1, limit }));
+  }, [dispatch, limit]);
 
   const goToPage = useCallback(
     (page: number) => {

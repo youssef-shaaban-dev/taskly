@@ -1,16 +1,24 @@
 import Link from "next/link";
 import { ROUTES } from "@/constant";
 
-interface AddProjectActionsProps {
+interface ProjectActionsProps {
   isSubmitting: boolean;
+  submitLabel?: string;
+  submittingLabel?: string;
+  cancelHref?: string;
 }
 
-export const AddProjectActions = ({ isSubmitting }: AddProjectActionsProps) => {
+export const ProjectActions = ({ 
+  isSubmitting, 
+  submitLabel = "Create Project", 
+  submittingLabel = "Creating...",
+  cancelHref = ROUTES.PROJECTS
+}: ProjectActionsProps) => {
   return (
     <>
       <div className="pt-6 border-t border-slate-50 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
         <Link
-          href={ROUTES.PROJECTS} 
+          href={cancelHref} 
           className="w-full sm:w-auto text-sm font-bold text-slate-500 hover:text-slate-700 text-center py-2 px-4 transition-colors"
         >
           Cancel
@@ -20,7 +28,7 @@ export const AddProjectActions = ({ isSubmitting }: AddProjectActionsProps) => {
           disabled={isSubmitting}
           className="w-full sm:w-auto bg-primary text-white px-6 py-2.5 rounded-md text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-70 flex items-center justify-center gap-2"
         >
-          {isSubmitting ? "Creating..." : "Create Project"}
+          {isSubmitting ? submittingLabel : submitLabel}
         </button>
       </div>
 

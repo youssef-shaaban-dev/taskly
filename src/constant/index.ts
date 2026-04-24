@@ -10,7 +10,7 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   CALLBACK: "/callback",
-  PROJECTS: "/projects",
+  PROJECTS: "/project",
   ADD_PROJECT: "/projects/add",
   MONITORING: "/monitoring",
   INVENTORY: "/inventory",
@@ -25,4 +25,5 @@ export const API_ENDPOINTS = {
   AUTH_RECOVER: "/auth/v1/recover",
   GET_PROJECTS: "/rest/v1/rpc/get_projects",
   CREATE_PROJECT: "/rest/v1/projects",
+  UPDATE_PROJECT: "/rest/v1/projects",
 } as const;

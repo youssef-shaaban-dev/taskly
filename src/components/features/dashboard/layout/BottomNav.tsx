@@ -1,20 +1,48 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
-import { 
-  DashboardIcon, MonitoringIcon, InventoryIcon, 
-  GroupsIcon, DescriptionIcon 
+import {
+  DashboardIcon, MonitoringIcon,
+  GroupsIcon, DescriptionIcon,
+  TasklyIcon
 } from "@/components/icons";
+import { ROUTES } from "@/constant";
 
 export const BottomNav = () => {
   const pathname = usePathname();
+  const { projectId } = useParams();
 
   const menuItems = [
-    { label: "Projects", icon: <DashboardIcon />, path: "/projects" },
-    { label: "Monitoring", icon: <MonitoringIcon />, path: "/monitoring" },
-    { label: "Inventory", icon: <InventoryIcon />, path: "/inventory" },
-    { label: "Groups", icon: <GroupsIcon />, path: "/groups" },
-    { label: "Details", icon: <DescriptionIcon />, path: "/details" },
+    {
+      label: "Projects",
+      icon: <DashboardIcon />,
+      path: ROUTES.PROJECTS,
+      isDisabled: false
+    },
+    {
+      label: "Project Epics",
+      icon: <MonitoringIcon />,
+      path: projectId ? `/project/${projectId}/epics` : "#",
+      isDisabled: !projectId
+    },
+    {
+      label: "Project Tasks",
+      icon: <TasklyIcon />,
+      path: projectId ? `/project/${projectId}/tasks` : "#",
+      isDisabled: !projectId
+    },
+    {
+      label: "Project Members",
+      icon: <GroupsIcon />,
+      path: projectId ? `/project/${projectId}/members` : "#",
+      isDisabled: !projectId
+    },
+    {
+      label: "Project Details",
+      icon: <DescriptionIcon />,
+      path: projectId ? `/project/${projectId}/edit` : "#",
+      isDisabled: !projectId
+    },
   ];
 
   return (
