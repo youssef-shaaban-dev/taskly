@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { COOKIES, ROUTES } from "@/constant";
 
 const authPaths = [ROUTES.LOGIN, ROUTES.SIGNUP, ROUTES.FORGOT_PASSWORD, ROUTES.RESET_PASSWORD];
-const publicPaths = [ROUTES.CALLBACK, "/auth/callback"];
+const publicPaths = [ROUTES.CALLBACK];
 
 export function proxy(request: NextRequest) {
   const token = request.cookies.get(COOKIES.ACCESS_TOKEN)?.value;
@@ -11,21 +11,18 @@ export function proxy(request: NextRequest) {
   const isAuthPage = authPaths.some(path => pathname.startsWith(path));
   const isPublicPage = publicPaths.some(path => pathname.startsWith(path));
 
-  // If it's a public page like auth callback, let it pass
   if (isPublicPage) {
     return NextResponse.next();
   }
 
-  // Dashboard is anything that isn't auth or public
-  // We also exclude Next.js internal paths and static assets
-  const isDashboardPage = !isAuthPage && !isPublicPage && !pathname.startsWith("/_next") && !pathname.includes(".");
+  const isDashboardPage = !isAuthPage && !isPublicPage && !pathname.startsWith("/_next");
 
   if (isDashboardPage && !token) {
     return NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
   }
 
   if (isAuthPage && token) {
-    return NextResponse.redirect(new URL(ROUTES.HOME, request.url));
+    return NextResponse.redirect(new URL(ROUTES.PROJECTS, request.url));
   }
 
   return NextResponse.next();

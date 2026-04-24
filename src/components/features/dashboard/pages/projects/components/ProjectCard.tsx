@@ -1,12 +1,15 @@
 import { formatDate } from "@/utils/formatDate";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface ProjectCardProps {
   project: { id: string; name: string; description?: string; created_at: string };
 }
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {
+  const pathname = usePathname();
   return (
-    <div className="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col h-56">
+    <Link href={`${pathname}/project/${project.id}/epics`} className="bg-white p-6 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col h-56">
       <h3 className="text-base font-bold text-slate-900 mb-3 line-clamp-1">
         {project.name}
       </h3>
@@ -19,6 +22,6 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           {formatDate(project.created_at)}
         </span>
       </div>
-    </div>
+    </Link>
   );
 };

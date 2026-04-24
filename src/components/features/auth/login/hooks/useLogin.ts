@@ -26,7 +26,7 @@ export const useLogin = () => {
       Cookies.set(COOKIES.ACCESS_TOKEN, result.access_token, cookieOptions);
       Cookies.set(COOKIES.REFRESH_TOKEN, result.refresh_token, cookieOptions);
 
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.PROJECTS);
       router.refresh();
     } catch (error: unknown) {
       const errorMessage =
