@@ -28,4 +28,5 @@ export const API_ENDPOINTS = {
   UPDATE_PROJECT: "/rest/v1/projects",
   PROJECT_MEMBERS: "/rest/v1/get_project_members",
   EPICS: "/rest/v1/epics",
+  PROJECT_EPICS: "/rest/v1/project_epics",
 } as const;
