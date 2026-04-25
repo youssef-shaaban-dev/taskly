@@ -11,7 +11,7 @@ export const ROUTES = {
   RESET_PASSWORD: "/reset-password",
   CALLBACK: "/callback",
   PROJECTS: "/project",
-  ADD_PROJECT: "/projects/add",
+  ADD_PROJECT: "/project/add",
   MONITORING: "/monitoring",
   INVENTORY: "/inventory",
   GROUPS: "/groups",
