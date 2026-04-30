@@ -1,6 +1,7 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
 import { RootState, AppDispatch } from "@/store";
 import { closeEpicDetails } from "@/store/slices/epics/epicSlice";
 import { cn } from "@/utils/cn";
@@ -11,6 +12,7 @@ import { EpicInlineTitle } from "./inline-editors/EpicInlineTitle";
 import { EpicInlineDescription } from "./inline-editors/EpicInlineDescription";
 import { EpicInlineAssignee } from "./inline-editors/EpicInlineAssignee";
 import { EpicInlineDeadline } from "./inline-editors/EpicInlineDeadline";
+import { ROUTES } from "@/constant";
 
 export const EpicDetailsModal = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -118,10 +120,14 @@ export const EpicDetailsModal = () => {
               <div className="pt-10 border-t border-slate-50 space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-extrabold text-slate-900">Epic Tasks</h3>
-                  <button className="text-primary hover:text-primary-dark text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-primary/5 transition-all">
+                  <Link 
+                    href={`${ROUTES.PROJECTS}/${selectedEpic?.project_id}${ROUTES.ADD_TASK}?epicId=${selectedEpic?.id}`}
+                    onClick={() => dispatch(closeEpicDetails())}
+                    className="text-primary hover:text-primary-dark text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-primary/5 transition-all"
+                  >
                     <PlusIcon size={14} />
                     Add Task
-                  </button>
+                  </Link>
                 </div>
 
                 {/* Tasks Empty State */}
@@ -132,9 +138,13 @@ export const EpicDetailsModal = () => {
                   <p className="text-slate-500 text-sm font-semibold mb-6">
                     No tasks have been added to this epic yet
                   </p>
-                  <button className="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+                  <Link 
+                    href={`${ROUTES.PROJECTS}/${selectedEpic?.project_id}${ROUTES.ADD_TASK}?epicId=${selectedEpic?.id}`}
+                    onClick={() => dispatch(closeEpicDetails())}
+                    className="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+                  >
                     + Add Task
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

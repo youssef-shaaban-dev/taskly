@@ -16,6 +16,7 @@ export const ROUTES = {
   INVENTORY: "/inventory",
   GROUPS: "/groups",
   DETAILS: "/details",
+  ADD_TASK: "/tasks/new",
 } as const;
 
 export const API_ENDPOINTS = {
