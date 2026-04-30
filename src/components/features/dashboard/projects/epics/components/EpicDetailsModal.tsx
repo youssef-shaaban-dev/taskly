@@ -5,7 +5,6 @@ import { RootState, AppDispatch } from "@/store";
 import { closeEpicDetails } from "@/store/slices/epics/epicSlice";
 import { cn } from "@/utils/cn";
 import { XIcon, PlusIcon, ArchitectureIcon } from "@/components/icons";
-import Image from "next/image";
 import { useEffect } from "react";
 import { useProjectMembers } from "../../projectMembers/hooks/useProjectMembers";
 import { EpicInlineTitle } from "./inline-editors/EpicInlineTitle";
@@ -88,13 +87,9 @@ export const EpicDetailsModal = () => {
                   <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Created By</h4>
                   <div className="flex items-center gap-2.5">
                     <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 shrink-0 border border-white shadow-sm">
-                      {selectedEpic?.created_by?.avatar_url ? (
-                        <Image src={selectedEpic.created_by.avatar_url} alt="" fill className="object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600 text-[10px] font-bold">
-                          {selectedEpic?.created_by?.name?.charAt(0) || "U"}
-                        </div>
-                      )}
+                      <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600 text-[10px] font-bold">
+                        {selectedEpic?.created_by?.name?.charAt(0) || "U"}
+                      </div>
                     </div>
                     <span className="text-xs font-bold text-slate-700 truncate">{selectedEpic?.created_by?.name || "Unknown"}</span>
                   </div>

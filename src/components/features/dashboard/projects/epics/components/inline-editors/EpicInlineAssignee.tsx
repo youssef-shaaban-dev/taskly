@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import Image from "next/image";
 import { updateEpic } from "@/store/slices/epics/epicSlice";
 import { useUpdateEpic } from "../../hooks/useUpdateEpic";
 import { Epic } from "../../types";
@@ -20,27 +19,26 @@ export const EpicInlineAssignee = ({ epic, members, isLoadingMembers }: Props) =
   const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newAssigneeId = e.target.value === "unassigned" ? null : e.target.value;
+    const newAssigneeId = !e.target.value ? null : e.target.value;
 
     const member = members.find((m) => m.user_id === newAssigneeId);
-    const assigneeData = member && member.user_details
+    const assigneeData = member && member.metadata
       ? {
         sub: member.user_id,
-        name: member.user_details.name,
-        email: member.user_details.email,
-        avatar_url: member.user_details.avatar_url,
+        name: member.metadata.name,
+        email: member.metadata.email,
+        department: member.metadata.department,
       }
       : undefined;
 
     updateField(
       "assignee_id",
       newAssigneeId,
-      epic.assignee_id,
+      epic.assignee?.sub || null,
       () => {
         dispatch(
           updateEpic({
             id: epic.id,
-            assignee_id: newAssigneeId || undefined,
             assignee: newAssigneeId ? assigneeData : undefined,
           })
         );
@@ -54,18 +52,17 @@ export const EpicInlineAssignee = ({ epic, members, isLoadingMembers }: Props) =
       {isEditing ? (
         <select
           autoFocus
-          value={epic.assignee_id || "unassigned"}
+          value={epic.assignee?.sub || ""}
           onChange={handleChange}
           onBlur={() => setIsEditing(false)}
           disabled={updatingField === "assignee_id" || isLoadingMembers}
           className="text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded px-2 py-1 outline-none focus:border-primary w-full"
         >
-          <option value="unassigned">Unassigned</option>
           {members.map(
             (m) =>
-              m.user_details && (
-                <option key={m.id} value={m.user_id}>
-                  {m.user_details.name}
+              m.metadata && (
+                <option key={m.member_id} value={m.user_id}>
+                  {m.metadata.name}
                 </option>
               )
           )}
@@ -76,26 +73,17 @@ export const EpicInlineAssignee = ({ epic, members, isLoadingMembers }: Props) =
           onClick={() => setIsEditing(true)}
         >
           <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 shrink-0 border border-white shadow-sm group-hover:border-primary/20 transition-colors">
-            {epic.assignee?.avatar_url ? (
-              <Image
-                src={epic.assignee.avatar_url}
-                alt=""
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-slate-50 text-slate-400">
-                <UserIcon size={14} />
-              </div>
-            )}
+            <div className="w-full h-full flex items-center justify-center bg-slate-50 text-slate-400">
+              {epic.assignee?.sub ? epic.assignee.name?.charAt(0) : <UserIcon size={14} />}
+            </div>
           </div>
           <span
             className={cn(
               "text-xs font-bold truncate group-hover:text-primary transition-colors",
-              epic.assignee ? "text-slate-700" : "text-slate-400 italic"
+              epic.assignee?.sub ? "text-slate-700" : "text-slate-400 italic"
             )}
           >
-            {epic.assignee?.name || "Unassigned"}
+            {epic.assignee?.sub && epic.assignee.name}
           </span>
         </div>
       )}

@@ -1,10 +1,8 @@
 "use client";
 
 import { Epic } from "../types";
-import { cn } from "@/utils/cn";
 import { MoreIcon, EventIcon, UserIcon } from "@/components/icons";
 import { formatDate } from "@/utils/formatDate";
-import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { fetchEpicDetailsThunk } from "@/store/slices/epics/epicThunks";
@@ -15,7 +13,6 @@ interface EpicCardProps {
 
 export const EpicCard = ({ epic }: EpicCardProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const isDone = epic.status?.toLowerCase() === "done";
   
   const formattedDate = formatDate(epic.created_at);
 
@@ -29,23 +26,10 @@ export const EpicCard = ({ epic }: EpicCardProps) => {
       className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 flex flex-col h-full hover:border-primary/20 transition-all group cursor-pointer active:scale-[0.99]"
     >
       <div className="flex items-center justify-between mb-4">
-        <span className={cn(
-          "px-2.5 py-1 rounded-md text-[10px] font-black tracking-wider uppercase",
-          isDone 
-            ? "bg-blue-50 text-blue-600" 
-            : "bg-emerald-50 text-emerald-600"
-        )}>
+        <span className="px-2.5 py-1 rounded-md text-[10px] font-black tracking-wider uppercase bg-blue-50 text-blue-600">
           {epic.epic_id}
         </span>
         <div className="flex items-center gap-2">
-          {epic.status && (
-             <span className={cn(
-               "px-2.5 py-0.5 rounded-full text-[10px] font-bold",
-               isDone ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"
-             )}>
-               {epic.status}
-             </span>
-          )}
           <button 
             onClick={(e) => {
               e.stopPropagation();
@@ -64,22 +48,13 @@ export const EpicCard = ({ epic }: EpicCardProps) => {
 
       <div className="flex items-center gap-3 mb-6">
         <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 border border-white shrink-0">
-          {epic.assignee?.avatar_url ? (
-            <Image 
-              src={epic.assignee.avatar_url} 
-              alt={epic.assignee.name} 
-              fill 
-              className="object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-xs font-bold text-slate-500 uppercase">
-              {epic.assignee?.name?.charAt(0) || <UserIcon size={14} />}
-            </div>
-          )}
+          <div className="w-full h-full flex items-center justify-center text-xs font-bold text-slate-500 uppercase">
+            {epic.assignee?.sub ? epic.assignee.name?.charAt(0) : <UserIcon size={14} />}
+          </div>
         </div>
         <div className="flex flex-col">
           <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Assignee</span>
-          <span className="text-sm font-semibold text-slate-700">{epic.assignee?.name || "Unassigned"}</span>
+          <span className="text-sm font-semibold text-slate-700">{epic.assignee?.sub && epic.assignee.name}</span>
         </div>
       </div>
 

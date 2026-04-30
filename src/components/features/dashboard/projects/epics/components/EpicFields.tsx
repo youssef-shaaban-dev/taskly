@@ -20,7 +20,7 @@ export const EpicFields = ({ members, isLoadingMembers }: EpicFieldsProps) => {
     <div className="space-y-10">
       {/* Title */}
       <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-10">
-        <label className="w-full md:w-32 pt-3 text-[10px] font-black text-slate-800 uppercase tracking-[0.1em]">
+        <label className="w-full md:w-32 pt-3 text-[10px] font-black text-slate-800 uppercase tracking-widest">
           Title <span className="text-red-500">*</span>
         </label>
         <div className="flex-1">
@@ -46,7 +46,7 @@ export const EpicFields = ({ members, isLoadingMembers }: EpicFieldsProps) => {
       {/* Description */}
       <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-10">
         <div className="w-full md:w-32 flex flex-col gap-1">
-          <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.1em]">
+          <label className="text-[10px] font-black text-slate-800 uppercase tracking-widest">
             Description
           </label>
           <span className="text-[10px] text-slate-400 font-medium">Optional</span>
@@ -96,9 +96,9 @@ export const EpicFields = ({ members, isLoadingMembers }: EpicFieldsProps) => {
           >
             <option value="">Select a member...</option>
             {members.map((member) => (
-              member.user_details && (
-                <option key={member.id} value={member.user_id}>
-                  {member.user_details.name}
+              member.metadata && (
+                <option key={member.member_id} value={member.user_id}>
+                  {member.metadata.name}
                 </option>
               )
             ))}
