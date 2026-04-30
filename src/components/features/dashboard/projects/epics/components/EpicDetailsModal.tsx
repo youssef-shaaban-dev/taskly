@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store";
 import { closeEpicDetails } from "@/store/slices/epics/epicSlice";
 import { cn } from "@/utils/cn";
-import { XIcon, PlusIcon, ArchitectureIcon } from "@/components/icons";
+import { XIcon, PlusIcon } from "@/components/icons";
 import { useEffect } from "react";
 import { useProjectMembers } from "../../projectMembers/hooks/useProjectMembers";
 import { EpicInlineTitle } from "./inline-editors/EpicInlineTitle";
 import { EpicInlineDescription } from "./inline-editors/EpicInlineDescription";
 import { EpicInlineAssignee } from "./inline-editors/EpicInlineAssignee";
 import { EpicInlineDeadline } from "./inline-editors/EpicInlineDeadline";
+import { EpicTasksList } from "./EpicTasksList";
 
 export const EpicDetailsModal = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -124,18 +125,7 @@ export const EpicDetailsModal = () => {
                   </button>
                 </div>
 
-                {/* Tasks Empty State */}
-                <div className="bg-[#f8faff] border border-blue-50 rounded-2xl p-12 flex flex-col items-center justify-center text-center">
-                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-blue-50 flex items-center justify-center mb-4 text-blue-100">
-                    <ArchitectureIcon size={28} />
-                  </div>
-                  <p className="text-slate-500 text-sm font-semibold mb-6">
-                    No tasks have been added to this epic yet
-                  </p>
-                  <button className="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
-                    + Add Task
-                  </button>
-                </div>
+                <EpicTasksList epicId={selectedEpic?.id} />
               </div>
             </div>
           )}
