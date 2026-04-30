@@ -25,11 +25,11 @@ export const EpicInlineAssignee = ({ epic, members, isLoadingMembers }: Props) =
     const member = members.find((m) => m.user_id === newAssigneeId);
     const assigneeData = member && member.user_details
       ? {
-          sub: member.user_id,
-          name: member.user_details.name,
-          email: member.user_details.email,
-          avatar_url: member.user_details.avatar_url,
-        }
+        sub: member.user_id,
+        name: member.user_details.name,
+        email: member.user_details.email,
+        avatar_url: member.user_details.avatar_url,
+      }
       : undefined;
 
     updateField(
