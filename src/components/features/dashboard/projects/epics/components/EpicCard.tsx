@@ -86,7 +86,7 @@ export const EpicCard = ({ epic }: EpicCardProps) => {
       <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between text-[11px] text-slate-400 font-medium">
         <div className="flex items-center gap-1.5">
           <span className="shrink-0">Created by:</span>
-          <span className="text-slate-600 font-semibold truncate max-w-[100px]">{epic.created_by.name}</span>
+          <span className="text-slate-600 font-semibold truncate max-w-25">{epic.created_by.name}</span>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           <EventIcon size={14} className="text-slate-300" />

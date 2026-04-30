@@ -51,6 +51,15 @@ const epicSlice = createSlice({
       state.isDetailsModalOpen = false;
       state.selectedEpic = null;
     },
+    updateEpic: (state, action: PayloadAction<Partial<Epic> & { id: string }>) => {
+      if (state.selectedEpic && state.selectedEpic.id === action.payload.id) {
+        state.selectedEpic = { ...state.selectedEpic, ...action.payload };
+      }
+      const index = state.epics.findIndex(e => e.id === action.payload.id);
+      if (index !== -1) {
+        state.epics[index] = { ...state.epics[index], ...action.payload };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -94,5 +103,5 @@ const epicSlice = createSlice({
   },
 });
 
-export const { setLimit, resetEpics, openEpicDetails, closeEpicDetails } = epicSlice.actions;
+export const { setLimit, resetEpics, openEpicDetails, closeEpicDetails, updateEpic } = epicSlice.actions;
 export default epicSlice.reducer;
