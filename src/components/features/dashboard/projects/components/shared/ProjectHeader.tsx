@@ -10,11 +10,12 @@ interface Breadcrumb {
 
 interface ProjectHeaderProps {
   title?: string;
+  description?: string;
   breadcrumbs: Breadcrumb[];
   action?: React.ReactNode;
 }
 
-export const ProjectHeader = ({ title, breadcrumbs, action }: ProjectHeaderProps) => {
+export const ProjectHeader = ({ title, description, breadcrumbs, action }: ProjectHeaderProps) => {
   return (
     <div className="mb-6">
       <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-2">
@@ -37,7 +38,12 @@ export const ProjectHeader = ({ title, breadcrumbs, action }: ProjectHeaderProps
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+          {description && (
+            <p className="text-sm font-semibold text-slate-400 mt-1">{description}</p>
+          )}
+        </div>
         {action}
       </div>
     </div>

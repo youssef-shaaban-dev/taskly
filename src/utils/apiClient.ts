@@ -4,11 +4,30 @@ import { COOKIES, API_ENDPOINTS } from "@/constant";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
+interface ApiOptions extends RequestInit {
+  params?: Record<string, string | number | boolean | undefined>;
+}
+
 export const apiClient = async (
   endpoint: string,
-  options: RequestInit = {},
-) => {
+  options: ApiOptions = {},
+): Promise<Response> => {
   const accessToken = Cookies.get(COOKIES.ACCESS_TOKEN);
+
+  // Handle query parameters
+  let url = `${BASE_URL}${endpoint}`;
+  if (options.params) {
+    const searchParams = new URLSearchParams();
+    Object.entries(options.params).forEach(([key, value]) => {
+      if (value !== undefined) {
+        searchParams.append(key, String(value));
+      }
+    });
+    const queryString = searchParams.toString();
+    if (queryString) {
+      url += (url.includes("?") ? "&" : "?") + queryString;
+    }
+  }
 
   const headers = {
     "Content-Type": "application/json",
@@ -17,7 +36,7 @@ export const apiClient = async (
     ...options.headers,
   };
 
-  let response = await fetch(`${BASE_URL}${endpoint}`, { ...options, headers });
+  let response = await fetch(url, { ...options, headers });
 
   if (response.status === 401 || response.status === 403) {
     const refreshToken = Cookies.get(COOKIES.REFRESH_TOKEN);
@@ -45,7 +64,7 @@ export const apiClient = async (
           ...headers,
           Authorization: `Bearer ${data.access_token}`,
         };
-        response = await fetch(`${BASE_URL}${endpoint}`, {
+        response = await fetch(url, {
           ...options,
           headers: newHeaders,
         });
