@@ -42,7 +42,7 @@ export const useCreateTask = (projectId: string) => {
         status: data.status || undefined,
       });
       toast.success("Task created successfully");
-      router.back();
+      router.push(`/project/${projectId}/tasks`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create task");
     } finally {
