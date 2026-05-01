@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useEpicTasks } from "../hooks/useEpicTasks";
 import { ArchitectureIcon } from "@/components/icons";
 import { EpicTask } from "../types";
