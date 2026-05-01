@@ -95,7 +95,7 @@ export const Sidebar = () => {
         </Link>
 
         <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto">
-          {menuItems.map((item) => {
+          {menuItems.filter(item => !item.isDisabled).map((item) => {
             const isActive = item.path !== "#" && (
               item.path === ROUTES.PROJECTS
                 ? pathname === ROUTES.PROJECTS
@@ -107,7 +107,6 @@ export const Sidebar = () => {
                 key={item.label}
                 href={item.path}
                 className={`flex items-center gap-3 p-3 rounded-lg transition-all group
-                  ${item.isDisabled ? "opacity-50 pointer-events-none grayscale" : ""}
                   ${isActive
                     ? "bg-white text-primary shadow-sm font-bold"
                     : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 font-medium"
