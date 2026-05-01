@@ -1,6 +1,7 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
 import { RootState, AppDispatch } from "@/store";
 import { closeEpicDetails } from "@/store/slices/epics/epicSlice";
 import { cn } from "@/utils/cn";
@@ -12,6 +13,7 @@ import { EpicInlineDescription } from "./inline-editors/EpicInlineDescription";
 import { EpicInlineAssignee } from "./inline-editors/EpicInlineAssignee";
 import { EpicInlineDeadline } from "./inline-editors/EpicInlineDeadline";
 import { EpicTasksList } from "./EpicTasksList";
+import { ROUTES } from "@/constant";
 
 export const EpicDetailsModal = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -119,10 +121,14 @@ export const EpicDetailsModal = () => {
               <div className="pt-10 border-t border-slate-50 space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-extrabold text-slate-900">Epic Tasks</h3>
-                  <button className="text-primary hover:text-primary-dark text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-primary/5 transition-all">
+                  <Link 
+                    href={`${ROUTES.PROJECTS}/${selectedEpic?.project_id}${ROUTES.ADD_TASK}?epicId=${selectedEpic?.id}`}
+                    onClick={() => dispatch(closeEpicDetails())}
+                    className="text-primary hover:text-primary-dark text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-primary/5 transition-all"
+                  >
                     <PlusIcon size={14} />
                     Add Task
-                  </button>
+                  </Link>
                 </div>
 
                 <EpicTasksList epicId={selectedEpic?.id} />
