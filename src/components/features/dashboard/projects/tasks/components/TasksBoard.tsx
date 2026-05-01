@@ -4,6 +4,7 @@ import { TasksBoardColumn } from "./TasksBoardColumn";
 
 interface TasksBoardProps {
   projectId: string;
+  onTaskClick: (taskId: string) => void;
 }
 
 const STATUS_COLORS: Record<TaskStatus, string> = {
@@ -17,7 +18,7 @@ const STATUS_COLORS: Record<TaskStatus, string> = {
   DONE: "bg-emerald-500",
 };
 
-export const TasksBoard = ({ projectId }: TasksBoardProps) => {
+export const TasksBoard = ({ projectId, onTaskClick }: TasksBoardProps) => {
   return (
     <div className="flex flex-1 w-full overflow-hidden mt-6">
       <div className="flex items-start gap-6 overflow-x-auto pb-6 custom-scrollbar w-full h-[calc(100vh-220px)] min-h-[500px]">
@@ -27,6 +28,7 @@ export const TasksBoard = ({ projectId }: TasksBoardProps) => {
             projectId={projectId} 
             status={status} 
             statusColor={STATUS_COLORS[status]} 
+            onTaskClick={onTaskClick}
           />
         ))}
       </div>

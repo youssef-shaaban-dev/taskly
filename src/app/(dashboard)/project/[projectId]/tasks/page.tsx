@@ -7,6 +7,7 @@ import { TasksHeader } from "@/components/features/dashboard/projects/tasks/comp
 import { TasksBoard } from "@/components/features/dashboard/projects/tasks/components/TasksBoard";
 import { TasksList } from "@/components/features/dashboard/projects/tasks/components/TasksList";
 import { useProjectTasks } from "@/components/features/dashboard/projects/tasks/hooks/useProjectTasks";
+import { TaskDetailsPopup } from "@/components/features/dashboard/projects/tasks/components/TaskDetailsPopup";
 
 interface TasksPageProps {
   params: Promise<{ projectId: string }>;
@@ -22,6 +23,7 @@ export default function TasksPage({ params }: TasksPageProps) {
   
   const currentView = (searchParams.get("view") as "list" | "board") || "board";
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
   const {
     tasks,
@@ -52,7 +54,10 @@ export default function TasksPage({ params }: TasksPageProps) {
       />
 
       {currentView === "board" ? (
-        <TasksBoard projectId={projectId} />
+        <TasksBoard 
+          projectId={projectId} 
+          onTaskClick={(id) => setSelectedTaskId(id)} 
+        />
       ) : (
         <TasksList 
           tasks={tasks}
@@ -61,8 +66,16 @@ export default function TasksPage({ params }: TasksPageProps) {
           totalPages={totalPages}
           totalCount={totalCount}
           onPageChange={setPage}
+          onTaskClick={(id) => setSelectedTaskId(id)}
         />
       )}
+
+      <TaskDetailsPopup 
+        isOpen={!!selectedTaskId}
+        onClose={() => setSelectedTaskId(null)}
+        projectId={projectId}
+        taskId={selectedTaskId}
+      />
     </div>
   );
 }

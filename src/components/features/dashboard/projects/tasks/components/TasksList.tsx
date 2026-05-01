@@ -11,6 +11,7 @@ interface TasksListProps {
   totalPages: number;
   totalCount: number;
   onPageChange: (page: number) => void;
+  onTaskClick: (taskId: string) => void;
 }
 
 export const TasksList = ({
@@ -19,7 +20,8 @@ export const TasksList = ({
   currentPage,
   totalPages,
   totalCount,
-  onPageChange
+  onPageChange,
+  onTaskClick
 }: TasksListProps) => {
   if (isLoading && tasks.length === 0) {
     return (
@@ -52,8 +54,11 @@ export const TasksList = ({
               const status = task.status;
               
               return (
-                <tr key={task.id} className="border-b border-slate-50 last:border-0 hover:bg-slate-50/30 transition-colors group">
-                  <td className="px-6 py-4">
+                <tr 
+                  key={task.id} 
+                  onClick={() => onTaskClick(task.id)}
+                  className="border-b border-slate-50 last:border-0 hover:bg-slate-50/30 transition-colors group cursor-pointer"
+                >                  <td className="px-6 py-4">
                     <span className="text-xs font-bold text-primary">{task.task_id}</span>
                   </td>
                   <td className="px-6 py-4">

@@ -10,9 +10,10 @@ interface TasksBoardColumnProps {
   projectId: string;
   status: TaskStatus;
   statusColor?: string;
+  onTaskClick: (taskId: string) => void;
 }
 
-export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-300" }: TasksBoardColumnProps) => {
+export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-300", onTaskClick }: TasksBoardColumnProps) => {
   const { tasks, isLoading, error } = useTasksByStatus(projectId, status);
 
   return (
@@ -69,6 +70,7 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
             return (
               <div 
                 key={task.id}
+                onClick={() => onTaskClick(task.id)}
                 className="flex flex-col bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group"
               >
                 <p className="text-sm font-bold text-slate-800 leading-snug mb-4 group-hover:text-primary transition-colors">
