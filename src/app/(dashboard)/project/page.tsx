@@ -53,11 +53,13 @@ export default function ProjectsPage() {
             />
           </div>
 
-          <InfiniteScrollObserver
-            onIntersect={loadMore}
-            isLoading={isLoadMoreLoading}
-            hasMore={currentPage < totalPages}
-          />
+          <div className="md:hidden">
+            <InfiniteScrollObserver
+              onIntersect={loadMore}
+              isLoading={isLoadMoreLoading}
+              hasMore={currentPage < totalPages}
+            />
+          </div>
         </>
       )}
     </div>

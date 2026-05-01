@@ -81,11 +81,13 @@ export default function EpicsPage({ params }: EpicsPageProps) {
             className="hidden md:flex"
           />
 
-          <InfiniteScrollObserver 
-            onIntersect={fetchNextPage} 
-            isLoading={isLoadMoreLoading} 
-            hasMore={hasMore} 
-          />
+          <div className="md:hidden">
+            <InfiniteScrollObserver 
+              onIntersect={fetchNextPage} 
+              isLoading={isLoadMoreLoading} 
+              hasMore={hasMore} 
+            />
+          </div>
         </>
       )}
 
