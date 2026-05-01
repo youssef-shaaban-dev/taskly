@@ -10,10 +10,7 @@ export const createTaskService = async (payload: CreateTaskPayload) => {
     headers: {
       Prefer: "return=minimal",
     },
-    body: JSON.stringify({
-      ...payload,
-      status: payload.status, 
-    }),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
