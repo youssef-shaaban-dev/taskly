@@ -6,14 +6,20 @@ interface FetchEpicsParams {
   projectId: string;
   limit: number;
   offset: number;
+  search?: string;
 }
 
 export const fetchProjectEpics = async ({
   projectId,
   limit,
   offset,
+  search,
 }: FetchEpicsParams): Promise<{ data: Epic[]; totalCount: number }> => {
-  const url = `${API_ENDPOINTS.PROJECT_EPICS}?project_id=eq.${projectId}&limit=${limit}&offset=${offset}`;
+  let url = `${API_ENDPOINTS.PROJECT_EPICS}?project_id=eq.${projectId}&limit=${limit}&offset=${offset}`;
+
+  if (search) {
+    url += `&title=ilike.%25${encodeURIComponent(search)}%25`;
+  }
 
   const response = await apiClient(url, {
     method: "GET",

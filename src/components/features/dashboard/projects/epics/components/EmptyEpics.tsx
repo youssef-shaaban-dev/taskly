@@ -3,9 +3,27 @@ import Link from "next/link";
 
 interface EmptyEpicsProps {
   projectId: string;
+  isSearch?: boolean;
+  searchQuery?: string;
 }
 
-export const EmptyEpics = ({ projectId }: EmptyEpicsProps) => {
+export const EmptyEpics = ({ projectId, isSearch, searchQuery }: EmptyEpicsProps) => {
+  if (isSearch) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 animate-in fade-in zoom-in duration-500">
+        <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 text-slate-300">
+          <SearchIcon size={32} />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 mb-2 text-center">
+          No epics found matching your search
+        </h2>
+        <p className="text-slate-500 text-sm text-center max-w-xs leading-relaxed font-medium">
+          We couldn&apos;t find any results for <span className="text-primary"> &quot;{searchQuery}&quot;</span>. Try adjusting your keywords.
+        </p>
+      </div>
+    );
+  }
+
   const infoCards = [
     {
       icon: <SearchIcon className="text-blue-500" size={20} />,
@@ -40,7 +58,7 @@ export const EmptyEpics = ({ projectId }: EmptyEpicsProps) => {
       </div>
 
       <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 text-center">
-        No epics in this project yet.
+        No epics found for this project
       </h2>
       <p className="text-slate-500 text-sm md:text-[15px] max-w-md text-center leading-relaxed mb-10 font-medium">
         Break down your large project into manageable epics to track progress better and maintain architectural clarity.

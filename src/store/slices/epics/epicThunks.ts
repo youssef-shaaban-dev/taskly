@@ -6,12 +6,13 @@ interface FetchEpicsArgs {
   page: number;
   limit: number;
   isLoadMore?: boolean;
+  search?: string;
 }
 
 export const fetchEpicsThunk = createAsyncThunk(
   "epics/fetch",
   async (
-    { projectId, page, limit, isLoadMore = false }: FetchEpicsArgs,
+    { projectId, page, limit, isLoadMore = false, search }: FetchEpicsArgs,
     { rejectWithValue }
   ) => {
     try {
@@ -21,6 +22,7 @@ export const fetchEpicsThunk = createAsyncThunk(
         projectId,
         limit,
         offset,
+        search,
       });
 
       return {
