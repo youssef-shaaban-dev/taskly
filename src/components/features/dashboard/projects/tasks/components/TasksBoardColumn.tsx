@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { useTasksByStatus } from "../hooks/useTasksByStatus";
 import { formatStatusForUI, TaskStatus } from "../types";
-import { formatDate } from "@/utils/formatDate";
 import { cn } from "@/utils/cn";
 import { InfiniteScrollObserver } from "@/components/shared/InfiniteScrollObserver";
+import { useDroppable } from "@dnd-kit/core";
+import { DraggableTaskCard } from "./DraggableTaskCard";
 
 interface TasksBoardColumnProps {
   projectId: string;
@@ -13,17 +14,21 @@ interface TasksBoardColumnProps {
 }
 
 export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-300", onTaskClick }: TasksBoardColumnProps) => {
-  const { 
-    tasks, 
-    isLoading, 
-    isFetchingMore, 
-    error, 
-    hasMore, 
-    loadMore 
+  const {
+    tasks,
+    isLoading,
+    isFetchingMore,
+    error,
+    hasMore,
+    loadMore
   } = useTasksByStatus(projectId, status);
 
+  const { setNodeRef } = useDroppable({
+    id: status,
+  });
+
   return (
-    <div className="flex flex-col flex-shrink-0 w-80 bg-slate-50/50 rounded-2xl p-3 h-full overflow-hidden border border-slate-100">
+    <div className="flex flex-col shrink-0 w-80 bg-slate-50/50 rounded-2xl p-3 h-full overflow-hidden border border-slate-100">
       {/* Column Header */}
       <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2">
@@ -36,7 +41,7 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
           </span>
         </div>
 
-        <Link 
+        <Link
           href={`/project/${projectId}/tasks/new?status=${status}`}
           className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-200 transition-colors text-slate-400 hover:text-slate-600"
         >
@@ -48,7 +53,7 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
       </div>
 
       {/* Add New Task Button */}
-      <Link 
+      <Link
         href={`/project/${projectId}/tasks/new?status=${status}`}
         className="flex items-center justify-center gap-2 w-full py-3 mb-3 border-2 border-dashed border-slate-200 rounded-xl text-xs font-bold text-slate-400 hover:border-primary/40 hover:text-primary transition-colors hover:bg-primary/5"
       >
@@ -60,7 +65,10 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
       </Link>
 
       {/* Task List */}
-      <div className="flex flex-col gap-3 overflow-y-auto flex-1 pb-2 custom-scrollbar">
+      <div
+        ref={setNodeRef}
+        className="flex flex-col gap-3 overflow-y-auto flex-1 pb-2 custom-scrollbar min-h-[200px]"
+      >
         {isLoading && tasks.length === 0 ? (
           Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="h-28 bg-white border border-slate-100 rounded-xl p-4 animate-pulse" />
@@ -71,49 +79,18 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
           </div>
         ) : (
           <>
-            {tasks.map((task) => {
-              const assigneeName = task.assignee?.name;
+            {tasks.map((task) => (
+              <DraggableTaskCard
+                key={task.id}
+                task={task}
+                onTaskClick={onTaskClick}
+              />
+            ))}
 
-              return (
-                <div 
-                  key={task.id}
-                  onClick={() => onTaskClick(task.id)}
-                  className="flex flex-col bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group"
-                >
-                  <p className="text-sm font-bold text-slate-800 leading-snug mb-4 group-hover:text-primary transition-colors">
-                    {task.title}
-                  </p>
-
-                  <div className="flex items-center justify-between mt-auto">
-                    {/* Due Date */}
-                    <div className="flex items-center gap-1.5 text-slate-400">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                      </svg>
-                      <span className="text-[10px] font-bold uppercase tracking-wider">
-                        {task.due_date ? formatDate(task.due_date) : "NO DATE"}
-                      </span>
-                    </div>
-
-                    {/* Assignee Avatar */}
-                    <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-[9px] font-bold overflow-hidden border-2 border-white shadow-sm" title={assigneeName || "Unassigned"}>
-                      {assigneeName 
-                        ? assigneeName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase()
-                        : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                      }
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-            
-            <InfiniteScrollObserver 
-              onIntersect={loadMore} 
-              isLoading={isFetchingMore} 
-              hasMore={hasMore} 
+            <InfiniteScrollObserver
+              onIntersect={loadMore}
+              isLoading={isFetchingMore}
+              hasMore={hasMore}
             />
           </>
         )}
@@ -121,3 +98,6 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
     </div>
   );
 };
+
+
+
