@@ -17,7 +17,7 @@ export const DraggableTaskCard = ({ task, onTaskClick }: DraggableTaskCardProps)
     });
 
     const style = {
-        transform: CSS.Translate.toString(transform),
+        transform: isDragging ? undefined : CSS.Translate.toString(transform),
         opacity: isDragging ? 0.3 : 1,
     };
 
