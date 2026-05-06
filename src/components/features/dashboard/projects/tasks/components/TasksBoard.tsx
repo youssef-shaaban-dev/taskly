@@ -1,6 +1,7 @@
-import React from "react";
 import { TASK_STATUSES, TaskStatus } from "../types";
 import { TasksBoardColumn } from "./TasksBoardColumn";
+import { DndContext } from "@dnd-kit/core";
+import { useBoardDnD } from "../hooks/useBoardDnD";
 
 interface TasksBoardProps {
   projectId: string;
@@ -19,19 +20,23 @@ const STATUS_COLORS: Record<TaskStatus, string> = {
 };
 
 export const TasksBoard = ({ projectId, onTaskClick }: TasksBoardProps) => {
+  const { handleDragEnd } = useBoardDnD();
+
   return (
-    <div className="flex flex-1 w-full overflow-hidden mt-6">
-      <div className="flex items-start gap-6 overflow-x-auto pb-6 custom-scrollbar w-full h-[calc(100vh-220px)] min-h-[500px]">
-        {TASK_STATUSES.map((status) => (
-          <TasksBoardColumn 
-            key={status} 
-            projectId={projectId} 
-            status={status} 
-            statusColor={STATUS_COLORS[status]} 
-            onTaskClick={onTaskClick}
-          />
-        ))}
+    <DndContext onDragEnd={handleDragEnd}>
+      <div className="flex flex-1 w-full overflow-hidden mt-6">
+        <div className="flex items-start gap-6 overflow-x-auto pb-6 custom-scrollbar w-full h-[calc(100vh-220px)] min-h-[500px]">
+          {TASK_STATUSES.map((status) => (
+            <TasksBoardColumn 
+              key={status} 
+              projectId={projectId} 
+              status={status} 
+              statusColor={STATUS_COLORS[status]} 
+              onTaskClick={onTaskClick}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </DndContext>
   );
 };

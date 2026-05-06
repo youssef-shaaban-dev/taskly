@@ -13,17 +13,17 @@ interface TasksBoardColumnProps {
 }
 
 export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-300", onTaskClick }: TasksBoardColumnProps) => {
-  const { 
-    tasks, 
-    isLoading, 
-    isFetchingMore, 
-    error, 
-    hasMore, 
-    loadMore 
+  const {
+    tasks,
+    isLoading,
+    isFetchingMore,
+    error,
+    hasMore,
+    loadMore
   } = useTasksByStatus(projectId, status);
 
   return (
-    <div className="flex flex-col flex-shrink-0 w-80 bg-slate-50/50 rounded-2xl p-3 h-full overflow-hidden border border-slate-100">
+    <div className="flex flex-col shrink-0 w-80 bg-slate-50/50 rounded-2xl p-3 h-full overflow-hidden border border-slate-100">
       {/* Column Header */}
       <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2">
@@ -36,7 +36,7 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
           </span>
         </div>
 
-        <Link 
+        <Link
           href={`/project/${projectId}/tasks/new?status=${status}`}
           className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-200 transition-colors text-slate-400 hover:text-slate-600"
         >
@@ -48,7 +48,7 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
       </div>
 
       {/* Add New Task Button */}
-      <Link 
+      <Link
         href={`/project/${projectId}/tasks/new?status=${status}`}
         className="flex items-center justify-center gap-2 w-full py-3 mb-3 border-2 border-dashed border-slate-200 rounded-xl text-xs font-bold text-slate-400 hover:border-primary/40 hover:text-primary transition-colors hover:bg-primary/5"
       >
@@ -75,7 +75,7 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
               const assigneeName = task.assignee?.name;
 
               return (
-                <div 
+                <div
                   key={task.id}
                   onClick={() => onTaskClick(task.id)}
                   className="flex flex-col bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group"
@@ -100,8 +100,8 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
 
                     {/* Assignee Avatar */}
                     <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-[9px] font-bold overflow-hidden border-2 border-white shadow-sm" title={assigneeName || "Unassigned"}>
-                      {assigneeName 
-                        ? assigneeName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase()
+                      {assigneeName
+                        ? assigneeName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
                         : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                       }
                     </div>
@@ -109,11 +109,11 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
                 </div>
               );
             })}
-            
-            <InfiniteScrollObserver 
-              onIntersect={loadMore} 
-              isLoading={isFetchingMore} 
-              hasMore={hasMore} 
+
+            <InfiniteScrollObserver
+              onIntersect={loadMore}
+              isLoading={isFetchingMore}
+              hasMore={hasMore}
             />
           </>
         )}
