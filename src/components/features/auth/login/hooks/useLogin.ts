@@ -26,7 +26,9 @@ export const useLogin = () => {
       Cookies.set(COOKIES.ACCESS_TOKEN, result.access_token, cookieOptions);
       Cookies.set(COOKIES.REFRESH_TOKEN, result.refresh_token, cookieOptions);
 
-      router.push(ROUTES.PROJECTS);
+      const searchParams = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+      const redirectTo = searchParams.get("redirectTo");
+      router.push(redirectTo || ROUTES.PROJECTS);
       router.refresh();
     } catch (error: unknown) {
       const errorMessage =
