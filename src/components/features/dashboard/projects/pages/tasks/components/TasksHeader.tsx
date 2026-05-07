@@ -1,5 +1,5 @@
 import { SearchIcon } from "@/components/icons";
-import { ProjectHeader } from "../../main/components/shared/ProjectHeader";
+import { ProjectHeader } from "@/components/features/dashboard/projects/main/components/shared/ProjectHeader";
 import { ROUTES } from "@/constant";
 import { cn } from "@/utils/cn";
 import Input from "@/components/ui/Input";

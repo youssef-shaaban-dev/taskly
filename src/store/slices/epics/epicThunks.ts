@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchProjectEpics, fetchEpicById } from "@/components/features/dashboard/projects/epics/services/fetchEpics";
+import { fetchProjectEpics, fetchEpicById } from "@/components/features/dashboard/projects/pages/epics/services/fetchEpics";
 
 interface FetchEpicsArgs {
   projectId: string;

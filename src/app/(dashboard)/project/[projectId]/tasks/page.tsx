@@ -2,12 +2,12 @@
 
 import { use, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
-import { TasksHeader } from "@/components/features/dashboard/projects/tasks/components/TasksHeader";
-import { TasksBoard } from "@/components/features/dashboard/projects/tasks/components/TasksBoard";
-import { TasksList } from "@/components/features/dashboard/projects/tasks/components/TasksList";
-import { useProjectTasks } from "@/components/features/dashboard/projects/tasks/hooks/useProjectTasks";
-import { TaskDetailsPopup } from "@/components/features/dashboard/projects/tasks/components/TaskDetailsPopup";
+import { useProjectDetails } from "@/components/features/dashboard/projects/pages/projectDetails/hooks/useProjectDetails";
+import { TasksHeader } from "@/components/features/dashboard/projects/pages/tasks/components/TasksHeader";
+import { TasksBoard } from "@/components/features/dashboard/projects/pages/tasks/components/TasksBoard";
+import { TasksList } from "@/components/features/dashboard/projects/pages/tasks/components/TasksList";
+import { useProjectTasks } from "@/components/features/dashboard/projects/pages/tasks/hooks/useProjectTasks";
+import { TaskDetailsPopup } from "@/components/features/dashboard/projects/pages/tasks/components/TaskDetailsPopup";
 
 interface TasksPageProps {
   params: Promise<{ projectId: string }>;

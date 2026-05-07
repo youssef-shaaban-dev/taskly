@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchEpicsThunk, fetchEpicDetailsThunk } from "./epicThunks";
-import { Epic } from "@/components/features/dashboard/projects/epics/types";
+import { Epic } from "@/components/features/dashboard/projects/pages/epics/types";
 
 interface EpicsState {
   epics: Epic[];

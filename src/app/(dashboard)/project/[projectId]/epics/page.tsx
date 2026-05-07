@@ -1,14 +1,14 @@
 "use client";
 
 import { use } from "react";
-import { useProjectEpics } from "@/components/features/dashboard/projects/epics/hooks/useProjectEpics";
-import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
-import { EpicsHeader } from "@/components/features/dashboard/projects/epics/components/EpicsHeader";
-import { EpicCard } from "@/components/features/dashboard/projects/epics/components/EpicCard";
-import { EpicListSkeleton } from "@/components/features/dashboard/projects/epics/components/EpicListSkeleton";
-import { EmptyEpics } from "@/components/features/dashboard/projects/epics/components/EmptyEpics";
-import { EpicsError } from "@/components/features/dashboard/projects/epics/components/EpicsError";
-import { EpicDetailsModal } from "@/components/features/dashboard/projects/epics/components/EpicDetailsModal";
+import { useProjectEpics } from "@/components/features/dashboard/projects/pages/epics/hooks/useProjectEpics";
+import { useProjectDetails } from "@/components/features/dashboard/projects/pages/projectDetails/hooks/useProjectDetails";
+import { EpicsHeader } from "@/components/features/dashboard/projects/pages/epics/components/EpicsHeader";
+import { EpicCard } from "@/components/features/dashboard/projects/pages/epics/components/EpicCard";
+import { EpicListSkeleton } from "@/components/features/dashboard/projects/pages/epics/components/EpicListSkeleton";
+import { EmptyEpics } from "@/components/features/dashboard/projects/pages/epics/components/EmptyEpics";
+import { EpicsError } from "@/components/features/dashboard/projects/pages/epics/components/EpicsError";
+import { EpicDetailsModal } from "@/components/features/dashboard/projects/pages/epics/components/EpicDetailsModal";
 import { InfiniteScrollObserver } from "@/components/shared/InfiniteScrollObserver";
 import { Pagination } from "@/components/shared/Pagination";
 

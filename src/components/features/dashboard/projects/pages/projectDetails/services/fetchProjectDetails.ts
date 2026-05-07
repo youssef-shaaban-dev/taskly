@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "@/constant";
-import { Project } from "../../main/types";
+import { Project } from "@/components/features/dashboard/projects/main/types";
 import { apiClient } from "@/utils/apiClient";
 
 export const fetchProjectDetails = async (id: string): Promise<Project> => {

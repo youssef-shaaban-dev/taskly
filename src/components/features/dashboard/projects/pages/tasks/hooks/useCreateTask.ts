@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { taskSchema, TaskFormValues } from "../schema/taskSchema";
 import { createTaskService } from "../services/taskService";
-import { useProjectMembers } from "../../pages/projectMembers/hooks/useProjectMembers";
+import { useProjectMembers } from "../../projectMembers/hooks/useProjectMembers";
 import { useProjectEpics } from "../../epics/hooks/useProjectEpics";
 
 export const useCreateTask = (projectId: string) => {

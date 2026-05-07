@@ -1,7 +1,7 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { cn } from "@/utils/cn";
-import { ProjectMember } from "../../pages/projectMembers/types";
-import { Epic } from "../../epics/types";
+import { ProjectMember } from "@/components/features/dashboard/projects/pages/projectMembers/types";
+import { Epic } from "@/components/features/dashboard/projects/pages/epics/types";
 import Input from "@/components/ui/Input";
 
 interface TaskFieldsProps {

@@ -8,7 +8,7 @@ import { MembersError } from "@/components/features/dashboard/projects/pages/pro
 import { ROUTES } from "@/constant";
 import Button from "@/components/ui/Button";
 
-import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
+import { useProjectDetails } from "@/components/features/dashboard/projects/pages/projectDetails/hooks/useProjectDetails";
 
 export default function ProjectMembersPage() {
   const { members, isLoading, error, retry, projectId } = useProjectMembers();
