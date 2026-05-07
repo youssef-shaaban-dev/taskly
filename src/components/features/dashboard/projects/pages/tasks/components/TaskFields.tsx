@@ -1,6 +1,6 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { cn } from "@/utils/cn";
-import { ProjectMember } from "../../projectMembers/types";
+import { ProjectMember } from "../../pages/projectMembers/types";
 import { Epic } from "../../epics/types";
 import Input from "@/components/ui/Input";
 

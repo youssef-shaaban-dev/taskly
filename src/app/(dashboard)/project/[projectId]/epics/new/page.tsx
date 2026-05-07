@@ -3,9 +3,9 @@
 import { use } from "react";
 import { FormProvider } from "react-hook-form";
 import { useCreateEpic } from "@/components/features/dashboard/projects/epics/hooks/useCreateEpic";
-import { ProjectHeader } from "@/components/features/dashboard/projects/components/shared/ProjectHeader";
+import { ProjectHeader } from "@/components/features/dashboard/projects/main/components/shared/ProjectHeader";
 import { EpicFields } from "@/components/features/dashboard/projects/epics/components/EpicFields";
-import { ProjectActions } from "@/components/features/dashboard/projects/components/shared/ProjectActions";
+import { ProjectActions } from "@/components/features/dashboard/projects/main/components/shared/ProjectActions";
 import { ROUTES } from "@/constant";
 import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
 

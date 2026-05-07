@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useProjects } from "@/components/features/dashboard/projects/hooks/useProjects";
+import { useProjects } from "@/components/features/dashboard/projects/main/hooks/useProjects";
 import { ROUTES } from "@/constant";
-import { ProjectsEmpty, ProjectsError, ProjectsSkeleton } from "@/components/features/dashboard/projects/components/ProjectsStates";
-import { ProjectsHeader } from "@/components/features/dashboard/projects/components/ProjectsHeader";
-import { ProjectCard } from "@/components/features/dashboard/projects/components/ProjectCard";
+import { ProjectsEmpty, ProjectsError, ProjectsSkeleton } from "@/components/features/dashboard/projects/main/components/ProjectsStates";
+import { ProjectsHeader } from "@/components/features/dashboard/projects/main/components/ProjectsHeader";
+import { ProjectCard } from "@/components/features/dashboard/projects/main/components/ProjectCard";
 import { Pagination } from "@/components/shared/Pagination";
 import { InfiniteScrollObserver } from "@/components/shared/InfiniteScrollObserver";
 

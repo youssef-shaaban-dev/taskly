@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ProjectFormValues,
   projectSchema,
-} from "@/components/features/dashboard/schemas/projectSchema";
+} from "@/components/features/dashboard/projects/main/schemas/projectSchema";
 import { ROUTES } from "@/constant";
 import { toast } from "sonner";
 import { addProjectService } from "../services/addProjectService";

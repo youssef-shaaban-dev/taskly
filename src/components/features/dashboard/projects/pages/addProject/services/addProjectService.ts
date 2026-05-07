@@ -1,4 +1,4 @@
-import { ProjectFormValues } from "@/components/features/dashboard/schemas/projectSchema";
+import { ProjectFormValues } from "@/components/features/dashboard/projects/main/schemas/projectSchema";
 import { API_ENDPOINTS } from "@/constant";
 import { apiClient } from "@/utils/apiClient";
 

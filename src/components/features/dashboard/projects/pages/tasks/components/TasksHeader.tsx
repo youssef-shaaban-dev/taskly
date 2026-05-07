@@ -1,5 +1,5 @@
 import { SearchIcon } from "@/components/icons";
-import { ProjectHeader } from "../../components/shared/ProjectHeader";
+import { ProjectHeader } from "../../main/components/shared/ProjectHeader";
 import { ROUTES } from "@/constant";
 import { cn } from "@/utils/cn";
 import Input from "@/components/ui/Input";
@@ -13,9 +13,9 @@ interface TasksHeaderProps {
   searchQuery?: string;
 }
 
-export const TasksHeader = ({ 
-  projectName, 
-  view, 
+export const TasksHeader = ({
+  projectName,
+  view,
   onViewChange,
   onSearch,
   searchQuery = ""
@@ -33,9 +33,9 @@ export const TasksHeader = ({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           {/* Search Input */}
           <div className="relative group min-w-[240px]">
-            <SearchIcon 
-              size={18} 
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" 
+            <SearchIcon
+              size={18}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors"
             />
             <Input
               placeholder="Search tasks..."
@@ -51,8 +51,8 @@ export const TasksHeader = ({
               onClick={() => onViewChange("list")}
               className={cn(
                 "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
-                view === "list" 
-                  ? "bg-white text-primary shadow-sm" 
+                view === "list"
+                  ? "bg-white text-primary shadow-sm"
                   : "text-slate-500 hover:text-slate-700"
               )}
             >
@@ -62,8 +62,8 @@ export const TasksHeader = ({
               onClick={() => onViewChange("board")}
               className={cn(
                 "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
-                view === "board" 
-                  ? "bg-white text-primary shadow-sm" 
+                view === "board"
+                  ? "bg-white text-primary shadow-sm"
                   : "text-slate-500 hover:text-slate-700"
               )}
             >

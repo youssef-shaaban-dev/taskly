@@ -3,9 +3,9 @@
 import { use } from "react";
 import { FormProvider } from "react-hook-form";
 import { useCreateTask } from "@/components/features/dashboard/projects/tasks/hooks/useCreateTask";
-import { ProjectHeader } from "@/components/features/dashboard/projects/components/shared/ProjectHeader";
+import { ProjectHeader } from "@/components/features/dashboard/projects/main/components/shared/ProjectHeader";
 import { TaskFields } from "@/components/features/dashboard/projects/tasks/components/TaskFields";
-import { ProjectActions } from "@/components/features/dashboard/projects/components/shared/ProjectActions";
+import { ProjectActions } from "@/components/features/dashboard/projects/main/components/shared/ProjectActions";
 import { ROUTES } from "@/constant";
 import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
 
@@ -42,11 +42,11 @@ export default function CreateTaskPage({ params }: CreateTaskPageProps) {
         <div className="p-8 md:p-12">
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
-              <TaskFields 
-                members={members} 
-                isLoadingMembers={isLoadingMembers} 
-                epics={epics} 
-                isLoadingEpics={isLoadingEpics} 
+              <TaskFields
+                members={members}
+                isLoadingMembers={isLoadingMembers}
+                epics={epics}
+                isLoadingEpics={isLoadingEpics}
               />
 
               <div className="pt-2">

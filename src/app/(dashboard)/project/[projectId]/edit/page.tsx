@@ -1,11 +1,11 @@
 "use client";
 
 import { FormProvider, Form } from 'react-hook-form';
-import { useEditProject } from '@/components/features/dashboard/projects/editProject/hooks/useEditProject';
-import { ProjectHeader } from '@/components/features/dashboard/projects/components/shared/ProjectHeader';
-import { ProjectFields } from '@/components/features/dashboard/projects/components/shared/ProjectFields';
-import { ProjectActions } from '@/components/features/dashboard/projects/components/shared/ProjectActions';
-import { ProjectCardHeader } from '@/components/features/dashboard/projects/components/shared/ProjectCardHeader';
+import { useEditProject } from '@/components/features/dashboard/projects/pages/editProject/hooks/useEditProject';
+import { ProjectHeader } from '@/components/features/dashboard/projects/main/components/shared/ProjectHeader';
+import { ProjectFields } from '@/components/features/dashboard/projects/main/components/shared/ProjectFields';
+import { ProjectActions } from '@/components/features/dashboard/projects/main/components/shared/ProjectActions';
+import { ProjectCardHeader } from '@/components/features/dashboard/projects/main/components/shared/ProjectCardHeader';
 import { ROUTES } from '@/constant';
 
 export default function EditProjectPage() {

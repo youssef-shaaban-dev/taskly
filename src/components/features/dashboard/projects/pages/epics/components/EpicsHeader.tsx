@@ -1,6 +1,6 @@
 import { PlusIcon, SearchIcon } from "@/components/icons";
 import Link from "next/link";
-import { ProjectHeader } from "../../components/shared/ProjectHeader";
+import { ProjectHeader } from "../../main/components/shared/ProjectHeader";
 import { ROUTES } from "@/constant";
 
 interface EpicsHeaderProps {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchProjectsThunk } from "./projectThunks";
-import { Project } from "@/components/features/dashboard/projects/types";
+import { Project } from "@/components/features/dashboard/projects/main/types";
 
 interface ProjectsState {
   projects: Project[];

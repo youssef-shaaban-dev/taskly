@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchProjectDetails } from "../services/fetchProjectDetails";
-import { Project } from "../../types";
+import { Project } from "../../main/types";
 
 export const useProjectDetails = (projectId: string) => {
   const [project, setProject] = useState<Project | null>(null);

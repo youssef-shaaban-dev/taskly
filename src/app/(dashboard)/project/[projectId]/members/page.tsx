@@ -1,10 +1,10 @@
 "use client";
 
-import { useProjectMembers } from "@/components/features/dashboard/projects/projectMembers/hooks/useProjectMembers";
-import { ProjectHeader } from "@/components/features/dashboard/projects/components/shared/ProjectHeader";
-import { MembersList } from "@/components/features/dashboard/projects/projectMembers/components/MembersList";
-import { MembersSkeleton } from "@/components/features/dashboard/projects/projectMembers/components/MembersSkeleton";
-import { MembersError } from "@/components/features/dashboard/projects/projectMembers/components/MembersError";
+import { useProjectMembers } from "@/components/features/dashboard/projects/pages/projectMembers/hooks/useProjectMembers";
+import { ProjectHeader } from "@/components/features/dashboard/projects/main/components/shared/ProjectHeader";
+import { MembersList } from "@/components/features/dashboard/projects/pages/projectMembers/components/MembersList";
+import { MembersSkeleton } from "@/components/features/dashboard/projects/pages/projectMembers/components/MembersSkeleton";
+import { MembersError } from "@/components/features/dashboard/projects/pages/projectMembers/components/MembersError";
 import { ROUTES } from "@/constant";
 import Button from "@/components/ui/Button";
 
