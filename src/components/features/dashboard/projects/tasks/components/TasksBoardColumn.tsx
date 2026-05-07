@@ -10,9 +10,10 @@ interface TasksBoardColumnProps {
   status: TaskStatus;
   statusColor?: string;
   onTaskClick: (taskId: string) => void;
+  searchQuery?: string;
 }
 
-export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-300", onTaskClick }: TasksBoardColumnProps) => {
+export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-300", onTaskClick, searchQuery = "" }: TasksBoardColumnProps) => {
   const { 
     tasks, 
     isLoading, 
@@ -20,10 +21,10 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
     error, 
     hasMore, 
     loadMore 
-  } = useTasksByStatus(projectId, status);
+  } = useTasksByStatus(projectId, status, searchQuery);
 
   return (
-    <div className="flex flex-col flex-shrink-0 w-80 bg-slate-50/50 rounded-2xl p-3 h-full overflow-hidden border border-slate-100">
+    <div className="flex flex-col shrink-0 w-80 bg-slate-50/50 rounded-2xl p-3 h-full overflow-hidden border border-slate-100">
       {/* Column Header */}
       <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2">
@@ -66,8 +67,22 @@ export const TasksBoardColumn = ({ projectId, status, statusColor = "bg-slate-30
             <div key={i} className="h-28 bg-white border border-slate-100 rounded-xl p-4 animate-pulse" />
           ))
         ) : error ? (
-          <div className="text-xs text-red-500 font-semibold p-2 bg-red-50 rounded-lg text-center border border-red-100">
-            Failed to load
+          <div className="flex flex-col items-center gap-2 p-4 bg-red-50/50 rounded-xl border border-red-100 text-center">
+            <span className="text-xs text-red-500 font-semibold">
+              {searchQuery ? "Failed to search tasks" : "Failed to load tasks"}
+            </span>
+            <button 
+              onClick={() => loadMore()}
+              className="text-[10px] font-bold text-red-600 hover:text-red-800 uppercase tracking-wider underline cursor-pointer"
+            >
+              Retry
+            </button>
+          </div>
+        ) : tasks.length === 0 ? (
+          <div className="py-12 text-center flex flex-col items-center justify-center">
+            <p className="text-xs text-slate-400 font-semibold italic">
+              {searchQuery ? "No tasks found matching your search" : "No tasks found for this project"}
+            </p>
           </div>
         ) : (
           <>

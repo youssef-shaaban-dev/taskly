@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useProjectDetails } from "@/components/features/dashboard/projects/projectDetails/hooks/useProjectDetails";
 import { TasksHeader } from "@/components/features/dashboard/projects/tasks/components/TasksHeader";
@@ -23,7 +23,16 @@ export default function TasksPage({ params }: TasksPageProps) {
   
   const currentView = (searchParams.get("view") as "list" | "board") || "board";
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+
+  // Debounce search query to prevent unnecessary API requests on typing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500); // 500ms debounce
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const {
     tasks,
@@ -32,7 +41,7 @@ export default function TasksPage({ params }: TasksPageProps) {
     totalPages,
     totalCount,
     setPage
-  } = useProjectTasks(projectId, PAGE_SIZE, searchQuery);
+  } = useProjectTasks(projectId, PAGE_SIZE, debouncedSearch);
 
   // Update URL when view changes
   const handleViewChange = (view: "list" | "board") => {
@@ -44,19 +53,21 @@ export default function TasksPage({ params }: TasksPageProps) {
   const projectName = project?.name || "Loading...";
 
   return (
-    <div className="max-w-[1280px] mx-auto w-full min-h-[calc(100vh-100px)] flex flex-col px-4 md:px-0">
+    <div className="max-w-[1280px] mx-auto w-full min-h-[calc-100vh-100px)] flex flex-col px-4 md:px-0">
       <TasksHeader 
         projectId={projectId} 
         projectName={projectName}
         view={currentView}
         onViewChange={handleViewChange}
         onSearch={setSearchQuery}
+        searchQuery={searchQuery}
       />
 
       {currentView === "board" ? (
         <TasksBoard 
           projectId={projectId} 
           onTaskClick={(id) => setSelectedTaskId(id)} 
+          searchQuery={debouncedSearch}
         />
       ) : (
         <TasksList 
@@ -67,6 +78,7 @@ export default function TasksPage({ params }: TasksPageProps) {
           totalCount={totalCount}
           onPageChange={setPage}
           onTaskClick={(id) => setSelectedTaskId(id)}
+          searchQuery={debouncedSearch}
         />
       )}
 

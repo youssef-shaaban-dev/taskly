@@ -4,7 +4,7 @@ import { fetchTasksByStatus } from "../services/fetchTasksByStatus";
 
 const PAGE_SIZE = 10;
 
-export const useTasksByStatus = (projectId: string | undefined, status: TaskStatus | string) => {
+export const useTasksByStatus = (projectId: string | undefined, status: TaskStatus | string, searchQuery: string = "") => {
   const [tasks, setTasks] = useState<ProjectTask[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);
@@ -28,7 +28,7 @@ export const useTasksByStatus = (projectId: string | undefined, status: TaskStat
       const currentPage = isInitial ? 1 : pageRef.current + 1;
       const offset = (currentPage - 1) * PAGE_SIZE;
 
-      const { data, totalCount: total } = await fetchTasksByStatus(projectId, status, PAGE_SIZE, offset);
+      const { data, totalCount: total } = await fetchTasksByStatus(projectId, status as TaskStatus, PAGE_SIZE, offset, searchQuery);
       
       setTasks(prev => {
         const nextTasks = isInitial ? data : [...prev, ...data];
@@ -46,7 +46,7 @@ export const useTasksByStatus = (projectId: string | undefined, status: TaskStat
       setIsLoading(false);
       setIsFetchingMore(false);
     }
-  }, [projectId, status]);
+  }, [projectId, status, searchQuery]);
 
   useEffect(() => {
     loadTasks(true);

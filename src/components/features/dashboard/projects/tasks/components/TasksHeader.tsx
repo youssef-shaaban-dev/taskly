@@ -10,13 +10,15 @@ interface TasksHeaderProps {
   view: "list" | "board";
   onViewChange: (view: "list" | "board") => void;
   onSearch: (query: string) => void;
+  searchQuery?: string;
 }
 
 export const TasksHeader = ({ 
   projectName, 
   view, 
   onViewChange,
-  onSearch 
+  onSearch,
+  searchQuery = ""
 }: TasksHeaderProps) => {
   return (
     <ProjectHeader
@@ -37,6 +39,7 @@ export const TasksHeader = ({
             />
             <Input
               placeholder="Search tasks..."
+              value={searchQuery}
               onChange={(e) => onSearch(e.target.value)}
               className="w-full pl-11 pr-4 py-2.5 bg-[#f4f7fe]/50 border border-transparent focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 rounded-lg text-sm font-medium transition-all outline-none"
             />

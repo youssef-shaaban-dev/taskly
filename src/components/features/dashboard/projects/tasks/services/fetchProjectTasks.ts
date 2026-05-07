@@ -24,7 +24,7 @@ export const fetchProjectTasks = async ({
   };
 
   if (search) {
-    params.title = `ilike.*${search}*`;
+    params.title = `ilike.%${search}%`;
   }
 
   if (status) {

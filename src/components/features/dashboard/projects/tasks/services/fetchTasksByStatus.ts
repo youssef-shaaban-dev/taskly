@@ -4,20 +4,27 @@ import { apiClient } from "@/utils/apiClient";
 
 export const fetchTasksByStatus = async (
   projectId: string,
-  status: TaskStatus | string,
+  status: TaskStatus,
   limit: number = 10,
-  offset: number = 0
+  offset: number = 0,
+  search?: string
 ): Promise<{ data: ProjectTask[]; totalCount: number }> => {
+  const params: Record<string, string> = { 
+    project_id: `eq.${projectId}`,
+    status: `eq.${status}`,
+    limit: limit.toString(),
+    offset: offset.toString(),
+  };
+
+  if (search) {
+    params.title = `ilike.%${search}%`;
+  }
+
   const response = await apiClient(API_ENDPOINTS.PROJECT_TASKS, {
     headers: {
       "Prefer": "count=exact"
     },
-    params: { 
-      project_id: `eq.${projectId}`,
-      status: `eq.${status}`,
-      limit: limit.toString(),
-      offset: offset.toString(),
-    },
+    params,
   });
 
   if (!response.ok) {

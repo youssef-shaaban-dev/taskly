@@ -12,6 +12,7 @@ interface TasksListProps {
   totalCount: number;
   onPageChange: (page: number) => void;
   onTaskClick: (taskId: string) => void;
+  searchQuery?: string;
 }
 
 export const TasksList = ({
@@ -21,7 +22,8 @@ export const TasksList = ({
   totalPages,
   totalCount,
   onPageChange,
-  onTaskClick
+  onTaskClick,
+  searchQuery = ""
 }: TasksListProps) => {
   if (isLoading && tasks.length === 0) {
     return (
@@ -113,7 +115,9 @@ export const TasksList = ({
 
         {tasks.length === 0 && !isLoading && (
           <div className="py-20 text-center flex flex-col items-center justify-center">
-             <p className="text-slate-400 font-medium italic">No tasks found</p>
+             <p className="text-slate-400 font-medium italic">
+               {searchQuery ? "No tasks found matching your search" : "No tasks found for this project"}
+             </p>
           </div>
         )}
       </div>
