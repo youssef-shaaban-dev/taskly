@@ -23,13 +23,13 @@ export const useTasksByStatus = (projectId: string | undefined, status: TaskStat
       } else {
         setIsFetchingMore(true);
       }
-      
+
       setError(null);
       const currentPage = isInitial ? 1 : pageRef.current + 1;
       const offset = (currentPage - 1) * PAGE_SIZE;
 
       const { data, totalCount: total } = await fetchTasksByStatus(projectId, status as TaskStatus, PAGE_SIZE, offset, searchQuery);
-      
+
       setTasks(prev => {
         const nextTasks = isInitial ? data : [...prev, ...data];
         setHasMore(nextTasks.length < total);
@@ -39,7 +39,7 @@ export const useTasksByStatus = (projectId: string | undefined, status: TaskStat
       if (!isInitial) {
         pageRef.current = currentPage;
       }
-      
+
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to load tasks");
     } finally {
@@ -58,13 +58,13 @@ export const useTasksByStatus = (projectId: string | undefined, status: TaskStat
     }
   };
 
-  return { 
-    tasks, 
-    isLoading, 
-    isFetchingMore, 
-    error, 
-    hasMore, 
-    totalCount, 
-    loadMore 
+  return {
+    tasks,
+    isLoading,
+    isFetchingMore,
+    error,
+    hasMore,
+    totalCount,
+    loadMore
   };
 };
