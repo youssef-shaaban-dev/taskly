@@ -35,6 +35,23 @@ export const useProjectTasks = (projectId: string, pageSize: number = 10, search
     loadTasks();
   }, [loadTasks]);
 
+  useEffect(() => {
+    const handleTaskUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { taskId, changes } = customEvent.detail || {};
+      if (taskId && changes) {
+        setTasks((prev) =>
+          prev.map((t) => (t.id === taskId ? { ...t, ...changes } : t))
+        );
+      }
+    };
+
+    window.addEventListener("task-updated", handleTaskUpdated);
+    return () => {
+      window.removeEventListener("task-updated", handleTaskUpdated);
+    };
+  }, []);
+
   // Reset to page 1 when search query changes
   useEffect(() => {
     setCurrentPage(1);

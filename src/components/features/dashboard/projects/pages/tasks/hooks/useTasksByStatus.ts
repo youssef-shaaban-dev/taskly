@@ -52,6 +52,45 @@ export const useTasksByStatus = (projectId: string | undefined, status: TaskStat
     loadTasks(true);
   }, [loadTasks]);
 
+  useEffect(() => {
+    const handleTaskUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { taskId, changes, task: fullTask } = customEvent.detail || {};
+      if (taskId && changes) {
+        setTasks((prev) => {
+          const exists = prev.some((t) => t.id === taskId);
+          const nextStatus = changes.status || (exists ? prev.find((t) => t.id === taskId)?.status : null);
+
+          if (nextStatus === status) {
+            if (exists) {
+              return prev.map((t) => (t.id === taskId ? { ...t, ...changes } : t));
+            } else if (fullTask) {
+              // Add to the top of the column if it moved to this status
+              return [{ ...fullTask, ...changes }, ...prev];
+            }
+          }
+
+          // If the task exists in this column but its status changed to something else, remove it
+          if (exists && nextStatus && nextStatus !== status) {
+            return prev.filter((t) => t.id !== taskId);
+          }
+
+          // Otherwise update fields if it is already here
+          if (exists) {
+            return prev.map((t) => (t.id === taskId ? { ...t, ...changes } : t));
+          }
+
+          return prev;
+        });
+      }
+    };
+
+    window.addEventListener("task-updated", handleTaskUpdated);
+    return () => {
+      window.removeEventListener("task-updated", handleTaskUpdated);
+    };
+  }, [status]);
+
   const loadMore = () => {
     if (!isLoading && !isFetchingMore && hasMore) {
       loadTasks(false);
