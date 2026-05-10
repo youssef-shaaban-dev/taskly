@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ProjectFormValues,
@@ -12,7 +12,25 @@ import { addProjectService } from "../services/addProjectService";
 
 export const useAddProject = () => {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
+
+  const addProjectMutation = useMutation({
+    mutationFn: addProjectService,
+    onSuccess: () => {
+      toast.success("Project created successfully");
+      // Force re-fetch of projects list to show new project immediately
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      form.reset();
+      router.push(ROUTES.PROJECTS);
+    },
+    onError: (error) => {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to create project. Please try again."
+      );
+    }
+  });
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -25,26 +43,12 @@ export const useAddProject = () => {
   const descriptionValue = form.watch("description") || "";
 
   const onSubmit = async (data: ProjectFormValues) => {
-    setIsSubmitting(true);
-    try {
-      await addProjectService(data);
-      toast.success("Project created successfully");
-      form.reset();
-      router.push(ROUTES.PROJECTS);
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to create project. Please try again.",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    addProjectMutation.mutate(data);
   };
 
   return {
     form,
-    isSubmitting,
+    isSubmitting: addProjectMutation.isPending,
     descriptionValue,
     onSubmit,
   };

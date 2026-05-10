@@ -1,29 +1,18 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchProjectDetails } from "../services/fetchProjectDetails";
-import { Project } from "@/components/features/dashboard/projects/main/types";
 
 export const useProjectDetails = (projectId: string) => {
-  const [project, setProject] = useState<Project | null>(null);
-  const [isFetchingProject, setIsFetchingProject] = useState(true);
-  const [projectError, setProjectError] = useState<string | null>(null);
+  const { data: project = null, isLoading: isFetchingProject, error } = useQuery({
+    queryKey: ["project", projectId],
+    queryFn: () => fetchProjectDetails(projectId),
+    enabled: !!projectId,
+  });
 
-  useEffect(() => {
-    const loadProject = async () => {
-      if (!projectId) return;
-      try {
-        setIsFetchingProject(true);
-        setProjectError(null);
-        const data = await fetchProjectDetails(projectId);
-        setProject(data);
-      } catch (err: unknown) {
-        setProjectError(err instanceof Error ? err.message : "Failed to load project details");
-      } finally {
-        setIsFetchingProject(false);
-      }
-    };
+  const projectError = error ? (error instanceof Error ? error.message : "Failed to load details") : null;
 
-    loadProject();
-  }, [projectId]);
-
-  return { project, isFetchingProject, projectError };
+  return { 
+    project, 
+    isFetchingProject, 
+    projectError 
+  };
 };

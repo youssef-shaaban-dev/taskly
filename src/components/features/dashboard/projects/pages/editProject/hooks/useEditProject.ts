@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
@@ -14,10 +15,8 @@ import { fetchProjectDetails } from "../../projectDetails/services/fetchProjectD
 export const useEditProject = () => {
   const router = useRouter();
   const params = useParams();
+  const queryClient = useQueryClient();
   const projectId = params.projectId as string;
-
-  const [isFetching, setIsFetching] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<EditProjectFormValues>({
     resolver: zodResolver(editProjectSchema),
@@ -30,50 +29,49 @@ export const useEditProject = () => {
     defaultValue: "",
   });
 
-  useEffect(() => {
-    const loadProject = async () => {
-      try {
-        setIsFetching(true);
-        const data = await fetchProjectDetails(projectId);
-        form.reset({
-          name: data.name,
-          description: data.description || "",
-        });
-      } catch (err: unknown) {
-        toast.error(
-          (err instanceof Error && err.message) ||
-            "Failed to load project details",
-        );
-        router.push(ROUTES.PROJECTS);
-      } finally {
-        setIsFetching(false);
-      }
-    };
+  // 1. Fetch details via useQuery
+  const { data: project, isLoading: isFetching } = useQuery({
+    queryKey: ["project", projectId],
+    queryFn: () => fetchProjectDetails(projectId),
+    enabled: !!projectId,
+  });
 
-    if (projectId) loadProject();
-  }, [projectId, form, router]);
+  // Hydrate form when data lands
+  useEffect(() => {
+    if (project) {
+      form.reset({
+        name: project.name,
+        description: project.description || "",
+      });
+    }
+  }, [project, form]);
+
+  // 2. Handle Update via useMutation
+  const updateMutation = useMutation({
+    mutationFn: (values: EditProjectFormValues) => updateProjectService(projectId, values),
+    onSuccess: () => {
+      toast.success("Project updated successfully!");
+      // Refresh both main list and this specific project cache
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      queryClient.invalidateQueries({ queryKey: ["project", projectId] });
+      router.push(ROUTES.PROJECTS);
+    },
+    onError: (err) => {
+      toast.error(
+        (err instanceof Error && err.message) || "Failed to update project"
+      );
+    }
+  });
 
   // 2. Handle Update
   const onSubmit = async (values: EditProjectFormValues) => {
-    try {
-      setIsSubmitting(true);
-      await updateProjectService(projectId, values);
-      toast.success("Project updated successfully!");
-      router.push(ROUTES.PROJECTS);
-      router.refresh();
-    } catch (err: unknown) {
-      toast.error(
-        (err instanceof Error && err.message) || "Failed to update project",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    updateMutation.mutate(values);
   };
 
   return {
     form,
     isFetching,
-    isSubmitting,
+    isSubmitting: updateMutation.isPending,
     descriptionValue,
     onSubmit,
     projectId,
