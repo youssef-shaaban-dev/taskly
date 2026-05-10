@@ -29,7 +29,7 @@ export const useInviteMember = (
     try {
       setIsSubmitting(true);
 
-      const appUrl = typeof window !== "undefined" ? window.location.origin : "";
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
 
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
