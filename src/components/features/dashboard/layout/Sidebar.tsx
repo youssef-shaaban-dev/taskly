@@ -8,7 +8,7 @@ import { logoutUser } from "@/store/slices/user/userActions";
 import {
   DashboardIcon, DescriptionIcon, LogoutIcon,
   ArrowIcon, TasklyIcon, GroupsIcon,
-  MonitoringIcon
+  MonitoringIcon, AnalyticsIcon
 } from "@/components/icons";
 import { ROUTES } from "@/constant";
 import { toast } from "sonner";
@@ -41,6 +41,12 @@ export const Sidebar = () => {
       label: "Projects",
       icon: <DashboardIcon />,
       path: ROUTES.PROJECTS,
+      isDisabled: false
+    },
+    {
+      label: "My Statistics",
+      icon: <AnalyticsIcon />,
+      path: ROUTES.MY_STATISTICS,
       isDisabled: false
     },
     {
