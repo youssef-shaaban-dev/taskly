@@ -5,6 +5,7 @@ import StoreProvider from "@/store/StoreProvider";
 import AuthHashHandler from "@/components/features/auth/shared/AuthHashHandler";
 import { Toaster } from "sonner";
 import { Suspense } from "react";
+import QueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Tasks Management",
@@ -23,12 +24,14 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Toaster position="top-right" richColors />
-        <StoreProvider>
-          <Suspense fallback={null}>
-            <AuthHashHandler />
-          </Suspense>
-          {children}
-        </StoreProvider>
+        <QueryProvider>
+          <StoreProvider>
+            <Suspense fallback={null}>
+              <AuthHashHandler />
+            </Suspense>
+            {children}
+          </StoreProvider>
+        </QueryProvider>
       </body>
     </html>
   );

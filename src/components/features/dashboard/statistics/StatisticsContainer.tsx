@@ -1,8 +1,7 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchCalendarStatsThunk, fetchTasksPerProjectThunk } from "@/store/slices/statistics/statisticsThunks";
+import { useCalendarStats, useTasksPerProject } from "./hooks/useStatistics";
 import { StatisticsFilters } from "./components/StatisticsFilters";
 import { KpiCard } from "./components/KpiCard";
 import { WeeklyCalendar } from "./components/WeeklyCalendar";
@@ -29,11 +28,6 @@ const AlertIcon = ({ className }: { className?: string }) => (
 export const StatisticsContainer = () => {
   const params = useParams();
   const urlProjectId = params.projectId as string | undefined;
-  const dispatch = useAppDispatch();
-  const { calendarStats, projectCounts, isLoadingStats, isLoadingProjects } = useAppSelector((state) => state.statistics);
-
-  // Add debug console logs
-  console.log("📊 [Statistics Data Debug]:", { calendarStats, projectCounts });
 
   // Default week range
   const defaultRange = getWeekRange();
@@ -44,33 +38,29 @@ export const StatisticsContainer = () => {
     projectId: urlProjectId || null,
     status: null as string | null,
   });
+
+  // Fetch via React Query Hooks
+  const { data: calendarStats, isLoading: isLoadingStats } = useCalendarStats({
+    p_start_date: filters.startDate,
+    p_end_date: filters.endDate,
+    p_project_id: filters.projectId,
+    p_status: filters.status,
+  });
+
+  const { data: projectCounts, isLoading: isLoadingProjects } = useTasksPerProject({
+    p_start_date: filters.startDate,
+    p_end_date: filters.endDate,
+  });
   
+  // Add debug console logs
+  console.log("📊 [Statistics Query Debug]:", { calendarStats, projectCounts });
+
   // Ensure state stays synced if projectId changes in URL
   useEffect(() => {
     if (urlProjectId) {
       setFilters(prev => ({ ...prev, projectId: urlProjectId }));
     }
   }, [urlProjectId]);
-
-  const loadData = useCallback(() => {
-    // Fetch main stats
-    dispatch(fetchCalendarStatsThunk({
-      p_start_date: filters.startDate,
-      p_end_date: filters.endDate,
-      p_project_id: filters.projectId,
-      p_status: filters.status,
-    }));
-
-    // Fetch project list counts (API #2 only takes dates)
-    dispatch(fetchTasksPerProjectThunk({
-      p_start_date: filters.startDate,
-      p_end_date: filters.endDate,
-    }));
-  }, [dispatch, filters]);
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
 
   const stats = calendarStats || { total_tasks: 0, done_tasks: 0, overdue_tasks: 0, totals: {}, daily: [] };
 
@@ -142,7 +132,7 @@ export const StatisticsContainer = () => {
         </div>
         <div className="lg:col-span-2">
           <ProjectList 
-            projects={projectCounts}
+            projects={projectCounts || []}
             loading={isLoadingProjects}
           />
         </div>
