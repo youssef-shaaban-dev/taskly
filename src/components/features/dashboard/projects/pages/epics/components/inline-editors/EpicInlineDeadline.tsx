@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateEpic } from "@/store/slices/epics/epicSlice";
 import { useUpdateEpic } from "../../hooks/useUpdateEpic";
 import { Epic } from "../../types";
 import { EventIcon } from "@/components/icons";
@@ -11,7 +9,6 @@ interface Props {
 }
 
 export const EpicInlineDeadline = ({ epic }: Props) => {
-  const dispatch = useDispatch();
   const { updateField, updatingField } = useUpdateEpic(epic.id);
 
   const [deadline, setDeadline] = useState(epic.deadline ? epic.deadline.split("T")[0] : "");
@@ -27,7 +24,6 @@ export const EpicInlineDeadline = ({ epic }: Props) => {
       newDeadline,
       currentFormatted,
       (updatedData: Epic) => {
-        dispatch(updateEpic(updatedData));
         setDeadline(updatedData.deadline ? updatedData.deadline.split("T")[0] : "");
       },
       () => {

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateEpic } from "@/store/slices/epics/epicSlice";
 import { useUpdateEpic } from "../../hooks/useUpdateEpic";
 import { Epic } from "../../types";
 
@@ -9,7 +7,6 @@ interface Props {
 }
 
 export const EpicInlineDescription = ({ epic }: Props) => {
-  const dispatch = useDispatch();
   const { updateField, updatingField } = useUpdateEpic(epic.id);
   const [description, setDescription] = useState(epic.description || "");
 
@@ -20,7 +17,6 @@ export const EpicInlineDescription = ({ epic }: Props) => {
       description,
       epic.description,
       (updatedData: Epic) => {
-        dispatch(updateEpic(updatedData));
         setDescription(updatedData.description || "");
       },
       () => {

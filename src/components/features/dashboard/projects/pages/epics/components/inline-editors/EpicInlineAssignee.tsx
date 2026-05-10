@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateEpic } from "@/store/slices/epics/epicSlice";
 import { useUpdateEpic } from "../../hooks/useUpdateEpic";
 import { Epic } from "../../types";
 import { ProjectMember } from "../../../projectMembers/types";
@@ -14,7 +12,6 @@ interface Props {
 }
 
 export const EpicInlineAssignee = ({ epic, members, isLoadingMembers }: Props) => {
-  const dispatch = useDispatch();
   const { updateField, updatingField } = useUpdateEpic(epic.id);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -34,15 +31,7 @@ export const EpicInlineAssignee = ({ epic, members, isLoadingMembers }: Props) =
     updateField(
       "assignee_id",
       newAssigneeId,
-      epic.assignee?.sub || null,
-      () => {
-        dispatch(
-          updateEpic({
-            id: epic.id,
-            assignee: newAssigneeId ? assigneeData : undefined,
-          })
-        );
-      }
+      epic.assignee?.sub || null
     );
     setIsEditing(false);
   };

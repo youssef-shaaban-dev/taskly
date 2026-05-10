@@ -1,19 +1,35 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import {
-  UpdateEpicPayload,
-  updateEpicService,
-} from "../services/updateEpicService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UpdateEpicPayload, updateEpicService } from "../services/updateEpicService";
 import { Epic } from "../types";
 
 
 export const useUpdateEpic = (epicId: string) => {
-  const router = useRouter();
+  const queryClient = useQueryClient();
+  const [updatingField, setUpdatingField] = useState<keyof UpdateEpicPayload | null>(null);
 
-  const [updatingField, setUpdatingField] = useState<
-    keyof UpdateEpicPayload | null
-  >(null);
+  const mutation = useMutation({
+    mutationFn: async ({ payload }: { payload: UpdateEpicPayload }) => {
+      return await updateEpicService(epicId, payload);
+    },
+    onSuccess: (updatedEpic) => {
+      toast.success("Updated successfully");
+      // Smart Invalidation: Update both specific epic AND general list
+      queryClient.invalidateQueries({ queryKey: ["epic", epicId] });
+      queryClient.invalidateQueries({ queryKey: ["epics"] });
+      
+      // Optional Optimistic Feedback: Instantly prime the cache for faster load
+      queryClient.setQueryData(["epic", epicId], updatedEpic);
+    },
+    onError: (error) => {
+      toast.error("Failed to update. Reverting changes...");
+      console.error(error);
+    },
+    onSettled: () => {
+      setUpdatingField(null);
+    }
+  });
 
   const updateField = async (
     field: keyof UpdateEpicPayload,
@@ -24,29 +40,19 @@ export const useUpdateEpic = (epicId: string) => {
   ) => {
     if (newValue === previousValue) return;
 
-    try {
-      setUpdatingField(field);
+    setUpdatingField(field);
+    
+    const payload: UpdateEpicPayload = { [field]: newValue };
 
-      const payload: UpdateEpicPayload = {
-        [field]: newValue,
-      };
-
-      const updatedEpic = await updateEpicService(epicId, payload);
-
-      toast.success("Updated successfully");
-
-      router.refresh();
-
-      if (onSuccess) onSuccess(updatedEpic);
-    } catch (error: unknown) {
-      toast.error("Failed to update. Reverting changes...");
-      console.error(error);
-
-      if (onError) onError();
-    } finally {
-      setUpdatingField(null);
-    }
+    mutation.mutate({ payload }, {
+      onSuccess: (data) => {
+        if (onSuccess) onSuccess(data);
+      },
+      onError: () => {
+        if (onError) onError();
+      }
+    });
   };
 
-  return { updateField, updatingField };
+  return { updateField, updatingField: mutation.isPending ? updatingField : null };
 };

@@ -1,69 +1,75 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store";
-import { fetchEpicsThunk } from "@/store/slices/epics/epicThunks";
-import { resetEpics } from "@/store/slices/epics/epicSlice";
+import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProjectEpics } from "../services/fetchEpics";
 
-export const useProjectEpics = (projectId: string, limit: number = 6) => {
-  const dispatch = useDispatch<AppDispatch>();
+export const useProjectEpics = (projectId: string, initialLimit: number = 6) => {
+  // Search state handling
   const [searchQuery, setSearchQuery] = useState("");
-  
-  const { 
-    epics, 
-    isLoading, 
-    isLoadMoreLoading, 
-    error, 
-    totalCount, 
-    currentPage 
-  } = useSelector((state: RootState) => state.epics);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  const loadEpics = useCallback(
-    (page: number, isLoadMore: boolean = false, search?: string) => {
-      dispatch(fetchEpicsThunk({ projectId, page, limit, isLoadMore, search }));
-    },
-    [projectId, limit, dispatch]
-  );
+  // UI Modes/Parameters
+  const [currentPage, setCurrentPage] = useState(1);
+  const [mobileVisibleCount, setMobileVisibleCount] = useState(initialLimit);
+  const [viewMode, setViewMode] = useState<"pagination" | "loadMore">("pagination");
 
-  // Search logic with debounce
+  // Debounce effect purely for search input (Safe from cascading renders warnings as it syncs client UI)
   useEffect(() => {
-    if (!projectId) return;
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      // Reset view state whenever search changes to show fresh first batch
+      setCurrentPage(1);
+      setMobileVisibleCount(initialLimit);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchQuery, initialLimit]);
 
-    const timer = setTimeout(() => {
-      dispatch(resetEpics());
-      loadEpics(1, false, searchQuery);
-    }, 500); // 500ms debounce
+  // Compute request params
+  const currentOffset = viewMode === "loadMore" ? 0 : (currentPage - 1) * initialLimit;
+  const currentLimit = viewMode === "loadMore" ? mobileVisibleCount : initialLimit;
 
-    return () => clearTimeout(timer);
-  }, [projectId, searchQuery, dispatch, loadEpics]);
+  const { data, isLoading, isFetching, error, refetch } = useQuery({
+    queryKey: ["epics", { projectId, limit: currentLimit, offset: currentOffset, search: debouncedSearch }],
+    queryFn: () => fetchProjectEpics({
+      projectId,
+      limit: currentLimit,
+      offset: currentOffset,
+      search: debouncedSearch,
+    }),
+    enabled: !!projectId,
+    placeholderData: (previousData) => previousData,
+  });
+
+  const epics = data?.data || [];
+  const totalCount = data?.totalCount || 0;
+  const totalPages = Math.ceil(totalCount / initialLimit);
 
   const fetchNextPage = useCallback(() => {
-    if (!isLoadMoreLoading && epics.length < totalCount) {
-      loadEpics(currentPage + 1, true, searchQuery);
+    if (mobileVisibleCount < totalCount && !isFetching) {
+      setViewMode("loadMore");
+      setMobileVisibleCount((prev) => prev + initialLimit);
     }
-  }, [isLoadMoreLoading, epics.length, totalCount, currentPage, loadEpics, searchQuery]);
+  }, [mobileVisibleCount, totalCount, isFetching, initialLimit]);
 
   const setPage = useCallback((page: number) => {
-    loadEpics(page, false, searchQuery);
-  }, [loadEpics, searchQuery]);
-
-  const totalPages = Math.ceil(totalCount / limit);
-  const hasMore = epics.length < totalCount;
+    setViewMode("pagination");
+    setCurrentPage(page);
+  }, []);
 
   return {
     epics,
-    isLoading,
-    isLoadMoreLoading,
-    error,
+    isLoading: isLoading && epics.length === 0,
+    isLoadMoreLoading: isFetching && viewMode === "loadMore",
+    error: error ? (error instanceof Error ? error.message : "An error occurred") : null,
     totalCount,
     currentPage,
     totalPages,
-    hasMore,
+    hasMore: epics.length < totalCount,
     searchQuery,
     setSearchQuery,
     fetchNextPage,
     setPage,
-    refetch: () => loadEpics(currentPage, false, searchQuery),
+    refetch,
   };
 };

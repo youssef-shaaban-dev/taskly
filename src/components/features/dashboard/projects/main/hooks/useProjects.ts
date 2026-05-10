@@ -1,12 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProjectsService } from "../services/projectService";
-import { Project } from "../types";
 
 export const useProjects = () => {
   // Track parameters instead of syncing data
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(6); // Used for desktop pagination limit
+  const [pageSize] = useState(6); // Used for desktop pagination limit
   const [mobileVisibleCount, setMobileVisibleCount] = useState(6); // Used for incremental growth
   const [viewMode, setViewMode] = useState<"pagination" | "loadMore">("pagination");
 

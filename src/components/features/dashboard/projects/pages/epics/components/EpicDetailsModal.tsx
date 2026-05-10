@@ -1,12 +1,11 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import Link from "next/link";
-import { RootState, AppDispatch } from "@/store";
-import { closeEpicDetails } from "@/store/slices/epics/epicSlice";
+import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/utils/cn";
 import { XIcon, PlusIcon } from "@/components/icons";
-import { useEffect } from "react";
+import { fetchEpicById } from "../services/fetchEpics";
 import { useProjectMembers } from "../../projectMembers/hooks/useProjectMembers";
 import { EpicInlineTitle } from "./inline-editors/EpicInlineTitle";
 import { EpicInlineDescription } from "./inline-editors/EpicInlineDescription";
@@ -15,31 +14,39 @@ import { EpicInlineDeadline } from "./inline-editors/EpicInlineDeadline";
 import { EpicTasksList } from "./EpicTasksList";
 import { ROUTES } from "@/constant";
 
-export const EpicDetailsModal = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { selectedEpic, isDetailsModalOpen, isDetailsLoading } = useSelector(
-    (state: RootState) => state.epics
-  );
+interface EpicDetailsModalProps {
+  projectId: string;
+  epicId: string | null;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const EpicDetailsModal = ({ projectId, epicId, isOpen, onClose }: EpicDetailsModalProps) => {
+  const { data: selectedEpic, isLoading: isDetailsLoading } = useQuery({
+    queryKey: ["epic", epicId],
+    queryFn: () => fetchEpicById(projectId, epicId as string),
+    enabled: !!epicId && isOpen,
+  });
 
   const { members, isLoading: isLoadingMembers } = useProjectMembers();
 
   // Close on ESC key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") dispatch(closeEpicDetails());
+      if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
-  }, [dispatch]);
+  }, [onClose]);
 
-  if (!isDetailsModalOpen) return null;
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300"
-        onClick={() => dispatch(closeEpicDetails())}
+        onClick={onClose}
       />
 
       {/* Modal Container */}
@@ -56,7 +63,7 @@ export const EpicDetailsModal = () => {
             {selectedEpic && <EpicInlineTitle key={selectedEpic.id} epic={selectedEpic} />}
           </div>
           <button
-            onClick={() => dispatch(closeEpicDetails())}
+            onClick={onClose}
             className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-all ml-4 shrink-0"
           >
             <XIcon size={20} />
@@ -123,7 +130,7 @@ export const EpicDetailsModal = () => {
                   <h3 className="text-lg font-extrabold text-slate-900">Epic Tasks</h3>
                   <Link 
                     href={`${ROUTES.PROJECTS}/${selectedEpic?.project_id}${ROUTES.ADD_TASK}?epicId=${selectedEpic?.id}`}
-                    onClick={() => dispatch(closeEpicDetails())}
+                    onClick={onClose}
                     className="text-primary hover:text-primary-dark text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-primary/5 transition-all"
                   >
                     <PlusIcon size={14} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import { useProjectEpics } from "@/components/features/dashboard/projects/pages/epics/hooks/useProjectEpics";
 import { useProjectDetails } from "@/components/features/dashboard/projects/pages/projectDetails/hooks/useProjectDetails";
 import { EpicsHeader } from "@/components/features/dashboard/projects/pages/epics/components/EpicsHeader";
@@ -35,6 +35,8 @@ export default function EpicsPage({ params }: EpicsPageProps) {
     setPage,
     refetch
   } = useProjectEpics(projectId, PAGE_SIZE);
+  
+  const [selectedEpicId, setSelectedEpicId] = useState<string | null>(null);
 
   const { project } = useProjectDetails(projectId);
 
@@ -62,7 +64,11 @@ export default function EpicsPage({ params }: EpicsPageProps) {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             {epics.map((epic) => (
-              <EpicCard key={epic.id} epic={epic} />
+              <EpicCard 
+                key={epic.id} 
+                epic={epic} 
+                onClick={() => setSelectedEpicId(epic.id)}
+              />
             ))}
           </div>
 
@@ -86,7 +92,12 @@ export default function EpicsPage({ params }: EpicsPageProps) {
         </>
       )}
 
-      <EpicDetailsModal />
+      <EpicDetailsModal 
+        projectId={projectId}
+        epicId={selectedEpicId}
+        isOpen={!!selectedEpicId}
+        onClose={() => setSelectedEpicId(null)}
+      />
     </div>
   );
 }

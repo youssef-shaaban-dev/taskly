@@ -3,26 +3,18 @@
 import { Epic } from "../types";
 import { MoreIcon, EventIcon, UserIcon } from "@/components/icons";
 import { formatDate } from "@/utils/formatDate";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
-import { fetchEpicDetailsThunk } from "@/store/slices/epics/epicThunks";
 
 interface EpicCardProps {
   epic: Epic;
+  onClick?: () => void;
 }
 
-export const EpicCard = ({ epic }: EpicCardProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  
+export const EpicCard = ({ epic, onClick }: EpicCardProps) => {
   const formattedDate = formatDate(epic.created_at);
-
-  const handleOpenDetails = () => {
-    dispatch(fetchEpicDetailsThunk({ projectId: epic.project_id, epicId: epic.id }));
-  };
 
   return (
     <div 
-      onClick={handleOpenDetails}
+      onClick={onClick}
       className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 flex flex-col h-full hover:border-primary/20 transition-all group cursor-pointer active:scale-[0.99]"
     >
       <div className="flex items-center justify-between mb-4">
