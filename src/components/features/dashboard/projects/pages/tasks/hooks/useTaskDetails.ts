@@ -1,40 +1,55 @@
-import { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ProjectTask } from "../types";
 import { fetchTaskDetails } from "../services/fetchTaskDetails";
 import { updateTaskDetailsService, UpdateTaskPayload } from "../services/taskService";
-import { updateTaskLocally } from "@/store/slices/tasks/taskSlice";
 import { toast } from "sonner";
 
 export const useTaskDetails = (projectId: string, taskId: string | null) => {
-  const [task, setTask] = useState<ProjectTask | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   const [updatingFields, setUpdatingFields] = useState<Record<string, boolean>>({});
 
-  const dispatch = useDispatch();
+  const { data: task, isLoading, error } = useQuery({
+    queryKey: ["tasks", "detail", { projectId, taskId }],
+    queryFn: () => fetchTaskDetails(projectId, taskId as string),
+    enabled: !!projectId && !!taskId,
+  });
 
-  useEffect(() => {
-    const loadTask = async () => {
-      if (!projectId || !taskId) {
-        setTask(null);
-        return;
+  const mutation = useMutation({
+    mutationFn: async ({ taskId, payload }: { taskId: string, payload: UpdateTaskPayload, optimisticChanges: Partial<ProjectTask> }) => {
+      return await updateTaskDetailsService(taskId, payload);
+    },
+    onMutate: async ({ taskId, optimisticChanges }) => {
+      // In case user was very aggressive, cancel outgoing fetches
+      await queryClient.cancelQueries({ queryKey: ["tasks", "detail", { projectId, taskId }] });
+      
+      const previousTask = queryClient.getQueryData(["tasks", "detail", { projectId, taskId }]);
+      
+      // Update current task locally instantly
+      queryClient.setQueryData(["tasks", "detail", { projectId, taskId }], (old: ProjectTask | undefined) => {
+        return old ? { ...old, ...optimisticChanges } : old;
+      });
+
+      return { previousTask };
+    },
+    onSuccess: (_, variables) => {
+      toast.success("Task updated successfully.");
+      // Instantly force background reload of ALL related lists and views
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    },
+    onError: (err, variables, context?: { previousTask?: ProjectTask }) => {
+      console.error("Error updating task field:", err);
+      toast.error("Failed to update task. Please try again.");
+      // Rollback logic
+      if (context?.previousTask) {
+        queryClient.setQueryData(
+          ["tasks", "detail", { projectId, taskId: variables.taskId }], 
+          context.previousTask
+        );
       }
-
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await fetchTaskDetails(projectId, taskId);
-        setTask(data);
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : "Failed to load task details");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadTask();
-  }, [projectId, taskId]);
+    },
+  });
 
   const updateTaskField = useCallback(async (
     field: string,
@@ -43,7 +58,7 @@ export const useTaskDetails = (projectId: string, taskId: string | null) => {
   ) => {
     if (!task || !taskId) return;
 
-    // Compare old vs new to skip unnecessary calls
+    // Basic identity comparison to save API trip
     let isUnchanged = true;
     const keys = Object.keys(payload) as Array<keyof UpdateTaskPayload>;
     for (const key of keys) {
@@ -62,47 +77,20 @@ export const useTaskDetails = (projectId: string, taskId: string | null) => {
 
     if (isUnchanged) return;
 
-    const previousTask = { ...task };
-
-    // Set field loading state
+    // Tracking simple loading flag for specific UI elements
     setUpdatingFields((prev) => ({ ...prev, [field]: true }));
 
-    // Optimistic Update: Local state
-    setTask((prev) => (prev ? { ...prev, ...optimisticChanges } : null));
-
-    // Optimistic Update: Redux state
-    dispatch(updateTaskLocally({ id: taskId, changes: optimisticChanges }));
-
-    try {
-      await updateTaskDetailsService(taskId, payload);
-      toast.success("Task updated successfully.");
-
-      // Sync with other list/board views using a custom event
-      window.dispatchEvent(new CustomEvent("task-updated", { 
-        detail: { 
-          taskId, 
-          changes: optimisticChanges,
-          task
-        } 
-      }));
-    } catch (err) {
-      console.error("Error updating task field:", err);
-      // Rollback: Local state
-      setTask(previousTask);
-      
-      // Rollback: Redux state
-      dispatch(updateTaskLocally({ id: taskId, changes: previousTask }));
-
-      toast.error("Failed to update task. Please try again.");
-    } finally {
-      setUpdatingFields((prev) => ({ ...prev, [field]: false }));
-    }
-  }, [task, taskId, dispatch]);
+    mutation.mutate({ taskId, payload, optimisticChanges }, {
+      onSettled: () => {
+        setUpdatingFields((prev) => ({ ...prev, [field]: false }));
+      }
+    });
+  }, [task, taskId, mutation, queryClient, projectId]);
 
   return {
-    task,
+    task: task || null,
     isLoading,
-    error,
+    error: error ? (error instanceof Error ? error.message : "Failed to load task") : null,
     updatingFields,
     updateTaskField,
   };

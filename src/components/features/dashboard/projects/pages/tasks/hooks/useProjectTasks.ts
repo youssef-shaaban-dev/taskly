@@ -1,72 +1,42 @@
-import { useState, useEffect, useCallback } from "react";
-import { ProjectTask } from "../types";
+import { useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchProjectTasks } from "../services/fetchProjectTasks";
 
 export const useProjectTasks = (projectId: string, pageSize: number = 10, searchQuery: string = "") => {
-  const [tasks, setTasks] = useState<ProjectTask[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const loadTasks = useCallback(async () => {
-    if (!projectId) return;
+  // Derived offset logic
+  const currentOffset = (currentPage - 1) * pageSize;
 
-    try {
-      setIsLoading(true);
-      setError(null);
-      const offset = (currentPage - 1) * pageSize;
-      const { data, totalCount } = await fetchProjectTasks({
-        projectId,
-        limit: pageSize,
-        offset,
-        search: searchQuery
-      });
-      setTasks(data);
-      setTotalCount(totalCount);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Failed to load tasks");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [projectId, pageSize, currentPage, searchQuery]);
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["tasks", { projectId, pageSize, currentOffset, searchQuery }],
+    queryFn: () => fetchProjectTasks({
+      projectId,
+      limit: pageSize,
+      offset: currentOffset,
+      search: searchQuery
+    }),
+    enabled: !!projectId,
+    placeholderData: (previousData) => previousData,
+  });
 
-  useEffect(() => {
-    loadTasks();
-  }, [loadTasks]);
-
-  useEffect(() => {
-    const handleTaskUpdated = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      const { taskId, changes } = customEvent.detail || {};
-      if (taskId && changes) {
-        setTasks((prev) =>
-          prev.map((t) => (t.id === taskId ? { ...t, ...changes } : t))
-        );
-      }
-    };
-
-    window.addEventListener("task-updated", handleTaskUpdated);
-    return () => {
-      window.removeEventListener("task-updated", handleTaskUpdated);
-    };
-  }, []);
-
-  // Reset to page 1 when search query changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery]);
-
+  const tasks = data?.data || [];
+  const totalCount = data?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / pageSize);
+
+  // Handle setting custom page smoothly
+  const setPage = useCallback((page: number) => {
+    setCurrentPage(page);
+  }, []);
 
   return {
     tasks,
     isLoading,
-    error,
+    error: error ? (error instanceof Error ? error.message : "Failed to load tasks") : null,
     totalCount,
     currentPage,
     totalPages,
-    setPage: setCurrentPage,
-    refetch: loadTasks
+    setPage,
+    refetch
   };
 };
