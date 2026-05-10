@@ -39,14 +39,17 @@ export const StatisticsContainer = () => {
     status: null as string | null,
   });
 
+  const effectiveProjectId = urlProjectId || filters.projectId;
+
   // Fetch via React Query Hooks
   const { data: calendarStats, isLoading: isLoadingStats } = useCalendarStats({
     p_start_date: filters.startDate,
     p_end_date: filters.endDate,
-    p_project_id: filters.projectId,
+    p_project_id: effectiveProjectId,
     p_status: filters.status,
   });
 
+  const stats = calendarStats || { total_tasks: 0, done_tasks: 0, overdue_tasks: 0, totals: {}, daily: [] };
   const { data: projectCounts, isLoading: isLoadingProjects } = useTasksPerProject({
     p_start_date: filters.startDate,
     p_end_date: filters.endDate,
@@ -54,15 +57,6 @@ export const StatisticsContainer = () => {
   
   // Add debug console logs
   console.log("📊 [Statistics Query Debug]:", { calendarStats, projectCounts });
-
-  // Ensure state stays synced if projectId changes in URL
-  useEffect(() => {
-    if (urlProjectId) {
-      setFilters(prev => ({ ...prev, projectId: urlProjectId }));
-    }
-  }, [urlProjectId]);
-
-  const stats = calendarStats || { total_tasks: 0, done_tasks: 0, overdue_tasks: 0, totals: {}, daily: [] };
 
   return (
     <div className="flex flex-col gap-8 animate-fade-in max-w-[1400px] mx-auto">
@@ -76,7 +70,7 @@ export const StatisticsContainer = () => {
         </div>
         
         <StatisticsFilters 
-          initialValues={filters}
+          initialValues={{ ...filters, projectId: effectiveProjectId }}
           onFilterChange={setFilters}
           hideProjectFilter={!!urlProjectId}
         />
