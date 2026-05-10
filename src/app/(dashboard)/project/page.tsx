@@ -8,6 +8,7 @@ import { ProjectsHeader } from "@/components/features/dashboard/projects/main/co
 import { ProjectCard } from "@/components/features/dashboard/projects/main/components/ProjectCard";
 import { Pagination } from "@/components/shared/Pagination";
 import { InfiniteScrollObserver } from "@/components/shared/InfiniteScrollObserver";
+import { Project } from "@/components/features/dashboard/projects/main/types";
 
 export default function ProjectsPage() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function ProjectsPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {projects.map((project) => (
+            {projects.map((project: Project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
 
