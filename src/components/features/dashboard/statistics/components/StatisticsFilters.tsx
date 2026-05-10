@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { fetchAllProjectsSimpleService, SimpleProject } from "../services/projectDataService";
 import { TaskStatusEnum } from "../types";
 import { getDayDiff } from "../utils/dateUtils";
@@ -17,6 +17,7 @@ interface FiltersState {
 interface StatisticsFiltersProps {
   initialValues: FiltersState;
   onFilterChange: (filters: FiltersState) => void;
+  hideProjectFilter?: boolean;
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -30,10 +31,10 @@ const STATUS_LABELS: Record<string, string> = {
   [TaskStatusEnum.DONE]: "DONE",
 };
 
-export const StatisticsFilters = ({ initialValues, onFilterChange }: StatisticsFiltersProps) => {
+export const StatisticsFilters = ({ initialValues, onFilterChange, hideProjectFilter = false }: StatisticsFiltersProps) => {
   const [projects, setProjects] = useState<SimpleProject[]>([]);
   const [filters, setFilters] = useState<FiltersState>(initialValues);
-  const [isInitialMount, setIsInitialMount] = useState(true);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -48,8 +49,8 @@ export const StatisticsFilters = ({ initialValues, onFilterChange }: StatisticsF
   }, []);
 
   useEffect(() => {
-    if (isInitialMount) {
-      setIsInitialMount(false);
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
       return;
     }
     
@@ -96,26 +97,28 @@ export const StatisticsFilters = ({ initialValues, onFilterChange }: StatisticsF
       </div>
 
       {/* Divider for layout */}
-      <div className="hidden sm:block w-px h-6 bg-slate-200" />
+      {!hideProjectFilter && <div className="hidden sm:block w-px h-6 bg-slate-200" />}
 
       {/* Project Filter */}
-      <div className="relative min-w-[160px]">
-        <select
-          value={filters.projectId || ""}
-          onChange={(e) => handleFilterUpdate("projectId", e.target.value === "" ? null : e.target.value)}
-          className={cn(selectClassName, "w-full")}
-        >
-          <option value="">All Projects</option>
-          {projects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.title}
-            </option>
-          ))}
-        </select>
-        <div className="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-slate-400">
-          <ChevronIcon className="rotate-90 w-4 h-4" />
+      {!hideProjectFilter && (
+        <div className="relative min-w-[160px]">
+          <select
+            value={filters.projectId || ""}
+            onChange={(e) => handleFilterUpdate("projectId", e.target.value === "" ? null : e.target.value)}
+            className={cn(selectClassName, "w-full")}
+          >
+            <option value="">All Projects</option>
+            {projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.title}
+              </option>
+            ))}
+          </select>
+          <div className="absolute inset-y-0 right-2.5 flex items-center pointer-events-none text-slate-400">
+            <ChevronIcon className="rotate-90 w-4 h-4" />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Status Filter */}
       <div className="relative min-w-[160px]">

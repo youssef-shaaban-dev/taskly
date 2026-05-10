@@ -46,8 +46,8 @@ export const Sidebar = () => {
     {
       label: "My Statistics",
       icon: <AnalyticsIcon />,
-      path: ROUTES.MY_STATISTICS,
-      isDisabled: false
+      path: projectId ? `/project/${projectId}/statistics` : "#",
+      isDisabled: !projectId
     },
     {
       label: "Project Epics",

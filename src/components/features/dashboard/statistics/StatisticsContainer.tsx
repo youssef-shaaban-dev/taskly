@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchCalendarStatsThunk, fetchTasksPerProjectThunk } from "@/store/slices/statistics/statisticsThunks";
 import { StatisticsFilters } from "./components/StatisticsFilters";
@@ -8,7 +9,7 @@ import { WeeklyCalendar } from "./components/WeeklyCalendar";
 import { StatusDoughnutChart } from "./components/StatusDoughnutChart";
 import { ProjectList } from "./components/ProjectList";
 import { getWeekRange } from "./utils/dateUtils";
-import { TasklyIcon, ChevronIcon } from "@/components/icons";
+import { TasklyIcon } from "@/components/icons";
 
 // Reusable icons for KPI cards (standardized for this page)
 const CheckIcon = ({ className }: { className?: string }) => (
@@ -26,8 +27,13 @@ const AlertIcon = ({ className }: { className?: string }) => (
 );
 
 export const StatisticsContainer = () => {
+  const params = useParams();
+  const urlProjectId = params.projectId as string | undefined;
   const dispatch = useAppDispatch();
   const { calendarStats, projectCounts, isLoadingStats, isLoadingProjects } = useAppSelector((state) => state.statistics);
+
+  // Add debug console logs
+  console.log("📊 [Statistics Data Debug]:", { calendarStats, projectCounts });
 
   // Default week range
   const defaultRange = getWeekRange();
@@ -35,9 +41,16 @@ export const StatisticsContainer = () => {
   const [filters, setFilters] = useState({
     startDate: defaultRange.startDate,
     endDate: defaultRange.endDate,
-    projectId: null as string | null,
+    projectId: urlProjectId || null,
     status: null as string | null,
   });
+  
+  // Ensure state stays synced if projectId changes in URL
+  useEffect(() => {
+    if (urlProjectId) {
+      setFilters(prev => ({ ...prev, projectId: urlProjectId }));
+    }
+  }, [urlProjectId]);
 
   const loadData = useCallback(() => {
     // Fetch main stats
@@ -75,6 +88,7 @@ export const StatisticsContainer = () => {
         <StatisticsFilters 
           initialValues={filters}
           onFilterChange={setFilters}
+          hideProjectFilter={!!urlProjectId}
         />
       </div>
 

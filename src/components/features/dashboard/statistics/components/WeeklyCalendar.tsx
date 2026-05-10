@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { DailyStat, TaskStatusEnum } from "../types";
 import { formatShortDate } from "../utils/dateUtils";
 import { cn } from "@/utils/cn";
