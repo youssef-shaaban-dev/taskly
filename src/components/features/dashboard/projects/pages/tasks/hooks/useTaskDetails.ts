@@ -23,10 +23,10 @@ export const useTaskDetails = (projectId: string, taskId: string | null) => {
       // In case user was very aggressive, cancel outgoing fetches
       await queryClient.cancelQueries({ queryKey: ["tasks", "detail", { projectId, taskId }] });
       
-      const previousTask = queryClient.getQueryData(["tasks", "detail", { projectId, taskId }]);
+      const previousTask = queryClient.getQueryData<ProjectTask>(["tasks", "detail", { projectId, taskId }]);
       
       // Update current task locally instantly
-      queryClient.setQueryData(["tasks", "detail", { projectId, taskId }], (old: ProjectTask | undefined) => {
+      queryClient.setQueryData<ProjectTask>(["tasks", "detail", { projectId, taskId }], (old) => {
         return old ? { ...old, ...optimisticChanges } : old;
       });
 
@@ -36,7 +36,6 @@ export const useTaskDetails = (projectId: string, taskId: string | null) => {
       toast.success("Task updated successfully.");
       // Instantly force background reload of ALL related lists and views
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
     },
     onError: (err, variables, context?: { previousTask?: ProjectTask }) => {
       console.error("Error updating task field:", err);
