@@ -4,6 +4,7 @@ import uiReducer from "./slices/uiSlice";
 import projectsReducer from "./slices/projects/projectSlice";
 import epicsReducer from "./slices/epics/epicSlice";
 import tasksReducer from "./slices/tasks/taskSlice";
+import statisticsReducer from "./slices/statistics/statisticsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     projects: projectsReducer,
     epics: epicsReducer,
     tasks: tasksReducer,
+    statistics: statisticsReducer,
   },
 });
 

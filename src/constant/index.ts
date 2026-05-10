@@ -35,4 +35,6 @@ export const API_ENDPOINTS = {
   TASKS: "/rest/v1/tasks",
   INVITE_MEMBER: "/rest/v1/rpc/invite_member",
   ACCEPT_INVITATION: "/rest/v1/rpc/accept_invitation",
+  GET_TASKS_CALENDAR_STATS: "/rest/v1/rpc/get_tasks_calendar_stats",
+  GET_TASKS_COUNT_PER_PROJECT: "/rest/v1/rpc/get_tasks_count_per_project",
 } as const;
